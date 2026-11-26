@@ -4177,7 +4177,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aggregateUseChain => 'Usar esta cadena';
 
   @override
-  String get aggregateChainInUse => 'En uso';
+  String get aggregateChainInUse => 'Seleccionada';
 
   @override
   String get aggregateUntested => 'Sin probar';
@@ -4192,4 +4192,59 @@ class AppLocalizationsEs extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return 'La latencia de la cadena se mide a través de la entrada $entry; la del nodo se mide por separado.';
   }
+
+  @override
+  String get aggregateEntryStatus => 'Estado de entrada';
+
+  @override
+  String get aggregateEntryUnknown => 'Estado desconocido';
+
+  @override
+  String get aggregateEntryNotLoaded => 'Cadena no cargada';
+
+  @override
+  String get aggregateEntryTransferring => 'Tráfico observado';
+
+  @override
+  String get aggregateEntryConnected => 'Conectado';
+
+  @override
+  String get aggregateEntryIdle => 'Seleccionada · sin conexiones';
+
+  @override
+  String get aggregateEntryUnselected => 'No seleccionada';
+
+  @override
+  String get aggregateEntryHint =>
+      'La entrada usa una conexión interna separada. Toca para ver las conexiones activas.';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return 'Entrada $entryCount · Salida $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections =>
+      'Quedan conexiones anteriores; el tráfico nuevo usa otra selección.';
+
+  @override
+  String get aggregateSortOriginal => 'Orden original';
+
+  @override
+  String get aggregateSortAscending => 'Latencia: menor a mayor';
+
+  @override
+  String get aggregateSortDescending => 'Latencia: mayor a menor';
+
+  @override
+  String get aggregateResort => 'Actualizar orden';
+
+  @override
+  String get aggregateSortHint =>
+      'Sin probar y fallidos al final. Se ordena tras la prueba por lotes.';
 }

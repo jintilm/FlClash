@@ -73,6 +73,54 @@ void main() {
   );
   final original = base([a.nodes.single.definition]);
 
+  test('entry transport names change when either hop changes', () {
+    final originalName = aggregateEntryName(chain);
+    expect(
+      aggregateEntryName(
+        chain.copyWith(entry: chain.entry.copyWith(fingerprint: 'new')),
+      ),
+      isNot(originalName),
+    );
+    expect(
+      aggregateEntryName(
+        chain.copyWith(exit: chain.exit.copyWith(fingerprint: 'new')),
+      ),
+      isNot(originalName),
+    );
+  });
+
+  test(
+    'delay sorting is stable and puts missing and failed results last in either direction',
+    () {
+      final keys = ['unknown', 'fast', 'failed', 'same', 'slow'];
+      final delays = {'fast': 40, 'same': 40, 'slow': 200, 'failed': -1};
+      expect(
+        orderAggregateDelays((
+          keys: keys,
+          delays: delays,
+          order: AggregateDelaySort.ascending,
+        )),
+        ['fast', 'same', 'slow', 'unknown', 'failed'],
+      );
+      expect(
+        orderAggregateDelays((
+          keys: keys,
+          delays: delays,
+          order: AggregateDelaySort.descending,
+        )),
+        ['slow', 'fast', 'same', 'unknown', 'failed'],
+      );
+      expect(
+        orderAggregateDelays((
+          keys: keys,
+          delays: delays,
+          order: AggregateDelaySort.original,
+        )),
+        keys,
+      );
+    },
+  );
+
   test('applying selects the chain behind both rule and global groups', () {
     final settings = recipe.copyWith(chains: [chain]);
     expect(
@@ -131,6 +179,7 @@ void main() {
         (p) => p['name'] == exit['dialer-proxy'],
       );
       expect(entry['server'], '192.0.2.1');
+      expect(entry['name'], contains(chain.entry.name));
       expect(exit['server'], '192.0.2.2');
       expect(proxies.first, a.nodes.single.definition);
       expect(aggregateMappings(result['proxy-groups']).first['proxies'], [

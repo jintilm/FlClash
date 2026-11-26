@@ -13,6 +13,7 @@ import 'layout.dart';
 import 'style.dart';
 import 'widget_registry.dart';
 import 'widgets/widgets.dart';
+import 'widgets/aggregate_entry.dart';
 
 // Narrower columns leave a pair of service cells too tight for a status, so
 // the grid stacks them in one.
@@ -123,7 +124,7 @@ class _DashboardViewState extends ConsumerState<DashboardView> {
 /// Four columns fill the window, the tables taking what the rows above them
 /// leave. A window too short for the tables, and every two column one, gets
 /// the summary cards instead, so no list scrolls inside a page that scrolls.
-class _DesktopDashboard extends StatelessWidget {
+class _DesktopDashboard extends ConsumerWidget {
   const _DesktopDashboard({
     required this.platform,
     required this.columns,
@@ -135,7 +136,8 @@ class _DesktopDashboard extends StatelessWidget {
   final double gap;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hasChain = ref.watch(aggregateCurrentChainProvider) != null;
     final density = DashboardDensityScope.of(context);
     final compact = density.isCompact;
     final scale = DashboardDensityScope.scaleOf(context);
@@ -197,6 +199,8 @@ class _DesktopDashboard extends StatelessWidget {
                   topHeight,
                   const RepaintBoundary(child: CurrentOutboundCard()),
                 ),
+                if (hasChain)
+                  const RepaintBoundary(child: AggregateEntryCard()),
                 sized(
                   topHeight,
                   row(const [
@@ -231,6 +235,11 @@ class _DesktopDashboard extends StatelessWidget {
               (1, SpeedCard(direction: TrafficDirection.download)),
             ]),
           ),
+          if (hasChain)
+            sized(
+              96 * scale,
+              const RepaintBoundary(child: AggregateEntryCard()),
+            ),
           sized(
             controlHeight,
             row([(2, const OutboundModeBar()), ...switches]),
@@ -255,7 +264,8 @@ class _DesktopDashboard extends StatelessWidget {
             topHeight +
             controlHeight +
             middleHeight +
-            gap * 3;
+            gap * 3 +
+            (hasChain ? 96 * scale + gap : 0);
         final tablesFit = constraints.maxHeight >= rowsHeight + tablesHeight;
         final fills = constraints.maxHeight >= rowsHeight + summaryHeight;
         return SingleChildScrollView(
@@ -320,6 +330,7 @@ class _MobileDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final hasChain = ref.watch(aggregateCurrentChainProvider) != null;
     final saved = ref.watch(
       dashboardStateProvider.select((state) => state.dashboardWidgets),
     );
@@ -358,11 +369,14 @@ class _MobileDashboard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   spacing: gap,
                   children: [
-                    for (final widget in widgets)
+                    for (final widget in widgets) ...[
                       RepaintBoundary(
                         key: cardKeyOf(widget),
                         child: widget.card,
                       ),
+                      if (hasChain && widget == DashboardWidget.currentOutbound)
+                        const RepaintBoundary(child: AggregateEntryCard()),
+                    ],
                   ],
                 ),
               ),

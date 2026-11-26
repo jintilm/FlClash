@@ -34,11 +34,15 @@ class _Action extends AggregateAction {
 
 class _Delay extends AggregateDelayTest {
   final List<AggregateDelayTarget> tested;
+  final Map<String, int> measurements;
 
-  _Delay(this.tested);
+  _Delay(this.tested, [this.measurements = const {}]);
 
   @override
-  AggregateDelayResult build(String targetKey) => const AggregateDelayResult();
+  AggregateDelayResult build(String targetKey) =>
+      AggregateDelayResult(delay: measurements[targetKey]);
+
+  void measure(int value) => state = AggregateDelayResult(delay: value);
 
   @override
   Future<void> test(AggregateDelayTarget target) async {
@@ -73,6 +77,67 @@ void main() {
     baseProfileId: 1,
     sourceIds: {1},
     targetGroup: 'Proxy',
+  );
+
+  testWidgets(
+    'sorts by measured latency without moving rows on individual replies',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 1000));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([base])),
+          aggregateActionProvider.overrideWith(_Action.new),
+          aggregateWorkspaceSettingProvider.overrideWithBuild(
+            (_, _) => const AggregateWorkspace(draft: draft),
+          ),
+          aggregateSourceProvider(1).overrideWith(
+            (_) async =>
+                AggregateSource(id: 1, label: base.label, nodes: nodes),
+          ),
+          aggregateSourceProvider(0).overrideWith(
+            (_) async => const AggregateSource(id: 0, label: 'Local'),
+          ),
+          aggregateDelayTestProvider.overrideWith2(
+            (_) => _Delay([], {nodes[0].ref.key: 200, nodes[1].ref.key: 40}),
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const TestApp(
+            locale: Locale('en'),
+            child: AggregateProxiesView(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Original order'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Latency: low to high'));
+      await tester.pumpAndSettle();
+      expect(
+        tester.getTopLeft(find.text('Exit')).dy,
+        lessThan(tester.getTopLeft(find.text('Entry')).dy),
+      );
+      (container.read(aggregateDelayTestProvider(nodes[0].ref.key).notifier)
+              as _Delay)
+          .measure(10);
+      await tester.pumpAndSettle();
+      expect(
+        tester.getTopLeft(find.text('Exit')).dy,
+        lessThan(tester.getTopLeft(find.text('Entry')).dy),
+      );
+      await tester.tap(find.byTooltip('Refresh order'));
+      await tester.pumpAndSettle();
+      expect(
+        tester.getTopLeft(find.text('Entry')).dy,
+        lessThan(tester.getTopLeft(find.text('Exit')).dy),
+      );
+      expect(tester.takeException(), isNull);
+    },
   );
 
   testWidgets(
@@ -287,7 +352,7 @@ void main() {
           .read(aggregateRuntimeProvider.notifier)
           .record(applied.id, workspace.draft, true);
       await tester.pumpAndSettle();
-      expect(find.text('In use'), findsNothing);
+      expect(find.text('Selected'), findsNothing);
       container
           .read(profilesProvider.notifier)
           .put(
@@ -299,7 +364,7 @@ void main() {
             ),
           );
       await tester.pumpAndSettle();
-      expect(find.text('In use'), findsOneWidget);
+      expect(find.text('Selected'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

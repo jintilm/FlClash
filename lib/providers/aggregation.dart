@@ -15,6 +15,23 @@ import 'providers.dart';
 
 part 'generated/aggregation.g.dart';
 
+@riverpod
+({int profileId, AggregateConfig settings, ProxyChain chain})?
+aggregateCurrentChain(Ref ref) {
+  final profile = ref.watch(currentProfileProvider);
+  final settings = profile?.aggregate;
+  if (profile == null || settings == null || settings.chains.isEmpty) {
+    return null;
+  }
+  final selected = profile.selectedMap[settings.groupName];
+  final chain =
+      settings.chains.firstWhereOrNull(
+        (chain) => aggregateChainName(chain) == selected,
+      ) ??
+      settings.chains.first;
+  return (profileId: profile.id, settings: settings, chain: chain);
+}
+
 @Riverpod(keepAlive: true)
 class AggregateRuntime extends _$AggregateRuntime {
   @override

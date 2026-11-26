@@ -8,6 +8,7 @@ import 'package:fl_clash/views/dashboard/dashboard.dart';
 import 'package:fl_clash/views/dashboard/layout.dart';
 import 'package:fl_clash/views/dashboard/widgets/card.dart';
 import 'package:fl_clash/views/dashboard/widgets/widgets.dart';
+import 'package:fl_clash/views/dashboard/widgets/aggregate_entry.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -138,6 +139,41 @@ void main() {
     expect(tester.takeException(), isNull);
 
     await teardown(tester);
+  });
+
+  testWidgets('aggregate entry status fits desktop and mobile dashboards', (
+    tester,
+  ) async {
+    const chain = ProxyChain(
+      id: 'chain',
+      name: 'SG to LT',
+      entry: AggregateNodeRef(sourceId: 1, fingerprint: 'sg', name: 'SG'),
+      exit: AggregateNodeRef(sourceId: 2, fingerprint: 'lt', name: 'LT'),
+    );
+    const settings = AggregateConfig(
+      baseProfileId: 1,
+      targetGroup: 'Proxy',
+      chains: [chain],
+    );
+    container
+        .read(profilesProvider.notifier)
+        .put(
+          const Profile(
+            id: 3,
+            type: ProfileType.aggregate,
+            aggregate: settings,
+            autoUpdateDuration: Duration.zero,
+          ),
+        );
+    container.read(currentProfileIdProvider.notifier).value = 3;
+    for (final size in const [Size(1220, 824), Size(360, 800)]) {
+      await pumpDashboard(tester, size);
+      await tester.pump(const Duration(milliseconds: 500));
+      expect(find.byType(AggregateEntryCard), findsOneWidget);
+      expect(find.text('SG → LT'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+      await teardown(tester);
+    }
   });
 
   testWidgets('the table lines its text up with the column and its head with '

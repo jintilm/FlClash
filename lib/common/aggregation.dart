@@ -47,6 +47,33 @@ class AggregateDelayTarget {
       nodes.every((node) => !node.hasDialer);
 }
 
+enum AggregateDelaySort { original, ascending, descending }
+
+List<String> orderAggregateDelays(
+  ({List<String> keys, Map<String, int?> delays, AggregateDelaySort order})
+  input,
+) {
+  if (input.order == AggregateDelaySort.original) return input.keys;
+  int category(int? delay) => delay == null
+      ? 1
+      : delay > 0
+      ? 0
+      : 2;
+  final indexes = {for (final (index, key) in input.keys.indexed) key: index};
+  return [...input.keys]..sort((a, b) {
+    final first = input.delays[a], second = input.delays[b];
+    final group = category(first).compareTo(category(second));
+    if (group != 0) return group;
+    if (first != null && first > 0 && second != null && second > 0) {
+      final delay = input.order == AggregateDelaySort.ascending
+          ? first.compareTo(second)
+          : second.compareTo(first);
+      if (delay != 0) return delay;
+    }
+    return indexes[a]!.compareTo(indexes[b]!);
+  });
+}
+
 enum AggregateIssue {
   missingBase,
   missingSource,
@@ -118,6 +145,9 @@ List<AggregateNode> aggregateNodes({
 }
 
 String aggregateChainName(ProxyChain chain) => '${chain.name} [${chain.id}]';
+
+String aggregateEntryName(ProxyChain chain) =>
+    '${chain.entry.name} · ${chain.name} [entry:${chain.id}:${sha256.convert(utf8.encode('${chain.entry.key}/${chain.exit.key}')).toString().substring(0, 10)}]';
 
 Map<String, String> aggregateSelectedMap(
   AggregateConfig settings,
@@ -262,7 +292,7 @@ Map<String, dynamic> composeAggregate(AggregateBuildInput input) {
         }.contains(entry.type)) {
       throw AggregateException(AggregateIssue.udpEntry, entry.name);
     }
-    final entryName = '@aggregate-entry:${chain.id}';
+    final entryName = aggregateEntryName(chain);
     final exitName = aggregateChainName(chain);
     reserve(entryName);
     reserve(exitName);

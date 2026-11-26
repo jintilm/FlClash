@@ -4138,7 +4138,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aggregateUseChain => 'Use this chain';
 
   @override
-  String get aggregateChainInUse => 'In use';
+  String get aggregateChainInUse => 'Selected';
 
   @override
   String get aggregateUntested => 'Not tested';
@@ -4153,4 +4153,59 @@ class AppLocalizationsEn extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return 'Chain latency is measured through entry $entry; node latency is the standalone result.';
   }
+
+  @override
+  String get aggregateEntryStatus => 'Entry status';
+
+  @override
+  String get aggregateEntryUnknown => 'Status unavailable';
+
+  @override
+  String get aggregateEntryNotLoaded => 'Chain not loaded';
+
+  @override
+  String get aggregateEntryTransferring => 'Traffic observed';
+
+  @override
+  String get aggregateEntryConnected => 'Connected';
+
+  @override
+  String get aggregateEntryIdle => 'Selected · no live connections';
+
+  @override
+  String get aggregateEntryUnselected => 'Not selected';
+
+  @override
+  String get aggregateEntryHint =>
+      'Entry transport is a separate internal connection. Tap to inspect live connections.';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return 'Entry $entryCount · Exit $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections =>
+      'Older connections remain active; new traffic uses another selection.';
+
+  @override
+  String get aggregateSortOriginal => 'Original order';
+
+  @override
+  String get aggregateSortAscending => 'Latency: low to high';
+
+  @override
+  String get aggregateSortDescending => 'Latency: high to low';
+
+  @override
+  String get aggregateResort => 'Refresh order';
+
+  @override
+  String get aggregateSortHint =>
+      'Untested and failed last. Order updates after batch tests.';
 }

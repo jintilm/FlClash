@@ -579,6 +579,31 @@ Map<String, dynamic> _$RouteSnapshotToJson(_RouteSnapshot instance) =>
       'running': instance.running,
     };
 
+_ChainStatus _$ChainStatusFromJson(Map<String, dynamic> json) => _ChainStatus(
+  coreEpoch: (json['core-epoch'] as num?)?.toInt() ?? 0,
+  routeVersion: (json['route-version'] as num?)?.toInt() ?? 0,
+  running: json['running'] as bool? ?? false,
+  selected: json['selected'] as bool? ?? false,
+  entry: json['entry'] as String? ?? '',
+  entryConnections: (json['entry-connections'] as num?)?.toInt() ?? 0,
+  exitConnections: (json['exit-connections'] as num?)?.toInt() ?? 0,
+  upload: (json['upload'] as num?)?.toInt() ?? 0,
+  download: (json['download'] as num?)?.toInt() ?? 0,
+);
+
+Map<String, dynamic> _$ChainStatusToJson(_ChainStatus instance) =>
+    <String, dynamic>{
+      'core-epoch': instance.coreEpoch,
+      'route-version': instance.routeVersion,
+      'running': instance.running,
+      'selected': instance.selected,
+      'entry': instance.entry,
+      'entry-connections': instance.entryConnections,
+      'exit-connections': instance.exitConnections,
+      'upload': instance.upload,
+      'download': instance.download,
+    };
+
 _RouteHit _$RouteHitFromJson(Map<String, dynamic> json) => _RouteHit(
   host: json['host'] as String? ?? '',
   proxy: json['proxy'] as String? ?? '',

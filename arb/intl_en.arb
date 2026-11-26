@@ -1308,7 +1308,7 @@
   "aggregateCoreRequired": "The core is not connected. Try again when it is ready.",
   "aggregateTestExitIp": "Check exit IP",
   "aggregateUseChain": "Use this chain",
-  "aggregateChainInUse": "In use",
+  "aggregateChainInUse": "Selected",
   "aggregateUntested": "Not tested",
   "aggregateNodeDelay": "Node latency",
   "aggregateTestChain": "Test chain",
@@ -1316,6 +1316,37 @@
   "@aggregateExitDelayHint": {
     "placeholders": {
       "entry": {
+        "type": "String"
+      }
+    }
+  },
+  "aggregateEntryStatus": "Entry status",
+  "aggregateEntryUnknown": "Status unavailable",
+  "aggregateEntryNotLoaded": "Chain not loaded",
+  "aggregateEntryTransferring": "Traffic observed",
+  "aggregateEntryConnected": "Connected",
+  "aggregateEntryIdle": "Selected · no live connections",
+  "aggregateEntryUnselected": "Not selected",
+  "aggregateEntryHint": "Entry transport is a separate internal connection. Tap to inspect live connections.",
+  "aggregateEntryCounts": "Entry {entryCount} · Exit {exitCount} · ↑ {upload} · ↓ {download}",
+  "aggregateEntryOldConnections": "Older connections remain active; new traffic uses another selection.",
+  "aggregateSortOriginal": "Original order",
+  "aggregateSortAscending": "Latency: low to high",
+  "aggregateSortDescending": "Latency: high to low",
+  "aggregateResort": "Refresh order",
+  "aggregateSortHint": "Untested and failed last. Order updates after batch tests.",
+  "@aggregateEntryCounts": {
+    "placeholders": {
+      "entryCount": {
+        "type": "int"
+      },
+      "exitCount": {
+        "type": "int"
+      },
+      "upload": {
+        "type": "String"
+      },
+      "download": {
         "type": "String"
       }
     }

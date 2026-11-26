@@ -9,6 +9,65 @@ part of '../aggregation.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(aggregateCurrentChain)
+final aggregateCurrentChainProvider = AggregateCurrentChainProvider._();
+
+final class AggregateCurrentChainProvider
+    extends
+        $FunctionalProvider<
+          ({ProxyChain chain, int profileId, AggregateConfig settings})?,
+          ({ProxyChain chain, int profileId, AggregateConfig settings})?,
+          ({ProxyChain chain, int profileId, AggregateConfig settings})?
+        >
+    with
+        $Provider<
+          ({ProxyChain chain, int profileId, AggregateConfig settings})?
+        > {
+  AggregateCurrentChainProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'aggregateCurrentChainProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$aggregateCurrentChainHash();
+
+  @$internal
+  @override
+  $ProviderElement<
+    ({ProxyChain chain, int profileId, AggregateConfig settings})?
+  >
+  $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+
+  @override
+  ({ProxyChain chain, int profileId, AggregateConfig settings})? create(
+    Ref ref,
+  ) {
+    return aggregateCurrentChain(ref);
+  }
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(
+    ({ProxyChain chain, int profileId, AggregateConfig settings})? value,
+  ) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride:
+          $SyncValueProvider<
+            ({ProxyChain chain, int profileId, AggregateConfig settings})?
+          >(value),
+    );
+  }
+}
+
+String _$aggregateCurrentChainHash() =>
+    r'acafb5ec3e3bab9144574af8a41c018f50052f05';
+
 @ProviderFor(AggregateRuntime)
 final aggregateRuntimeProvider = AggregateRuntimeProvider._();
 

@@ -7275,7 +7275,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateChainInUse.
   ///
   /// In en, this message translates to:
-  /// **'In use'**
+  /// **'Selected'**
   String get aggregateChainInUse;
 
   /// No description provided for @aggregateUntested.
@@ -7301,6 +7301,101 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Chain latency is measured through entry {entry}; node latency is the standalone result.'**
   String aggregateExitDelayHint(String entry);
+
+  /// No description provided for @aggregateEntryStatus.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry status'**
+  String get aggregateEntryStatus;
+
+  /// No description provided for @aggregateEntryUnknown.
+  ///
+  /// In en, this message translates to:
+  /// **'Status unavailable'**
+  String get aggregateEntryUnknown;
+
+  /// No description provided for @aggregateEntryNotLoaded.
+  ///
+  /// In en, this message translates to:
+  /// **'Chain not loaded'**
+  String get aggregateEntryNotLoaded;
+
+  /// No description provided for @aggregateEntryTransferring.
+  ///
+  /// In en, this message translates to:
+  /// **'Traffic observed'**
+  String get aggregateEntryTransferring;
+
+  /// No description provided for @aggregateEntryConnected.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get aggregateEntryConnected;
+
+  /// No description provided for @aggregateEntryIdle.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected · no live connections'**
+  String get aggregateEntryIdle;
+
+  /// No description provided for @aggregateEntryUnselected.
+  ///
+  /// In en, this message translates to:
+  /// **'Not selected'**
+  String get aggregateEntryUnselected;
+
+  /// No description provided for @aggregateEntryHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry transport is a separate internal connection. Tap to inspect live connections.'**
+  String get aggregateEntryHint;
+
+  /// No description provided for @aggregateEntryCounts.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry {entryCount} · Exit {exitCount} · ↑ {upload} · ↓ {download}'**
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  );
+
+  /// No description provided for @aggregateEntryOldConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Older connections remain active; new traffic uses another selection.'**
+  String get aggregateEntryOldConnections;
+
+  /// No description provided for @aggregateSortOriginal.
+  ///
+  /// In en, this message translates to:
+  /// **'Original order'**
+  String get aggregateSortOriginal;
+
+  /// No description provided for @aggregateSortAscending.
+  ///
+  /// In en, this message translates to:
+  /// **'Latency: low to high'**
+  String get aggregateSortAscending;
+
+  /// No description provided for @aggregateSortDescending.
+  ///
+  /// In en, this message translates to:
+  /// **'Latency: high to low'**
+  String get aggregateSortDescending;
+
+  /// No description provided for @aggregateResort.
+  ///
+  /// In en, this message translates to:
+  /// **'Refresh order'**
+  String get aggregateResort;
+
+  /// No description provided for @aggregateSortHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Untested and failed last. Order updates after batch tests.'**
+  String get aggregateSortHint;
 }
 
 class _AppLocalizationsDelegate

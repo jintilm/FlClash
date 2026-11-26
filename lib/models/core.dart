@@ -402,6 +402,24 @@ abstract class RouteSnapshot with _$RouteSnapshot {
       _$RouteSnapshotFromJson(json);
 }
 
+@freezed
+abstract class ChainStatus with _$ChainStatus {
+  const factory ChainStatus({
+    @JsonKey(name: 'core-epoch') @Default(0) int coreEpoch,
+    @JsonKey(name: 'route-version') @Default(0) int routeVersion,
+    @Default(false) bool running,
+    @Default(false) bool selected,
+    @Default('') String entry,
+    @JsonKey(name: 'entry-connections') @Default(0) int entryConnections,
+    @JsonKey(name: 'exit-connections') @Default(0) int exitConnections,
+    @Default(0) int upload,
+    @Default(0) int download,
+  }) = _ChainStatus;
+
+  factory ChainStatus.fromJson(Map<String, Object?> json) =>
+      _$ChainStatusFromJson(json);
+}
+
 /// [exit] is the Core's name for where a connection left, only compared whole.
 @freezed
 abstract class RouteHit with _$RouteHit {

@@ -3895,7 +3895,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aggregateUseChain => '使用此链路';
 
   @override
-  String get aggregateChainInUse => '使用中';
+  String get aggregateChainInUse => '已选用';
 
   @override
   String get aggregateUntested => '未测试';
@@ -3910,4 +3910,56 @@ class AppLocalizationsZh extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return '链路延迟通过入口 $entry 测得；节点延迟为单独测试结果。';
   }
+
+  @override
+  String get aggregateEntryStatus => '入口状态';
+
+  @override
+  String get aggregateEntryUnknown => '状态未知';
+
+  @override
+  String get aggregateEntryNotLoaded => '链路未加载';
+
+  @override
+  String get aggregateEntryTransferring => '已观察到传输';
+
+  @override
+  String get aggregateEntryConnected => '已建立连接';
+
+  @override
+  String get aggregateEntryIdle => '已选用 · 暂无连接';
+
+  @override
+  String get aggregateEntryUnselected => '未选用';
+
+  @override
+  String get aggregateEntryHint => '入口为独立内部连接，点击可查看实时连接。';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return '入口 $entryCount 条 · 出口 $exitCount 条 · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections => '旧连接仍存在，新流量已切换到其他选择。';
+
+  @override
+  String get aggregateSortOriginal => '原始顺序';
+
+  @override
+  String get aggregateSortAscending => '延迟从低到高';
+
+  @override
+  String get aggregateSortDescending => '延迟从高到低';
+
+  @override
+  String get aggregateResort => '重新排序';
+
+  @override
+  String get aggregateSortHint => '未测试和失败置后，批量测速结束后更新顺序。';
 }

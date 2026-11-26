@@ -6664,6 +6664,300 @@ as bool,
 
 
 /// @nodoc
+mixin _$ChainStatus {
+
+@JsonKey(name: 'core-epoch') int get coreEpoch;@JsonKey(name: 'route-version') int get routeVersion; bool get running; bool get selected; String get entry;@JsonKey(name: 'entry-connections') int get entryConnections;@JsonKey(name: 'exit-connections') int get exitConnections; int get upload; int get download;
+/// Create a copy of ChainStatus
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ChainStatusCopyWith<ChainStatus> get copyWith => _$ChainStatusCopyWithImpl<ChainStatus>(this as ChainStatus, _$identity);
+
+  /// Serializes this ChainStatus to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as ChainStatus;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChainStatus&&(identical(other.coreEpoch, _this.coreEpoch) || other.coreEpoch == _this.coreEpoch)&&(identical(other.routeVersion, _this.routeVersion) || other.routeVersion == _this.routeVersion)&&(identical(other.running, _this.running) || other.running == _this.running)&&(identical(other.selected, _this.selected) || other.selected == _this.selected)&&(identical(other.entry, _this.entry) || other.entry == _this.entry)&&(identical(other.entryConnections, _this.entryConnections) || other.entryConnections == _this.entryConnections)&&(identical(other.exitConnections, _this.exitConnections) || other.exitConnections == _this.exitConnections)&&(identical(other.upload, _this.upload) || other.upload == _this.upload)&&(identical(other.download, _this.download) || other.download == _this.download));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as ChainStatus;
+  return Object.hash(runtimeType,_this.coreEpoch,_this.routeVersion,_this.running,_this.selected,_this.entry,_this.entryConnections,_this.exitConnections,_this.upload,_this.download);
+}
+
+@override
+String toString() {
+  final _this = this as ChainStatus;
+  return 'ChainStatus(coreEpoch: ${_this.coreEpoch}, routeVersion: ${_this.routeVersion}, running: ${_this.running}, selected: ${_this.selected}, entry: ${_this.entry}, entryConnections: ${_this.entryConnections}, exitConnections: ${_this.exitConnections}, upload: ${_this.upload}, download: ${_this.download})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ChainStatusCopyWith<$Res>  {
+  factory $ChainStatusCopyWith(ChainStatus value, $Res Function(ChainStatus) _then) = _$ChainStatusCopyWithImpl;
+@useResult
+$Res call({
+@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download
+});
+
+
+
+
+}
+/// @nodoc
+class _$ChainStatusCopyWithImpl<$Res>
+    implements $ChainStatusCopyWith<$Res> {
+  _$ChainStatusCopyWithImpl(this._self, this._then);
+
+  final ChainStatus _self;
+  final $Res Function(ChainStatus) _then;
+
+/// Create a copy of ChainStatus
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,}) {
+  return _then(ChainStatus(
+coreEpoch: null == coreEpoch ? _self.coreEpoch : coreEpoch // ignore: cast_nullable_to_non_nullable
+as int,routeVersion: null == routeVersion ? _self.routeVersion : routeVersion // ignore: cast_nullable_to_non_nullable
+as int,running: null == running ? _self.running : running // ignore: cast_nullable_to_non_nullable
+as bool,selected: null == selected ? _self.selected : selected // ignore: cast_nullable_to_non_nullable
+as bool,entry: null == entry ? _self.entry : entry // ignore: cast_nullable_to_non_nullable
+as String,entryConnections: null == entryConnections ? _self.entryConnections : entryConnections // ignore: cast_nullable_to_non_nullable
+as int,exitConnections: null == exitConnections ? _self.exitConnections : exitConnections // ignore: cast_nullable_to_non_nullable
+as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
+as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ChainStatus].
+extension ChainStatusPatterns on ChainStatus {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ChainStatus value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ChainStatus() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ChainStatus value)  $default,){
+final _that = this;
+switch (_that) {
+case _ChainStatus():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ChainStatus value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ChainStatus() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ChainStatus() when $default != null:
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)  $default,) {final _that = this;
+switch (_that) {
+case _ChainStatus():
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)?  $default,) {final _that = this;
+switch (_that) {
+case _ChainStatus() when $default != null:
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ChainStatus implements ChainStatus {
+  const _ChainStatus({@JsonKey(name: 'core-epoch') this.coreEpoch = 0, @JsonKey(name: 'route-version') this.routeVersion = 0, this.running = false, this.selected = false, this.entry = '', @JsonKey(name: 'entry-connections') this.entryConnections = 0, @JsonKey(name: 'exit-connections') this.exitConnections = 0, this.upload = 0, this.download = 0});
+  factory _ChainStatus.fromJson(Map<String, dynamic> json) => _$ChainStatusFromJson(json);
+
+@override@JsonKey(name: 'core-epoch') final  int coreEpoch;
+@override@JsonKey(name: 'route-version') final  int routeVersion;
+@override@JsonKey() final  bool running;
+@override@JsonKey() final  bool selected;
+@override@JsonKey() final  String entry;
+@override@JsonKey(name: 'entry-connections') final  int entryConnections;
+@override@JsonKey(name: 'exit-connections') final  int exitConnections;
+@override@JsonKey() final  int upload;
+@override@JsonKey() final  int download;
+
+/// Create a copy of ChainStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ChainStatusCopyWith<_ChainStatus> get copyWith => __$ChainStatusCopyWithImpl<_ChainStatus>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ChainStatusToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChainStatus&&(identical(other.coreEpoch, coreEpoch) || other.coreEpoch == coreEpoch)&&(identical(other.routeVersion, routeVersion) || other.routeVersion == routeVersion)&&(identical(other.running, running) || other.running == running)&&(identical(other.selected, selected) || other.selected == selected)&&(identical(other.entry, entry) || other.entry == entry)&&(identical(other.entryConnections, entryConnections) || other.entryConnections == entryConnections)&&(identical(other.exitConnections, exitConnections) || other.exitConnections == exitConnections)&&(identical(other.upload, upload) || other.upload == upload)&&(identical(other.download, download) || other.download == download));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,coreEpoch,routeVersion,running,selected,entry,entryConnections,exitConnections,upload,download);
+}
+
+@override
+String toString() {
+    return 'ChainStatus(coreEpoch: $coreEpoch, routeVersion: $routeVersion, running: $running, selected: $selected, entry: $entry, entryConnections: $entryConnections, exitConnections: $exitConnections, upload: $upload, download: $download)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ChainStatusCopyWith<$Res> implements $ChainStatusCopyWith<$Res> {
+  factory _$ChainStatusCopyWith(_ChainStatus value, $Res Function(_ChainStatus) _then) = __$ChainStatusCopyWithImpl;
+@override @useResult
+$Res call({
+@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download
+});
+
+
+
+
+}
+/// @nodoc
+class __$ChainStatusCopyWithImpl<$Res>
+    implements _$ChainStatusCopyWith<$Res> {
+  __$ChainStatusCopyWithImpl(this._self, this._then);
+
+  final _ChainStatus _self;
+  final $Res Function(_ChainStatus) _then;
+
+/// Create a copy of ChainStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,}) {
+  return _then(_ChainStatus(
+coreEpoch: null == coreEpoch ? _self.coreEpoch : coreEpoch // ignore: cast_nullable_to_non_nullable
+as int,routeVersion: null == routeVersion ? _self.routeVersion : routeVersion // ignore: cast_nullable_to_non_nullable
+as int,running: null == running ? _self.running : running // ignore: cast_nullable_to_non_nullable
+as bool,selected: null == selected ? _self.selected : selected // ignore: cast_nullable_to_non_nullable
+as bool,entry: null == entry ? _self.entry : entry // ignore: cast_nullable_to_non_nullable
+as String,entryConnections: null == entryConnections ? _self.entryConnections : entryConnections // ignore: cast_nullable_to_non_nullable
+as int,exitConnections: null == exitConnections ? _self.exitConnections : exitConnections // ignore: cast_nullable_to_non_nullable
+as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
+as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$RouteHit {
 
  String get host; String get proxy; String get exit;

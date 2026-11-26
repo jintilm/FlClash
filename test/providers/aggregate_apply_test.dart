@@ -190,7 +190,10 @@ void main() {
       final chainExit = (output['proxies'] as List).cast<Map>().singleWhere(
         (node) => node['name'] == 'Chain [chain]',
       );
-      expect(chainExit['dialer-proxy'], '@aggregate-entry:chain');
+      expect(
+        chainExit['dialer-proxy'],
+        aggregateEntryName(recipe.chains.single),
+      );
       final second = recipe.chains.single.copyWith(
         id: 'second',
         name: 'Second',

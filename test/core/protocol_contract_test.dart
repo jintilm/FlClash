@@ -39,6 +39,17 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
     calls[method] = arguments;
     final result = switch (method) {
       CoreMethod.coreInitialized => true,
+      CoreMethod.connectionChainStatus => {
+        'core-epoch': 3,
+        'route-version': 7,
+        'running': true,
+        'selected': true,
+        'entry': 'SG [entry:chain]',
+        'entry-connections': 2,
+        'exit-connections': 4,
+        'upload': 1200,
+        'download': 3400,
+      },
       CoreMethod.trafficCurrent ||
       CoreMethod.trafficTotal => {'up': 12, 'down': 34},
       CoreMethod.proxyTestDelay || CoreMethod.proxyTestDraft => {
@@ -211,6 +222,25 @@ class _EmptyConfigCoreHandler extends _RecordingCoreHandler {
 }
 
 void main() {
+  test('chain status reads observed transport counts from Core', () async {
+    final handler = _RecordingCoreHandler();
+    final status = await handler.getChainStatus(
+      proxy: 'SG to LT',
+      target: 'Proxy',
+    );
+    expect(status.entry, 'SG [entry:chain]');
+    expect(status.entryConnections, 2);
+    expect(status.exitConnections, 4);
+    expect(status.upload, 1200);
+    expect(status.download, 3400);
+    expect(status.coreEpoch, 3);
+    expect(status.routeVersion, 7);
+    expect(handler.calls[CoreMethod.connectionChainStatus], {
+      'proxy': 'SG to LT',
+      'target': 'Proxy',
+    });
+  });
+
   test('method call keeps structured arguments', () async {
     final fixture =
         json.decode(

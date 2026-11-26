@@ -1492,12 +1492,25 @@ The chain row's use action goes through the same apply and rollback path; loadin
 traffic uses it. Its active label also checks the selected group path and mode. Node pickers reuse standalone delays and,
 when choosing an exit with an entry selected, test the complete ordered pair and label those results separately.
 
+The dashboard's `AggregateEntryCard` polls `connection.chainStatus` only while visible. Core reads the exit adapter's
+actual `dialer-proxy` and the live tracker manager: an internal entry transport and a user connection through the exit
+are separate records, and the entry does not add its bytes to the global traffic totals again. A selection alone is not
+traffic evidence. Counts and byte totals cover only the currently open transports; mode changes can leave old ones open.
+The card requires the applied recipe and current route counters, and discards late replies after hiding or route changes.
+Generated entry names include the saved node name so the internal connection is searchable in the live feed, and an
+identity of both hops so a transport left on an older pair is not attributed to its replacement.
+
 Draft delay tests use `proxy.testDraft`, which constructs temporary adapters and connects a second hop directly through
 the first adapter without registering either in the running tunnel. They use the current DNS settings and share the
 Core's delay-test concurrency limit. `AggregateDelayTest` keeps results by ordered node identities and drops stale replies
 after a Core or test-URL change; the page dispatches a bounded number of workers when testing the visible list. Exit-IP
 checks still require an applied route. Aggregate setup captures all watched inputs before awaiting its base, so disposal
 or a rebuild while that base loads cannot leave the continuation reading an expired `Ref`.
+
+Aggregate delay sorting snapshots existing measurements only on a sort request or after the visible batch completes;
+individual replies never move a row under the pointer. Successful delays lead in either direction, then untested nodes,
+then failures, preserving source order within ties. More than 1,000 targets are sorted off the UI isolate, without
+instantiating delay providers for untested nodes, and the view applies the resulting key order in one linear pass.
 
 The app uses Drift/SQLite in `lib/database/`. `schemaVersion` in `lib/database/database.dart` is the migration
 counter; a schema change bumps it and goes into the one step the coming release takes, as the Migrations section of

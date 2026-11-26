@@ -351,6 +351,15 @@ abstract class CoreHandlerInterface {
     return _query(CoreMethod.connectionCount, (data) => (data as num).toInt());
   }
 
+  Future<ChainStatus> getChainStatus({
+    required String proxy,
+    required String target,
+  }) => _query(
+    CoreMethod.connectionChainStatus,
+    _model(ChainStatus.fromJson),
+    arguments: {'proxy': proxy, 'target': target},
+  );
+
   Future<void> closeConnection(String id) {
     return _command(CoreMethod.connectionClose, arguments: {'id': id});
   }

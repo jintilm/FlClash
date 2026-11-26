@@ -4183,7 +4183,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aggregateUseChain => 'Utiliser cette chaîne';
 
   @override
-  String get aggregateChainInUse => 'En cours d’utilisation';
+  String get aggregateChainInUse => 'Sélectionnée';
 
   @override
   String get aggregateUntested => 'Non testé';
@@ -4198,4 +4198,59 @@ class AppLocalizationsFr extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return 'La latence de la chaîne est mesurée via l’entrée $entry ; celle du nœud est mesurée séparément.';
   }
+
+  @override
+  String get aggregateEntryStatus => 'État de l’entrée';
+
+  @override
+  String get aggregateEntryUnknown => 'État inconnu';
+
+  @override
+  String get aggregateEntryNotLoaded => 'Chaîne non chargée';
+
+  @override
+  String get aggregateEntryTransferring => 'Trafic observé';
+
+  @override
+  String get aggregateEntryConnected => 'Connecté';
+
+  @override
+  String get aggregateEntryIdle => 'Sélectionnée · sans connexion';
+
+  @override
+  String get aggregateEntryUnselected => 'Non sélectionnée';
+
+  @override
+  String get aggregateEntryHint =>
+      'L’entrée utilise une connexion interne distincte. Touchez pour voir les connexions actives.';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return 'Entrée $entryCount · Sortie $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections =>
+      'Des connexions précédentes restent actives ; le nouveau trafic utilise une autre sélection.';
+
+  @override
+  String get aggregateSortOriginal => 'Ordre initial';
+
+  @override
+  String get aggregateSortAscending => 'Latence croissante';
+
+  @override
+  String get aggregateSortDescending => 'Latence décroissante';
+
+  @override
+  String get aggregateResort => 'Actualiser l’ordre';
+
+  @override
+  String get aggregateSortHint =>
+      'Non testés et échecs à la fin. Tri après les tests groupés.';
 }

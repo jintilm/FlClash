@@ -14,6 +14,7 @@ import 'package:fl_clash/state.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'chain_editor.dart';
@@ -34,6 +35,10 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
   bool _busy = false;
   bool _testing = false;
   bool _favoritesOnly = false;
+  AggregateDelaySort _sort = AggregateDelaySort.original;
+  List<String> _sortedKeys = const [];
+  int _sortRun = 0;
+  bool _sorting = false;
   int? _source;
   String? _protocol;
   SearchQuery _query = SearchQuery('');
@@ -60,6 +65,7 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
 
   Future<void> _testAll(List<AggregateDelayTarget> targets) async {
     if (_testing) return;
+    final testingChains = _chains;
     final pending = {
       for (final target in targets.where((target) => target.testable))
         target.key: target,
@@ -82,6 +88,72 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
     } finally {
       if (mounted) setState(() => _testing = false);
     }
+    if (mounted &&
+        testingChains == _chains &&
+        _sort != AggregateDelaySort.original) {
+      await _sortTargets(_sort, targets);
+    }
+  }
+
+  Future<void> _sortTargets(
+    AggregateDelaySort order,
+    List<AggregateDelayTarget> targets,
+  ) async {
+    final run = ++_sortRun;
+    setState(() {
+      _sort = order;
+      _sorting = true;
+    });
+    try {
+      final keys = targets.map((target) => target.key).toSet().toList();
+      final delays = <String, int?>{};
+      for (final key in keys) {
+        final provider = aggregateDelayTestProvider(key);
+        if (ref.exists(provider)) delays[key] = ref.read(provider).delay;
+      }
+      final input = (keys: keys, delays: delays, order: order);
+      final sorted = keys.length > 1000
+          ? await compute(orderAggregateDelays, input)
+          : orderAggregateDelays(input);
+      if (mounted && run == _sortRun) setState(() => _sortedKeys = sorted);
+    } finally {
+      if (mounted && run == _sortRun) setState(() => _sorting = false);
+    }
+  }
+
+  String _sortLabel(AggregateDelaySort order) => switch (order) {
+    AggregateDelaySort.original =>
+      context.appLocalizations.aggregateSortOriginal,
+    AggregateDelaySort.ascending =>
+      context.appLocalizations.aggregateSortAscending,
+    AggregateDelaySort.descending =>
+      context.appLocalizations.aggregateSortDescending,
+  };
+
+  Future<void> _pickSort(List<AggregateDelayTarget> targets) async {
+    final order = await showNestedSheet<AggregateDelaySort>(
+      context,
+      builder: (context) => SelectionSheet<AggregateDelaySort>(
+        title: context.appLocalizations.sort,
+        sections: const [SelectionSection(items: AggregateDelaySort.values)],
+        labelBuilder: _sortLabel,
+        selectedOf: (_) => _sort,
+        onSelected: (value) => Navigator.of(context).pop(value),
+      ),
+    );
+    if (mounted && order != null) await _sortTargets(order, targets);
+  }
+
+  List<T> _ordered<T>(List<T> items, String Function(T) keyOf) {
+    if (_sort == AggregateDelaySort.original) return items;
+    final remaining = <String, List<T>>{};
+    for (final item in items) {
+      remaining.putIfAbsent(keyOf(item), () => []).add(item);
+    }
+    return [
+      for (final key in _sortedKeys) ...?remaining.remove(key),
+      ...remaining.values.expand((items) => items),
+    ];
   }
 
   Future<void> _pickBase(List<Profile> profiles) async {
@@ -227,7 +299,7 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
           : AggregateDelayTarget([entry, exit]);
     }
 
-    final nodes = allNodes
+    final filteredNodes = allNodes
         .where(
           (node) =>
               (_source == null || node.ref.sourceId == _source) &&
@@ -239,6 +311,11 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
           (node) => [node.name, node.sourceLabel, node.type],
         )
         .toList();
+    final nodes = _ordered(filteredNodes, (node) => node.ref.key);
+    final chains = _ordered(
+      draft.chains,
+      (chain) => chainTarget(chain)?.key ?? chain.id,
+    );
     final applied = ref.watch(profileProvider(workspace.profileId));
     final currentId = ref.watch(currentProfileIdProvider);
     final selectedMap = ref.watch(selectedMapProvider);
@@ -264,11 +341,13 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
             (entry.value.value?.errors.isNotEmpty ?? false))
           entry.key,
     ];
-    final testTargets = _chains
-        ? [for (final chain in draft.chains) ?chainTarget(chain)]
-        : [
-            for (final node in nodes) AggregateDelayTarget([node]),
-          ];
+    final chainTargets = [
+      for (final chain in draft.chains) ?chainTarget(chain),
+    ];
+    final nodeTargets = [
+      for (final node in filteredNodes) AggregateDelayTarget([node]),
+    ];
+    final testTargets = _chains ? chainTargets : nodeTargets;
     return Scaffold(
       title: l.aggregateProxies,
       isLoading: _busy,
@@ -447,7 +526,17 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                         (true, l.aggregateChains),
                       ],
                       value: _chains,
-                      onChanged: (value) => setState(() => _chains = value),
+                      onChanged: (value) {
+                        setState(() => _chains = value);
+                        if (_sort != AggregateDelaySort.original) {
+                          unawaited(
+                            _sortTargets(
+                              _sort,
+                              value ? chainTargets : nodeTargets,
+                            ),
+                          );
+                        }
+                      },
                     ),
                     ListHeader(
                       title: _chains ? l.aggregateChains : l.aggregateAllNodes,
@@ -475,6 +564,33 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                           ),
                       ],
                     ),
+                    Row(
+                      spacing: 8,
+                      children: [
+                        TonalButton(
+                          size: TonalButtonSize.section,
+                          glyph: AppGlyphs.sort,
+                          label: _sortLabel(_sort),
+                          onPressed: _sorting
+                              ? null
+                              : () => _pickSort(testTargets),
+                        ),
+                        if (_sort != AggregateDelaySort.original)
+                          IconButton(
+                            tooltip: l.aggregateResort,
+                            icon: const GlyphIcon(AppGlyphs.sync),
+                            onPressed: _sorting
+                                ? null
+                                : () => _sortTargets(_sort, testTargets),
+                          ),
+                        Expanded(
+                          child: Text(
+                            l.aggregateSortHint,
+                            style: AppTextStyle.caption1.of(context).toLighter,
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -483,9 +599,9 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
               SliverPadding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 sliver: SliverPrismList(
-                  itemCount: draft.chains.length,
+                  itemCount: chains.length,
                   itemBuilder: (context, index) {
-                    final chain = draft.chains[index];
+                    final chain = chains[index];
                     final missing =
                         !availableChainNodes.containsKey(chain.entry.key) ||
                         !availableChainNodes.containsKey(chain.exit.key);

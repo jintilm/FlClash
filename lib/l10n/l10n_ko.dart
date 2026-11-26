@@ -4022,7 +4022,7 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aggregateUseChain => '이 체인 사용';
 
   @override
-  String get aggregateChainInUse => '사용 중';
+  String get aggregateChainInUse => '선택됨';
 
   @override
   String get aggregateUntested => '측정 안 됨';
@@ -4037,4 +4037,57 @@ class AppLocalizationsKo extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return '체인 지연은 진입 노드 $entry을(를) 통해 측정하며, 노드 지연은 단독 측정 결과입니다.';
   }
+
+  @override
+  String get aggregateEntryStatus => '진입 상태';
+
+  @override
+  String get aggregateEntryUnknown => '상태 알 수 없음';
+
+  @override
+  String get aggregateEntryNotLoaded => '체인 미로드';
+
+  @override
+  String get aggregateEntryTransferring => '트래픽 확인됨';
+
+  @override
+  String get aggregateEntryConnected => '연결됨';
+
+  @override
+  String get aggregateEntryIdle => '선택됨 · 연결 없음';
+
+  @override
+  String get aggregateEntryUnselected => '선택되지 않음';
+
+  @override
+  String get aggregateEntryHint => '진입은 별도의 내부 연결입니다. 눌러 실시간 연결을 확인하세요.';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return '진입 $entryCount · 출구 $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections =>
+      '이전 연결이 남아 있으며 새 트래픽은 다른 선택을 사용합니다.';
+
+  @override
+  String get aggregateSortOriginal => '원래 순서';
+
+  @override
+  String get aggregateSortAscending => '지연 낮은 순';
+
+  @override
+  String get aggregateSortDescending => '지연 높은 순';
+
+  @override
+  String get aggregateResort => '정렬 새로고침';
+
+  @override
+  String get aggregateSortHint => '미측정 및 실패는 마지막에 표시되며 일괄 테스트 후 정렬됩니다.';
 }

@@ -4129,7 +4129,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aggregateUseChain => 'Использовать цепочку';
 
   @override
-  String get aggregateChainInUse => 'Используется';
+  String get aggregateChainInUse => 'Выбрана';
 
   @override
   String get aggregateUntested => 'Не проверено';
@@ -4144,4 +4144,59 @@ class AppLocalizationsRu extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return 'Задержка цепочки измеряется через вход $entry; задержка узла измеряется отдельно.';
   }
+
+  @override
+  String get aggregateEntryStatus => 'Состояние входа';
+
+  @override
+  String get aggregateEntryUnknown => 'Состояние неизвестно';
+
+  @override
+  String get aggregateEntryNotLoaded => 'Цепочка не загружена';
+
+  @override
+  String get aggregateEntryTransferring => 'Передача данных подтверждена';
+
+  @override
+  String get aggregateEntryConnected => 'Подключено';
+
+  @override
+  String get aggregateEntryIdle => 'Выбрана · нет соединений';
+
+  @override
+  String get aggregateEntryUnselected => 'Не выбрана';
+
+  @override
+  String get aggregateEntryHint =>
+      'Вход — отдельное внутреннее соединение. Нажмите для просмотра активных соединений.';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return 'Вход $entryCount · Выход $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections =>
+      'Старые соединения активны; новый трафик использует другой выбор.';
+
+  @override
+  String get aggregateSortOriginal => 'Исходный порядок';
+
+  @override
+  String get aggregateSortAscending => 'Задержка по возрастанию';
+
+  @override
+  String get aggregateSortDescending => 'Задержка по убыванию';
+
+  @override
+  String get aggregateResort => 'Обновить порядок';
+
+  @override
+  String get aggregateSortHint =>
+      'Непроверенные и сбои в конце. Порядок обновляется после пакетного теста.';
 }

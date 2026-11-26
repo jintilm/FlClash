@@ -3946,7 +3946,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aggregateUseChain => 'このチェーンを使用';
 
   @override
-  String get aggregateChainInUse => '使用中';
+  String get aggregateChainInUse => '選択済み';
 
   @override
   String get aggregateUntested => '未測定';
@@ -3961,4 +3961,56 @@ class AppLocalizationsJa extends AppLocalizations {
   String aggregateExitDelayHint(String entry) {
     return 'チェーンの遅延は入口 $entry を経由して測定します。ノードの遅延は単独の測定結果です。';
   }
+
+  @override
+  String get aggregateEntryStatus => '入口の状態';
+
+  @override
+  String get aggregateEntryUnknown => '状態不明';
+
+  @override
+  String get aggregateEntryNotLoaded => 'チェーン未読込';
+
+  @override
+  String get aggregateEntryTransferring => '通信を確認';
+
+  @override
+  String get aggregateEntryConnected => '接続済み';
+
+  @override
+  String get aggregateEntryIdle => '選択済み・接続なし';
+
+  @override
+  String get aggregateEntryUnselected => '未選択';
+
+  @override
+  String get aggregateEntryHint => '入口は独立した内部接続です。タップして現在の接続を確認できます。';
+
+  @override
+  String aggregateEntryCounts(
+    int entryCount,
+    int exitCount,
+    String upload,
+    String download,
+  ) {
+    return '入口 $entryCount · 出口 $exitCount · ↑ $upload · ↓ $download';
+  }
+
+  @override
+  String get aggregateEntryOldConnections => '以前の接続が残っています。新しい通信は別の選択先を使用します。';
+
+  @override
+  String get aggregateSortOriginal => '元の順序';
+
+  @override
+  String get aggregateSortAscending => '遅延の小さい順';
+
+  @override
+  String get aggregateSortDescending => '遅延の大きい順';
+
+  @override
+  String get aggregateResort => '並べ替えを更新';
+
+  @override
+  String get aggregateSortHint => '未測定と失敗は末尾。一括測定後に順序を更新します。';
 }
