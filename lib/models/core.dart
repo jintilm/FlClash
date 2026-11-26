@@ -9,6 +9,9 @@ part 'generated/core.g.dart';
 @freezed
 abstract class SetupParams with _$SetupParams {
   const factory SetupParams({
+    @Default(false)
+    @JsonKey(name: 'preserve-on-failure')
+    bool preserveOnFailure,
     @JsonKey(includeIfNull: false) SetupBase? base,
     @JsonKey(name: 'selected-map') required Map<String, String> selectedMap,
     required CoreOptions options,

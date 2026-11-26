@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:prism_ui/color.dart';
 
 import 'app.dart';
+import 'aggregation.dart';
 import 'clash_config.dart';
 import 'common.dart';
 import 'core.dart';
@@ -265,5 +266,8 @@ abstract class SetupState with _$SetupState {
     @Default({}) Map<int, String> proxyDialers,
     @Default({}) Map<String, String> exitTargets,
     @Default([]) List<MitmModuleSource> mitmModules,
+    AggregateConfig? aggregate,
+    SetupState? aggregateBase,
+    @Default({}) Map<int, int?> aggregateSourceVersions,
   }) = _SetupState;
 }

@@ -1,4 +1,5 @@
 export 'app.dart';
+export 'aggregation.dart';
 export 'capabilities.dart';
 export 'changelog.dart';
 export 'clash_config.dart';

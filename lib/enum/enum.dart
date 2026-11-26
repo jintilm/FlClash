@@ -177,7 +177,7 @@ enum AccessControlMode { acceptSelected, rejectSelected }
 
 enum AccessSortType { none, name, time }
 
-enum ProfileType { file, url, custom }
+enum ProfileType { file, url, custom, aggregate }
 
 enum ResultType {
   @JsonValue(0)
@@ -527,6 +527,7 @@ extension GeoResourceExt on GeoResource {
 }
 
 enum PageLabel {
+  aggregate,
   dashboard,
   proxies,
   profiles,

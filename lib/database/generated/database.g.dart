@@ -192,6 +192,15 @@ class $ProfilesTable extends Profiles
     requiredDuringInsert: false,
   ).withConverter<ProfileOverrides?>($ProfilesTable.$converteroverrides);
   @override
+  late final GeneratedColumnWithTypeConverter<AggregateConfig?, String>
+  aggregate = GeneratedColumn<String>(
+    'aggregate',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<AggregateConfig?>($ProfilesTable.$converteraggregate);
+  @override
   List<GeneratedColumn> get $columns => [
     id,
     type,
@@ -211,6 +220,7 @@ class $ProfilesTable extends Profiles
     unfoldSet,
     order,
     overrides,
+    aggregate,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -411,6 +421,12 @@ class $ProfilesTable extends Profiles
           data['${effectivePrefix}overrides'],
         ),
       ),
+      aggregate: $ProfilesTable.$converteraggregate.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}aggregate'],
+        ),
+      ),
     );
   }
 
@@ -433,6 +449,8 @@ class $ProfilesTable extends Profiles
       const StringSetConverter();
   static TypeConverter<ProfileOverrides?, String?> $converteroverrides =
       const ProfileOverridesConverter();
+  static TypeConverter<AggregateConfig?, String?> $converteraggregate =
+      const AggregateConfigConverter();
 }
 
 class RawProfile extends DataClass implements Insertable<RawProfile> {
@@ -458,6 +476,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
   final Set<String> unfoldSet;
   final int? order;
   final ProfileOverrides? overrides;
+  final AggregateConfig? aggregate;
   const RawProfile({
     required this.id,
     required this.type,
@@ -477,6 +496,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     required this.unfoldSet,
     this.order,
     this.overrides,
+    this.aggregate,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
@@ -535,6 +555,11 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
         $ProfilesTable.$converteroverrides.toSql(overrides),
       );
     }
+    if (!nullToAbsent || aggregate != null) {
+      map['aggregate'] = Variable<String>(
+        $ProfilesTable.$converteraggregate.toSql(aggregate),
+      );
+    }
     return map;
   }
 
@@ -576,6 +601,9 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       overrides: overrides == null && nullToAbsent
           ? const Value.absent()
           : Value(overrides),
+      aggregate: aggregate == null && nullToAbsent
+          ? const Value.absent()
+          : Value(aggregate),
     );
   }
 
@@ -613,6 +641,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       unfoldSet: serializer.fromJson<Set<String>>(json['unfoldSet']),
       order: serializer.fromJson<int?>(json['order']),
       overrides: serializer.fromJson<ProfileOverrides?>(json['overrides']),
+      aggregate: serializer.fromJson<AggregateConfig?>(json['aggregate']),
     );
   }
   @override
@@ -643,6 +672,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       'unfoldSet': serializer.toJson<Set<String>>(unfoldSet),
       'order': serializer.toJson<int?>(order),
       'overrides': serializer.toJson<ProfileOverrides?>(overrides),
+      'aggregate': serializer.toJson<AggregateConfig?>(aggregate),
     };
   }
 
@@ -665,6 +695,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     Set<String>? unfoldSet,
     Value<int?> order = const Value.absent(),
     Value<ProfileOverrides?> overrides = const Value.absent(),
+    Value<AggregateConfig?> aggregate = const Value.absent(),
   }) => RawProfile(
     id: id ?? this.id,
     type: type ?? this.type,
@@ -691,6 +722,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     unfoldSet: unfoldSet ?? this.unfoldSet,
     order: order.present ? order.value : this.order,
     overrides: overrides.present ? overrides.value : this.overrides,
+    aggregate: aggregate.present ? aggregate.value : this.aggregate,
   );
   RawProfile copyWithCompanion(ProfilesCompanion data) {
     return RawProfile(
@@ -732,6 +764,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       unfoldSet: data.unfoldSet.present ? data.unfoldSet.value : this.unfoldSet,
       order: data.order.present ? data.order.value : this.order,
       overrides: data.overrides.present ? data.overrides.value : this.overrides,
+      aggregate: data.aggregate.present ? data.aggregate.value : this.aggregate,
     );
   }
 
@@ -755,7 +788,8 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
           ..write('selectedMap: $selectedMap, ')
           ..write('unfoldSet: $unfoldSet, ')
           ..write('order: $order, ')
-          ..write('overrides: $overrides')
+          ..write('overrides: $overrides, ')
+          ..write('aggregate: $aggregate')
           ..write(')'))
         .toString();
   }
@@ -780,6 +814,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     unfoldSet,
     order,
     overrides,
+    aggregate,
   );
   @override
   bool operator ==(Object other) =>
@@ -802,7 +837,8 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
           other.selectedMap == this.selectedMap &&
           other.unfoldSet == this.unfoldSet &&
           other.order == this.order &&
-          other.overrides == this.overrides);
+          other.overrides == this.overrides &&
+          other.aggregate == this.aggregate);
 }
 
 class ProfilesCompanion extends UpdateCompanion<RawProfile> {
@@ -824,6 +860,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
   final Value<Set<String>> unfoldSet;
   final Value<int?> order;
   final Value<ProfileOverrides?> overrides;
+  final Value<AggregateConfig?> aggregate;
   const ProfilesCompanion({
     this.id = const Value.absent(),
     this.type = const Value.absent(),
@@ -843,6 +880,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     this.unfoldSet = const Value.absent(),
     this.order = const Value.absent(),
     this.overrides = const Value.absent(),
+    this.aggregate = const Value.absent(),
   });
   ProfilesCompanion.insert({
     this.id = const Value.absent(),
@@ -863,6 +901,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     required Set<String> unfoldSet,
     this.order = const Value.absent(),
     this.overrides = const Value.absent(),
+    this.aggregate = const Value.absent(),
   }) : type = Value(type),
        label = Value(label),
        url = Value(url),
@@ -890,6 +929,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     Expression<String>? unfoldSet,
     Expression<int>? order,
     Expression<String>? overrides,
+    Expression<String>? aggregate,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -911,6 +951,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
       if (unfoldSet != null) 'unfold_set': unfoldSet,
       if (order != null) 'order': order,
       if (overrides != null) 'overrides': overrides,
+      if (aggregate != null) 'aggregate': aggregate,
     });
   }
 
@@ -933,6 +974,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     Value<Set<String>>? unfoldSet,
     Value<int?>? order,
     Value<ProfileOverrides?>? overrides,
+    Value<AggregateConfig?>? aggregate,
   }) {
     return ProfilesCompanion(
       id: id ?? this.id,
@@ -954,6 +996,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
       unfoldSet: unfoldSet ?? this.unfoldSet,
       order: order ?? this.order,
       overrides: overrides ?? this.overrides,
+      aggregate: aggregate ?? this.aggregate,
     );
   }
 
@@ -1028,6 +1071,11 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
         $ProfilesTable.$converteroverrides.toSql(overrides.value),
       );
     }
+    if (aggregate.present) {
+      map['aggregate'] = Variable<String>(
+        $ProfilesTable.$converteraggregate.toSql(aggregate.value),
+      );
+    }
     return map;
   }
 
@@ -1051,7 +1099,8 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
           ..write('selectedMap: $selectedMap, ')
           ..write('unfoldSet: $unfoldSet, ')
           ..write('order: $order, ')
-          ..write('overrides: $overrides')
+          ..write('overrides: $overrides, ')
+          ..write('aggregate: $aggregate')
           ..write(')'))
         .toString();
   }
@@ -5590,6 +5639,7 @@ typedef $$ProfilesTableCreateCompanionBuilder =
       required Set<String> unfoldSet,
       Value<int?> order,
       Value<ProfileOverrides?> overrides,
+      Value<AggregateConfig?> aggregate,
     });
 typedef $$ProfilesTableUpdateCompanionBuilder =
     ProfilesCompanion Function({
@@ -5611,6 +5661,7 @@ typedef $$ProfilesTableUpdateCompanionBuilder =
       Value<Set<String>> unfoldSet,
       Value<int?> order,
       Value<ProfileOverrides?> overrides,
+      Value<AggregateConfig?> aggregate,
     });
 
 final class $$ProfilesTableReferences
@@ -5801,6 +5852,12 @@ class $$ProfilesTableFilterComposer
   ColumnWithTypeConverterFilters<ProfileOverrides?, ProfileOverrides, String>
   get overrides => $composableBuilder(
     column: $table.overrides,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<AggregateConfig?, AggregateConfig, String>
+  get aggregate => $composableBuilder(
+    column: $table.aggregate,
     builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
@@ -6003,6 +6060,11 @@ class $$ProfilesTableOrderingComposer
     column: $table.overrides,
     builder: (column) => ColumnOrderings(column),
   );
+
+  ColumnOrderings<String> get aggregate => $composableBuilder(
+    column: $table.aggregate,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
 class $$ProfilesTableAnnotationComposer
@@ -6090,6 +6152,9 @@ class $$ProfilesTableAnnotationComposer
 
   GeneratedColumnWithTypeConverter<ProfileOverrides?, String> get overrides =>
       $composableBuilder(column: $table.overrides, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<AggregateConfig?, String> get aggregate =>
+      $composableBuilder(column: $table.aggregate, builder: (column) => column);
 
   Expression<T> rulesRefs<T extends Object>(
     Expression<T> Function($$RulesTableAnnotationComposer a) f,
@@ -6244,6 +6309,7 @@ class $$ProfilesTableTableManager
                 Value<Set<String>> unfoldSet = const Value.absent(),
                 Value<int?> order = const Value.absent(),
                 Value<ProfileOverrides?> overrides = const Value.absent(),
+                Value<AggregateConfig?> aggregate = const Value.absent(),
               }) => ProfilesCompanion(
                 id: id,
                 type: type,
@@ -6263,6 +6329,7 @@ class $$ProfilesTableTableManager
                 unfoldSet: unfoldSet,
                 order: order,
                 overrides: overrides,
+                aggregate: aggregate,
               ),
           createCompanionCallback:
               ({
@@ -6285,6 +6352,7 @@ class $$ProfilesTableTableManager
                 required Set<String> unfoldSet,
                 Value<int?> order = const Value.absent(),
                 Value<ProfileOverrides?> overrides = const Value.absent(),
+                Value<AggregateConfig?> aggregate = const Value.absent(),
               }) => ProfilesCompanion.insert(
                 id: id,
                 type: type,
@@ -6304,6 +6372,7 @@ class $$ProfilesTableTableManager
                 unfoldSet: unfoldSet,
                 order: order,
                 overrides: overrides,
+                aggregate: aggregate,
               ),
           withReferenceMapper: (p0) => p0
               .map(

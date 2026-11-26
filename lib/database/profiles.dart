@@ -46,8 +46,25 @@ class Profiles extends Table {
   TextColumn get overrides =>
       text().map(const ProfileOverridesConverter()).nullable()();
 
+  TextColumn get aggregate =>
+      text().map(const AggregateConfigConverter()).nullable()();
+
   @override
   Set<Column> get primaryKey => {id};
+}
+
+class AggregateConfigConverter
+    extends TypeConverter<AggregateConfig?, String?> {
+  const AggregateConfigConverter();
+
+  @override
+  AggregateConfig? fromSql(String? fromDb) => fromDb == null
+      ? null
+      : AggregateConfig.fromJson(json.decode(fromDb) as Map<String, dynamic>);
+
+  @override
+  String? toSql(AggregateConfig? value) =>
+      value == null ? null : json.encode(value.toJson());
 }
 
 class ProfileOverridesConverter
@@ -184,6 +201,7 @@ extension RawProfilExt on RawProfile {
       exitTargets: exitTargets ?? const {},
       order: order,
       overrides: overrides ?? const ProfileOverrides(),
+      aggregate: aggregate,
     );
   }
 }
@@ -208,6 +226,7 @@ extension ProfilesCompanionExt on Profile {
       exitTargets: Value(exitTargets),
       order: Value(order ?? this.order),
       overrides: Value(overrides),
+      aggregate: Value(aggregate),
     );
   }
 }

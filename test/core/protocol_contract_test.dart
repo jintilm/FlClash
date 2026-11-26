@@ -110,6 +110,9 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
         'runtime-other': 32,
       },
       CoreMethod.proxySelect => {'message': '', 'changed': true},
+      CoreMethod.providerSnapshot => [
+        {'name': 'node', 'type': 'socks5'},
+      ],
       CoreMethod.ruleSetCompile => {'behavior': 'ipcidr', 'format': 'text'},
       CoreMethod.ruleSetDump => '/home/responses/2.yaml',
       CoreMethod.configDecrypt => 'mode: rule',
@@ -290,6 +293,7 @@ void main() {
       'version': 35,
     });
     expect(json.decode(json.encode(handler.calls[CoreMethod.configSetup])), {
+      'preserve-on-failure': false,
       'selected-map': {'GLOBAL': 'DIRECT'},
       'options': {
         'test-url': 'test',
@@ -321,6 +325,28 @@ void main() {
     expect(handler.calls[CoreMethod.connectionClose], {'id': 'connection-1'});
     expect(handler.calls[CoreMethod.geoUpdate], {'type': 'GeoIp'});
   });
+
+  test(
+    'provider snapshots carry definitions and explicit refresh separately',
+    () async {
+      final handler = _RecordingCoreHandler();
+      final nodes = await handler.providerSnapshot({
+        'type': 'http',
+        'path': '/profiles/providers/1/proxies/test',
+        'override': {'udp': true},
+      }, refresh: true);
+      expect(nodes.single['name'], 'node');
+      expect(handler.calls[CoreMethod.providerSnapshot], {
+        'definition': {
+          'type': 'http',
+          'path': '/profiles/providers/1/proxies/test',
+          'override': {'udp': true},
+        },
+        'content': '',
+        'refresh': true,
+      });
+    },
+  );
 
   test('a list validation reads only the entries the Core refuses', () async {
     final handler = _RecordingCoreHandler();

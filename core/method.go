@@ -212,6 +212,7 @@ var methodHandlers = map[CoreMethod]methodHandler{
 	providerGetMethod:      withArguments(handleGetExternalProvider),
 	providerUpdateMethod:   command(handleUpdateExternalProvider),
 	providerSideLoadMethod: command(handleSideLoadExternalProvider),
+	providerSnapshotMethod: withFallible(handleProviderSnapshot),
 	ruleSetDumpMethod:      withFallible(handleDumpRuleSet),
 	ruleSetCompileMethod:   withFallible(handleCompileRuleSet),
 	geoUpdateMethod:        command(handleUpdateGeoData),

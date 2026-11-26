@@ -5,6 +5,7 @@ import 'package:fl_clash/core/core.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/action.dart';
+import 'package:fl_clash/providers/aggregation.dart';
 import 'package:fl_clash/providers/app.dart';
 import 'package:fl_clash/providers/config.dart';
 import 'package:fl_clash/providers/core.dart';
@@ -42,6 +43,9 @@ class _CoreContainerState extends ConsumerState<CoreManager>
     // the previous one hides the error and looks like the switch was lost.
     ref.listenManual(currentProfileIdProvider, (prev, next) {
       if (prev == next) return;
+      if (ref.read(aggregateActionProvider.notifier).handlesSelection(next)) {
+        return;
+      }
       runAfterFrame(() {
         unawaited(ref.read(setupActionProvider.notifier).fullSetup());
       });
@@ -53,6 +57,35 @@ class _CoreContainerState extends ConsumerState<CoreManager>
     });
     ref.listenManual(setupPatchProvider, (prev, next) {
       if (prev != next) {
+        ref
+            .read(setupActionProvider.notifier)
+            .applyProfileDebounce(silence: true);
+      }
+    });
+    ref.listenManual(profilesProvider, (prev, next) {
+      final aggregate = ref.read(currentProfileProvider)?.aggregate;
+      if (aggregate == null || prev == null) return;
+      final ids = {...aggregate.sourceIds, ?aggregate.baseProfileId};
+      if (ids.any((id) {
+        final before = prev.getProfile(id);
+        final after = next.getProfile(id);
+        return before?.lastUpdateDate != after?.lastUpdateDate ||
+            before?.label != after?.label ||
+            before?.scriptId != after?.scriptId ||
+            before?.overrides != after?.overrides;
+      })) {
+        ref.invalidate(setupStateProvider(ref.read(currentProfileIdProvider)));
+        ref
+            .read(setupActionProvider.notifier)
+            .applyProfileDebounce(silence: true);
+      }
+    });
+    ref.listenManual(customProxiesProvider, (prev, next) {
+      final aggregate = ref.read(currentProfileProvider)?.aggregate;
+      if (aggregate?.sourceIds.contains(0) == true &&
+          prev?.value != null &&
+          next.hasValue &&
+          prev?.value != next.value) {
         ref
             .read(setupActionProvider.notifier)
             .applyProfileDebounce(silence: true);
@@ -179,6 +212,13 @@ class _CoreContainerState extends ConsumerState<CoreManager>
       return;
     }
     ref.read(providersProvider.notifier).setProvider(provider);
+    final aggregate = ref.read(currentProfileProvider)?.aggregate;
+    if (provider?.type == 'Proxy' && aggregate?.baseProfileId != null) {
+      ref.invalidate(aggregateSourceProvider(aggregate!.baseProfileId!));
+      ref
+          .read(setupActionProvider.notifier)
+          .applyProfileDebounce(silence: true);
+    }
     debouncer.call(FunctionTag.loadedProvider, () async {
       if (!mounted) {
         return;

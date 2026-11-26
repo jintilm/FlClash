@@ -523,6 +523,7 @@ abstract class ThemeProps with _$ThemeProps {
 abstract class Config with _$Config {
   const factory Config({
     int? currentProfileId,
+    @Default(AggregateWorkspace()) AggregateWorkspace aggregateWorkspace,
     @Default([]) List<HotKeyAction> hotKeyActions,
     @JsonKey(fromJson: AppSettingProps.safeFromJson)
     @Default(defaultAppSettingProps)

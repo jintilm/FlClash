@@ -63,6 +63,9 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
       : ProfileOverrides.safeFromJson(
           json['overrides'] as Map<String, Object?>,
         ),
+  aggregate: json['aggregate'] == null
+      ? null
+      : AggregateConfig.fromJson(json['aggregate'] as Map<String, dynamic>),
 );
 
 Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
@@ -82,10 +85,12 @@ Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'exitTargets': instance.exitTargets,
   'order': instance.order,
   'overrides': instance.overrides,
+  'aggregate': instance.aggregate,
 };
 
 const _$ProfileTypeEnumMap = {
   ProfileType.file: 'file',
   ProfileType.url: 'url',
   ProfileType.custom: 'custom',
+  ProfileType.aggregate: 'aggregate',
 };

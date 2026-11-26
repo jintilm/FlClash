@@ -47,6 +47,7 @@ const (
 	providerGetMethod      CoreMethod = "provider.get"
 	providerUpdateMethod   CoreMethod = "provider.update"
 	providerSideLoadMethod CoreMethod = "provider.sideLoad"
+	providerSnapshotMethod CoreMethod = "provider.snapshot"
 	ruleSetDumpMethod      CoreMethod = "ruleSet.dump"
 	ruleSetCompileMethod   CoreMethod = "ruleSet.compile"
 	geoUpdateMethod        CoreMethod = "geo.update"
@@ -116,9 +117,10 @@ type DecryptConfigParams struct {
 }
 
 type SetupParams struct {
-	Base        *SetupBase        `json:"base,omitempty"`
-	SelectedMap map[string]string `json:"selected-map"`
-	Options     CoreOptions       `json:"options"`
+	PreserveOnFailure bool              `json:"preserve-on-failure,omitempty"`
+	Base              *SetupBase        `json:"base,omitempty"`
+	SelectedMap       map[string]string `json:"selected-map"`
+	Options           CoreOptions       `json:"options"`
 }
 
 type CoreOptions struct {

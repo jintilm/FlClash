@@ -58,7 +58,7 @@ class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 26;
+  int get schemaVersion => 27;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -141,11 +141,12 @@ class Database extends _$Database {
           await _addColumnIfMissing(m, profiles, profiles.exitTargets);
           await _matchTargetToExit();
         }
-        if (from < 26) {
+        if (from < 27) {
           // v23 rebuilds the table with both columns; v26 adds what is missing.
           await _addColumnIfMissing(m, mitmModules, mitmModules.asksConsent);
           await _addColumnIfMissing(m, mitmModules, mitmModules.accepted);
           await _recordMitmConsent();
+          await _addColumnIfMissing(m, profiles, profiles.aggregate);
         }
       }),
       beforeOpen: (_) => customStatement('PRAGMA foreign_keys = ON'),

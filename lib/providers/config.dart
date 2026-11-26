@@ -6,6 +6,13 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'generated/config.g.dart';
 
 @riverpod
+class AggregateWorkspaceSetting extends _$AggregateWorkspaceSetting
+    with AutoDisposeNotifierMixin {
+  @override
+  AggregateWorkspace build() => const AggregateWorkspace();
+}
+
+@riverpod
 class AppSetting extends _$AppSetting with AutoDisposeNotifierMixin {
   @override
   AppSettingProps build() {
@@ -123,6 +130,7 @@ Config _config(Ref ref) {
   final patchClashConfig = ref.watch(patchClashConfigProvider);
   final excludeSSIDs = ref.watch(excludeSSIDsProvider);
   return Config(
+    aggregateWorkspace: ref.watch(aggregateWorkspaceSettingProvider),
     appSettingProps: appSettingProps,
     windowProps: windowProps,
     vpnProps: vpnProps,
@@ -138,6 +146,8 @@ Config _config(Ref ref) {
 }
 
 void writeConfig(Ref ref, Config config) {
+  ref.read(aggregateWorkspaceSettingProvider.notifier).value =
+      config.aggregateWorkspace;
   ref.read(appSettingProvider.notifier).value = config.appSettingProps;
   ref.read(windowSettingProvider.notifier).value = config.windowProps;
   ref.read(vpnSettingProvider.notifier).value = config.vpnProps;
@@ -155,6 +165,9 @@ void writeConfig(Ref ref, Config config) {
 
 List<Override> buildConfigOverrides(Config config) {
   return [
+    aggregateWorkspaceSettingProvider.overrideWithBuild(
+      (_, _) => config.aggregateWorkspace,
+    ),
     appSettingProvider.overrideWithBuild((_, _) => config.appSettingProps),
     windowSettingProvider.overrideWithBuild((_, _) => config.windowProps),
     vpnSettingProvider.overrideWithBuild((_, _) => config.vpnProps),

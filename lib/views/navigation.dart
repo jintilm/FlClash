@@ -3,6 +3,7 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/ui/icons/app_glyphs.dart';
 import 'package:fl_clash/views/views.dart';
+import 'package:fl_clash/views/aggregation/aggregation.dart';
 
 class Navigation implements NavigationPort {
   static Navigation? _instance;
@@ -25,6 +26,12 @@ class Navigation implements NavigationPort {
         modes: hasProxies
             ? [NavigationItemMode.mobile, NavigationItemMode.desktop]
             : [],
+      ),
+      NavigationItem(
+        glyph: AppGlyphs.link,
+        label: PageLabel.aggregate,
+        builder: (_) => const AggregateProxiesView(),
+        modes: [NavigationItemMode.desktop, NavigationItemMode.moreFull],
       ),
       NavigationItem(
         glyph: AppGlyphs.profiles,

@@ -33,10 +33,15 @@ void main() {
       overrides: const ProfileOverrides(
         dnsOverrideKeys: {DnsOverrideKey.nameserver},
       ),
+      aggregate: const AggregateConfig(
+        baseProfileId: 7,
+        sourceIds: {7, 8},
+        targetGroup: 'Proxy',
+      ),
     );
 
-    expect(profile.toColumns(true), hasLength(18));
-    expect(profile.toCompanion(true).toColumns(true), hasLength(18));
+    expect(profile.toColumns(true), hasLength(19));
+    expect(profile.toCompanion(true).toColumns(true), hasLength(19));
     expect(RawProfile.fromJson(profile.toJson()).toJson(), profile.toJson());
     expect(profile.copyWith(label: 'Next').label, 'Next');
     expect(
@@ -67,7 +72,7 @@ void main() {
       unfoldSet: {},
     );
     expect(emptyProfile.toColumns(true), hasLength(9));
-    expect(emptyProfile.toColumns(false), hasLength(18));
+    expect(emptyProfile.toColumns(false), hasLength(19));
     expect(emptyProfile.toCompanion(true).toColumns(true), hasLength(9));
 
     final insertedProfile = ProfilesCompanion.insert(

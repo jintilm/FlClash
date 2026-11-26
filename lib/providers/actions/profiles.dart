@@ -38,6 +38,18 @@ class ProfilesAction extends _$ProfilesAction {
   }
 
   Future<void> deleteProfile(int id) async {
+    final users = ref
+        .read(profilesProvider)
+        .where(
+          (profile) =>
+              profile.aggregate?.baseProfileId == id ||
+              (profile.aggregate?.sourceIds.contains(id) ?? false),
+        );
+    if (users.isNotEmpty) {
+      throw MessageException(
+        '${currentAppLocalizations.aggregateSourceInUse}: ${users.map((p) => p.realLabel).join(', ')}',
+      );
+    }
     await ref.read(profilesProvider.notifier).del(id);
     await clearEffect(id);
     final currentProfileId = ref.read(currentProfileIdProvider);
@@ -93,6 +105,10 @@ class ProfilesAction extends _$ProfilesAction {
     return [
       for (final user in users)
         if (user.id != profile.id) user,
+      for (final user in ref.read(profilesProvider))
+        if (user.aggregate?.baseProfileId == profile.id ||
+            (user.aggregate?.sourceIds.contains(profile.id) ?? false))
+          user,
     ];
   }
 

@@ -26,7 +26,8 @@ class CustomProvidersView extends ConsumerWidget {
     final data = ref.watch(customProfileDataProvider(profileId));
     final profiles = {
       for (final profile in ref.watch(profilesProvider))
-        if (profile.type != ProfileType.custom) profile.realLabel: profile,
+        if (profile.type == ProfileType.file || profile.type == ProfileType.url)
+          profile.realLabel: profile,
     };
     final ruleProviders = {
       for (final provider

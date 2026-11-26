@@ -506,6 +506,15 @@ class SetupAction extends _$SetupAction {
     required SetupState setupState,
     required PatchClashConfig patchConfig,
   }) async {
+    if (setupState.aggregate case final aggregate?) {
+      try {
+        return await ref
+            .read(aggregateActionProvider.notifier)
+            .buildProfile(aggregate, setupState.aggregateBase!, patchConfig);
+      } on AggregateException catch (error) {
+        throw MessageException(aggregateErrorMessage(error));
+      }
+    }
     final profileId = setupState.profileId;
     if (profileId == null) {
       final yaml = await encodeYamlTask(
@@ -795,14 +804,34 @@ class SetupAction extends _$SetupAction {
     final pushWatch = Stopwatch()..start();
     final realPatchConfig = _effectivePatchConfig(patchConfig);
     final networkSetting = ref.read(networkSettingProvider);
+    final preserve = profile?.type == ProfileType.aggregate;
     SetupState? setupState;
     final realProfile = await globalState.safeRun(() async {
-      final state = await ref.read(setupStateProvider(profile?.id).future);
-      setupState = state;
-      return getProfile(setupState: state, patchConfig: realPatchConfig);
+      try {
+        final state = await ref.read(setupStateProvider(profile?.id).future);
+        setupState = state;
+        return await getProfile(
+          setupState: state,
+          patchConfig: realPatchConfig,
+        );
+      } catch (error) {
+        if (preserve) {
+          ref
+              .read(aggregateRuntimeProvider.notifier)
+              .record(profile!.id, profile.aggregate, false, error.toString());
+        }
+        rethrow;
+      }
     }, title: 'build profile');
     final profileFailed = realProfile == null;
-    final setupParams = _setupParams.copyWith(base: realProfile?.base);
+    if (preserve && ref.read(currentProfileIdProvider) != profile?.id) {
+      return _SetupTaskResult.failed;
+    }
+    if (profileFailed && preserve) return _SetupTaskResult.failed;
+    final setupParams = _setupParams.copyWith(
+      base: realProfile?.base,
+      preserveOnFailure: preserve,
+    );
     final inputs = switch (setupState) {
       final state? when !profileFailed => (
         state,
@@ -815,6 +844,11 @@ class SetupAction extends _$SetupAction {
     final yamlString = realProfile?.yaml ?? '';
     final yamlMd5 = realProfile?.md5 ?? '';
     if (!profileFailed && yamlMd5 == globalState.lastConfigMd5 && !force) {
+      if (preserve) {
+        ref
+            .read(aggregateRuntimeProvider.notifier)
+            .record(profile!.id, profile.aggregate, true);
+      }
       _appliedInputs = inputs;
       globalState.lastConfigCounts = realProfile.counts;
       await preloadInvoke?.call();
@@ -822,6 +856,9 @@ class SetupAction extends _$SetupAction {
     }
     // Go answers a config it rejects by running its built-in default, which
     // has no proxies, so until this push succeeds no applied config is known.
+    final previousInputs = _appliedInputs;
+    final previousMd5 = globalState.lastConfigMd5;
+    final previousCounts = globalState.lastConfigCounts;
     _appliedInputs = null;
     globalState.lastConfigMd5 = null;
     globalState.lastConfigCounts = null;
@@ -835,10 +872,17 @@ class SetupAction extends _$SetupAction {
     var setupFailed = false;
     await globalState.loadingRun(
       () async {
+        File? writtenConfig;
+        List<int>? previousConfig;
+        var dispatched = false;
         try {
           if (setupParams.base == null) {
             final configFilePath = await appPath.configFilePath;
-            await File(configFilePath).writeAsStringAtomically(yamlString);
+            writtenConfig = File(configFilePath);
+            if (preserve && await writtenConfig.exists()) {
+              previousConfig = await writtenConfig.readAsBytes();
+            }
+            await writtenConfig.writeAsStringAtomically(yamlString);
           }
           final profileId = profile?.id;
           if (profileId != null) {
@@ -854,6 +898,7 @@ class SetupAction extends _$SetupAction {
             }
           }
           try {
+            dispatched = true;
             await _core.setupConfig(
               params: setupParams,
               preloadInvoke: preloadInvoke,
@@ -868,6 +913,28 @@ class SetupAction extends _$SetupAction {
           }
         } catch (e, s) {
           setupFailed = true;
+          if (preserve) {
+            ref
+                .read(aggregateRuntimeProvider.notifier)
+                .record(
+                  profile!.id,
+                  profile.aggregate,
+                  false,
+                  userFacingErrorMessage(e, currentAppLocalizations),
+                );
+            if (previousConfig != null && writtenConfig != null) {
+              await writtenConfig.safeWriteAsBytes(previousConfig);
+            }
+            final unchanged =
+                !dispatched ||
+                e is CoreMethodException && e.code == 'config_preserved';
+            _appliedInputs = unchanged ? previousInputs : null;
+            globalState.lastConfigMd5 = unchanged ? previousMd5 : null;
+            globalState.lastConfigCounts = unchanged ? previousCounts : null;
+            if (system.isAndroid) {
+              await preferences.saveAppliedConfigMd5(globalState.lastConfigMd5);
+            }
+          }
           if (preloadInvoke != null) {
             handoffFailure = (e, s);
           }
@@ -877,6 +944,11 @@ class SetupAction extends _$SetupAction {
         globalState.lastConfigCounts =
             realProfile?.counts ?? configCountsOf(const {});
         _appliedInputs = inputs;
+        if (preserve) {
+          ref
+              .read(aggregateRuntimeProvider.notifier)
+              .record(profile!.id, profile.aggregate, true);
+        }
         if (system.isAndroid) {
           await preferences.saveAppliedConfigMd5(yamlMd5);
         }

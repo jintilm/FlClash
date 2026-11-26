@@ -7,6 +7,7 @@ part of '../core.dart';
 // **************************************************************************
 
 _SetupParams _$SetupParamsFromJson(Map<String, dynamic> json) => _SetupParams(
+  preserveOnFailure: json['preserve-on-failure'] as bool? ?? false,
   base: json['base'] == null
       ? null
       : SetupBase.fromJson(json['base'] as Map<String, dynamic>),
@@ -16,6 +17,7 @@ _SetupParams _$SetupParamsFromJson(Map<String, dynamic> json) => _SetupParams(
 
 Map<String, dynamic> _$SetupParamsToJson(_SetupParams instance) =>
     <String, dynamic>{
+      'preserve-on-failure': instance.preserveOnFailure,
       'base': ?instance.base,
       'selected-map': instance.selectedMap,
       'options': instance.options,

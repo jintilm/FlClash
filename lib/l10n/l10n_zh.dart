@@ -3731,4 +3731,148 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'VPN 服务无法启动。';
+
+  @override
+  String get aggregateProxies => '聚合代理';
+
+  @override
+  String get aggregateSelection => '聚合选择';
+
+  @override
+  String get aggregateProfile => '聚合配置';
+
+  @override
+  String get aggregateBase => '基础配置';
+
+  @override
+  String get aggregateTarget => '接入代理组';
+
+  @override
+  String get aggregateSources => '参与聚合的来源';
+
+  @override
+  String get aggregateSource => '来源';
+
+  @override
+  String get aggregateSourceFilter => '按来源筛选';
+
+  @override
+  String get aggregateProtocol => '协议';
+
+  @override
+  String get aggregateAllNodes => '全部节点';
+
+  @override
+  String get aggregateChains => '链式代理';
+
+  @override
+  String get aggregateNewChain => '新建链路';
+
+  @override
+  String get aggregateEntry => '入口节点';
+
+  @override
+  String get aggregateExit => '出口节点';
+
+  @override
+  String get aggregateAsEntry => '设为入口';
+
+  @override
+  String get aggregateAsExit => '设为出口';
+
+  @override
+  String get aggregateSwap => '交换入口与出口';
+
+  @override
+  String get aggregateChoose => '请选择';
+
+  @override
+  String get aggregateRouteHint => '本机 → 入口 → 出口 → 目标网站。保存为草稿，应用后即可选用和测试。';
+
+  @override
+  String get aggregateDnsInherited => 'DNS 与分流继承基础配置，并保留其代理依赖。';
+
+  @override
+  String get aggregateApply => '应用聚合配置';
+
+  @override
+  String get aggregateApplied => '已应用';
+
+  @override
+  String get aggregateInactive => '已保存 · 未启用';
+
+  @override
+  String get aggregateNotApplied => '草稿 · 未应用';
+
+  @override
+  String get aggregatePending => '有修改待应用';
+
+  @override
+  String get aggregateApplyFailed => '应用失败，请检查错误和当前配置后重试。';
+
+  @override
+  String get aggregateFavorite => '收藏';
+
+  @override
+  String get aggregateFavorites => '仅显示收藏';
+
+  @override
+  String get aggregateExcluded => '未参与聚合';
+
+  @override
+  String get aggregateLoading => '正在加载节点…';
+
+  @override
+  String get aggregateTest => '测试连通性、延迟与出口 IP';
+
+  @override
+  String get aggregateApplyBeforeTest => '应用此配置后可测试';
+
+  @override
+  String get aggregateUnreachable => '不可达';
+
+  @override
+  String get aggregateNoChains => '尚无链路，请选择节点并新建链路。';
+
+  @override
+  String get aggregateNoNodes => '暂无可用节点';
+
+  @override
+  String get aggregateMissingBase => '请选择有效的基础配置';
+
+  @override
+  String get aggregateMissingSource => '来源已不存在';
+
+  @override
+  String get aggregateSourceUnavailable => '部分来源加载失败，请查看来源详情并刷新。';
+
+  @override
+  String get aggregateMissingGroup => '请选择基础配置中有效的手动选择组';
+
+  @override
+  String get aggregateRepair => '需要修复：请重新选择缺失或已变更的节点';
+
+  @override
+  String get aggregateDuplicateName => '名称重复或为空';
+
+  @override
+  String get aggregateExistingDialer => '此节点已有前置代理依赖，请先处理后再聚合或组链';
+
+  @override
+  String get aggregateSameHop => '入口与出口不能是同一个节点';
+
+  @override
+  String get aggregateUdpEntry => '出口协议需要入口支持 UDP';
+
+  @override
+  String get aggregateCycle => '代理引用形成循环';
+
+  @override
+  String get aggregateDnsBootstrap => 'DNS 引导依赖尚未解析的代理，请配置独立的节点域名解析或 IP 入口。';
+
+  @override
+  String get aggregateMissingDnsProxy => 'DNS 引用的代理不存在';
+
+  @override
+  String get aggregateSourceInUse => '此来源被聚合配置使用，请先移除或替换引用。';
 }

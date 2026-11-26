@@ -31,6 +31,7 @@ enum CoreMethod {
   providerGet('provider.get'),
   providerUpdate('provider.update'),
   providerSideLoad('provider.sideLoad'),
+  providerSnapshot('provider.snapshot'),
   ruleSetDump('ruleSet.dump'),
   ruleSetCompile('ruleSet.compile'),
   geoUpdate('geo.update'),

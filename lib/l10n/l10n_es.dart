@@ -4002,4 +4002,157 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'No se pudo iniciar el servicio VPN.';
+
+  @override
+  String get aggregateProxies => 'Proxies agregados';
+
+  @override
+  String get aggregateSelection => 'Selección agregada';
+
+  @override
+  String get aggregateProfile => 'Perfil agregado';
+
+  @override
+  String get aggregateBase => 'Perfil base';
+
+  @override
+  String get aggregateTarget => 'Añadir al grupo';
+
+  @override
+  String get aggregateSources => 'Fuentes participantes';
+
+  @override
+  String get aggregateSource => 'Fuente';
+
+  @override
+  String get aggregateSourceFilter => 'Filtrar por fuente';
+
+  @override
+  String get aggregateProtocol => 'Protocolo';
+
+  @override
+  String get aggregateAllNodes => 'Todos los nodos';
+
+  @override
+  String get aggregateChains => 'Cadenas de proxies';
+
+  @override
+  String get aggregateNewChain => 'Nueva cadena';
+
+  @override
+  String get aggregateEntry => 'Nodo de entrada';
+
+  @override
+  String get aggregateExit => 'Nodo de salida';
+
+  @override
+  String get aggregateAsEntry => 'Usar como entrada';
+
+  @override
+  String get aggregateAsExit => 'Usar como salida';
+
+  @override
+  String get aggregateSwap => 'Intercambiar entrada y salida';
+
+  @override
+  String get aggregateChoose => 'Elegir';
+
+  @override
+  String get aggregateRouteHint =>
+      'Este dispositivo → Entrada → Salida → Sitio. Guarde y aplique para usar y probar la cadena.';
+
+  @override
+  String get aggregateDnsInherited =>
+      'DNS y rutas se heredan del perfil base con sus dependencias de proxy.';
+
+  @override
+  String get aggregateApply => 'Aplicar perfil agregado';
+
+  @override
+  String get aggregateApplied => 'Aplicado';
+
+  @override
+  String get aggregateInactive => 'Guardado · Inactivo';
+
+  @override
+  String get aggregateNotApplied => 'Borrador · Sin aplicar';
+
+  @override
+  String get aggregatePending => 'Cambios pendientes';
+
+  @override
+  String get aggregateApplyFailed =>
+      'Error al aplicar. Revise el error y el perfil actual.';
+
+  @override
+  String get aggregateFavorite => 'Favorito';
+
+  @override
+  String get aggregateFavorites => 'Solo favoritos';
+
+  @override
+  String get aggregateExcluded => 'No incluido';
+
+  @override
+  String get aggregateLoading => 'Cargando nodos…';
+
+  @override
+  String get aggregateTest => 'Probar conexión, latencia e IP de salida';
+
+  @override
+  String get aggregateApplyBeforeTest => 'Aplique el perfil antes de probar';
+
+  @override
+  String get aggregateUnreachable => 'Inaccesible';
+
+  @override
+  String get aggregateNoChains => 'Elija nodos para crear una cadena.';
+
+  @override
+  String get aggregateNoNodes => 'No hay nodos disponibles';
+
+  @override
+  String get aggregateMissingBase => 'Elija un perfil base existente';
+
+  @override
+  String get aggregateMissingSource => 'Falta una fuente';
+
+  @override
+  String get aggregateSourceUnavailable =>
+      'No se pudieron cargar algunas fuentes. Revise y actualice.';
+
+  @override
+  String get aggregateMissingGroup =>
+      'Elija un grupo de selección manual existente';
+
+  @override
+  String get aggregateRepair => 'Requiere reparación: vuelva a elegir el nodo';
+
+  @override
+  String get aggregateDuplicateName => 'Nombre vacío o duplicado';
+
+  @override
+  String get aggregateExistingDialer =>
+      'Este nodo ya depende de un proxy previo';
+
+  @override
+  String get aggregateSameHop => 'La entrada y salida deben ser distintas';
+
+  @override
+  String get aggregateUdpEntry =>
+      'El protocolo de salida requiere UDP en la entrada';
+
+  @override
+  String get aggregateCycle => 'Dependencia circular de proxy';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      'El DNS inicial depende de un proxy sin resolver. Configure DNS independiente o una entrada IP.';
+
+  @override
+  String get aggregateMissingDnsProxy => 'Falta un proxy requerido por DNS';
+
+  @override
+  String get aggregateSourceInUse =>
+      'Esta fuente está en uso. Quite o reemplace las referencias.';
 }

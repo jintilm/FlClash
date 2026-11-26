@@ -3855,4 +3855,150 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'VPN 서비스를 시작하지 못했습니다.';
+
+  @override
+  String get aggregateProxies => '통합 프록시';
+
+  @override
+  String get aggregateSelection => '통합 선택';
+
+  @override
+  String get aggregateProfile => '통합 프로필';
+
+  @override
+  String get aggregateBase => '기본 프로필';
+
+  @override
+  String get aggregateTarget => '추가할 프록시 그룹';
+
+  @override
+  String get aggregateSources => '통합할 소스';
+
+  @override
+  String get aggregateSource => '소스';
+
+  @override
+  String get aggregateSourceFilter => '소스별 필터';
+
+  @override
+  String get aggregateProtocol => '프로토콜';
+
+  @override
+  String get aggregateAllNodes => '모든 노드';
+
+  @override
+  String get aggregateChains => '프록시 체인';
+
+  @override
+  String get aggregateNewChain => '체인 만들기';
+
+  @override
+  String get aggregateEntry => '입구 노드';
+
+  @override
+  String get aggregateExit => '출구 노드';
+
+  @override
+  String get aggregateAsEntry => '입구로 사용';
+
+  @override
+  String get aggregateAsExit => '출구로 사용';
+
+  @override
+  String get aggregateSwap => '입구와 출구 바꾸기';
+
+  @override
+  String get aggregateChoose => '선택';
+
+  @override
+  String get aggregateRouteHint =>
+      '이 기기 → 입구 → 출구 → 웹사이트. 초안을 저장하고 적용하면 사용하거나 테스트할 수 있습니다.';
+
+  @override
+  String get aggregateDnsInherited => 'DNS와 라우팅은 프록시 의존성을 포함하여 기본 프로필에서 상속됩니다.';
+
+  @override
+  String get aggregateApply => '통합 프로필 적용';
+
+  @override
+  String get aggregateApplied => '적용됨';
+
+  @override
+  String get aggregateInactive => '저장됨 · 비활성';
+
+  @override
+  String get aggregateNotApplied => '초안 · 미적용';
+
+  @override
+  String get aggregatePending => '적용 대기 중인 변경 사항';
+
+  @override
+  String get aggregateApplyFailed => '적용하지 못했습니다. 오류와 현재 프로필을 확인하세요.';
+
+  @override
+  String get aggregateFavorite => '즐겨찾기';
+
+  @override
+  String get aggregateFavorites => '즐겨찾기만';
+
+  @override
+  String get aggregateExcluded => '포함되지 않음';
+
+  @override
+  String get aggregateLoading => '노드 불러오는 중…';
+
+  @override
+  String get aggregateTest => '연결, 지연 및 출구 IP 테스트';
+
+  @override
+  String get aggregateApplyBeforeTest => '적용 후 테스트할 수 있습니다';
+
+  @override
+  String get aggregateUnreachable => '연결 불가';
+
+  @override
+  String get aggregateNoChains => '노드를 선택하여 체인을 만드세요.';
+
+  @override
+  String get aggregateNoNodes => '사용 가능한 노드 없음';
+
+  @override
+  String get aggregateMissingBase => '유효한 기본 프로필을 선택하세요';
+
+  @override
+  String get aggregateMissingSource => '소스가 없습니다';
+
+  @override
+  String get aggregateSourceUnavailable => '일부 소스를 불러오지 못했습니다. 확인 후 새로 고치세요.';
+
+  @override
+  String get aggregateMissingGroup => '기존 수동 선택 그룹을 선택하세요';
+
+  @override
+  String get aggregateRepair => '복구 필요: 변경되거나 누락된 노드를 다시 선택하세요';
+
+  @override
+  String get aggregateDuplicateName => '이름이 비어 있거나 중복됩니다';
+
+  @override
+  String get aggregateExistingDialer => '이 노드의 기존 전단 프록시 의존성을 먼저 해결하세요';
+
+  @override
+  String get aggregateSameHop => '입구와 출구는 서로 달라야 합니다';
+
+  @override
+  String get aggregateUdpEntry => '출구 프로토콜에는 입구의 UDP 지원이 필요합니다';
+
+  @override
+  String get aggregateCycle => '순환 프록시 의존성';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      '초기 DNS가 미해결 프록시에 의존합니다. 독립적인 노드 DNS 또는 IP 입구를 설정하세요.';
+
+  @override
+  String get aggregateMissingDnsProxy => 'DNS에 필요한 프록시가 없습니다';
+
+  @override
+  String get aggregateSourceInUse => '통합 프로필이 사용 중인 소스입니다. 참조를 먼저 제거하거나 교체하세요.';
 }

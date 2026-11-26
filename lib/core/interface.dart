@@ -194,6 +194,20 @@ abstract class CoreHandlerInterface {
     return _find(CoreMethod.proxyDefinition, _json, arguments: {'name': name});
   }
 
+  Future<List<Map<String, dynamic>>> providerSnapshot(
+    Map<String, dynamic> definition, {
+    String content = '',
+    bool refresh = false,
+  }) => _query(
+    CoreMethod.providerSnapshot,
+    _jsonList,
+    arguments: {
+      'definition': definition,
+      'content': content,
+      'refresh': refresh,
+    },
+  );
+
   Future<Delay> testDelay(TestDelayParams params) {
     return _query(
       CoreMethod.proxyTestDelay,

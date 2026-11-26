@@ -3960,4 +3960,160 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'The VPN service could not start.';
+
+  @override
+  String get aggregateProxies => 'Aggregate proxies';
+
+  @override
+  String get aggregateSelection => 'Aggregate selection';
+
+  @override
+  String get aggregateProfile => 'Aggregate profile';
+
+  @override
+  String get aggregateBase => 'Base profile';
+
+  @override
+  String get aggregateTarget => 'Add to proxy group';
+
+  @override
+  String get aggregateSources => 'Participating sources';
+
+  @override
+  String get aggregateSource => 'Source';
+
+  @override
+  String get aggregateSourceFilter => 'Filter by source';
+
+  @override
+  String get aggregateProtocol => 'Protocol';
+
+  @override
+  String get aggregateAllNodes => 'All nodes';
+
+  @override
+  String get aggregateChains => 'Proxy chains';
+
+  @override
+  String get aggregateNewChain => 'New chain';
+
+  @override
+  String get aggregateEntry => 'Entry node';
+
+  @override
+  String get aggregateExit => 'Exit node';
+
+  @override
+  String get aggregateAsEntry => 'Use as entry';
+
+  @override
+  String get aggregateAsExit => 'Use as exit';
+
+  @override
+  String get aggregateSwap => 'Swap entry and exit';
+
+  @override
+  String get aggregateChoose => 'Choose';
+
+  @override
+  String get aggregateRouteHint =>
+      'This device → Entry → Exit → Website. Save the draft, then apply it to use or test the chain.';
+
+  @override
+  String get aggregateDnsInherited =>
+      'DNS and routing are inherited from the base profile, including proxy dependencies.';
+
+  @override
+  String get aggregateApply => 'Apply aggregate profile';
+
+  @override
+  String get aggregateApplied => 'Applied';
+
+  @override
+  String get aggregateInactive => 'Saved · Not active';
+
+  @override
+  String get aggregateNotApplied => 'Draft · Not applied';
+
+  @override
+  String get aggregatePending => 'Changes pending application';
+
+  @override
+  String get aggregateApplyFailed =>
+      'Application failed. Check the error and the current profile before trying again.';
+
+  @override
+  String get aggregateFavorite => 'Favorite';
+
+  @override
+  String get aggregateFavorites => 'Favorites only';
+
+  @override
+  String get aggregateExcluded => 'Not included';
+
+  @override
+  String get aggregateLoading => 'Loading nodes…';
+
+  @override
+  String get aggregateTest => 'Test connection, delay and exit IP';
+
+  @override
+  String get aggregateApplyBeforeTest =>
+      'Apply this configuration before testing';
+
+  @override
+  String get aggregateUnreachable => 'Unreachable';
+
+  @override
+  String get aggregateNoChains =>
+      'No chains yet. Choose nodes and create a chain.';
+
+  @override
+  String get aggregateNoNodes => 'No nodes available';
+
+  @override
+  String get aggregateMissingBase => 'Choose an existing base profile';
+
+  @override
+  String get aggregateMissingSource => 'A source is missing';
+
+  @override
+  String get aggregateSourceUnavailable =>
+      'Some sources could not be loaded. Check Sources and refresh.';
+
+  @override
+  String get aggregateMissingGroup =>
+      'Choose an existing manual selection group';
+
+  @override
+  String get aggregateRepair =>
+      'Needs repair: select the missing or changed node again';
+
+  @override
+  String get aggregateDuplicateName => 'Duplicate or empty name';
+
+  @override
+  String get aggregateExistingDialer =>
+      'This node already has a dialer dependency; resolve it before aggregation or chaining';
+
+  @override
+  String get aggregateSameHop => 'Entry and exit must be different nodes';
+
+  @override
+  String get aggregateUdpEntry =>
+      'The exit protocol requires UDP support from the entry';
+
+  @override
+  String get aggregateCycle => 'Circular proxy dependency';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      'DNS bootstrap depends on an unresolved proxy. Configure independent node resolution or an IP entry.';
+
+  @override
+  String get aggregateMissingDnsProxy => 'A DNS proxy dependency is missing';
+
+  @override
+  String get aggregateSourceInUse =>
+      'This source is used by an aggregate profile. Remove or replace its references first.';
 }

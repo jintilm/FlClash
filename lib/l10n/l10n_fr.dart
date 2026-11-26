@@ -4007,4 +4007,158 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'Le service VPN n\'a pas pu démarrer.';
+
+  @override
+  String get aggregateProxies => 'Proxys regroupés';
+
+  @override
+  String get aggregateSelection => 'Sélection regroupée';
+
+  @override
+  String get aggregateProfile => 'Profil regroupé';
+
+  @override
+  String get aggregateBase => 'Profil de base';
+
+  @override
+  String get aggregateTarget => 'Ajouter au groupe';
+
+  @override
+  String get aggregateSources => 'Sources participantes';
+
+  @override
+  String get aggregateSource => 'Source';
+
+  @override
+  String get aggregateSourceFilter => 'Filtrer par source';
+
+  @override
+  String get aggregateProtocol => 'Protocole';
+
+  @override
+  String get aggregateAllNodes => 'Tous les nœuds';
+
+  @override
+  String get aggregateChains => 'Chaînes de proxys';
+
+  @override
+  String get aggregateNewChain => 'Nouvelle chaîne';
+
+  @override
+  String get aggregateEntry => 'Nœud d’entrée';
+
+  @override
+  String get aggregateExit => 'Nœud de sortie';
+
+  @override
+  String get aggregateAsEntry => 'Utiliser comme entrée';
+
+  @override
+  String get aggregateAsExit => 'Utiliser comme sortie';
+
+  @override
+  String get aggregateSwap => 'Inverser entrée et sortie';
+
+  @override
+  String get aggregateChoose => 'Choisir';
+
+  @override
+  String get aggregateRouteHint =>
+      'Cet appareil → Entrée → Sortie → Site. Enregistrez puis appliquez pour utiliser et tester la chaîne.';
+
+  @override
+  String get aggregateDnsInherited =>
+      'DNS et routage héritent du profil de base, avec leurs dépendances proxy.';
+
+  @override
+  String get aggregateApply => 'Appliquer le profil regroupé';
+
+  @override
+  String get aggregateApplied => 'Appliqué';
+
+  @override
+  String get aggregateInactive => 'Enregistré · Inactif';
+
+  @override
+  String get aggregateNotApplied => 'Brouillon · Non appliqué';
+
+  @override
+  String get aggregatePending => 'Modifications à appliquer';
+
+  @override
+  String get aggregateApplyFailed =>
+      'Échec de l’application. Vérifiez l’erreur et le profil actuel.';
+
+  @override
+  String get aggregateFavorite => 'Favori';
+
+  @override
+  String get aggregateFavorites => 'Favoris uniquement';
+
+  @override
+  String get aggregateExcluded => 'Non inclus';
+
+  @override
+  String get aggregateLoading => 'Chargement des nœuds…';
+
+  @override
+  String get aggregateTest => 'Tester connexion, latence et IP de sortie';
+
+  @override
+  String get aggregateApplyBeforeTest => 'Appliquez le profil avant le test';
+
+  @override
+  String get aggregateUnreachable => 'Injoignable';
+
+  @override
+  String get aggregateNoChains => 'Choisissez des nœuds pour créer une chaîne.';
+
+  @override
+  String get aggregateNoNodes => 'Aucun nœud disponible';
+
+  @override
+  String get aggregateMissingBase => 'Choisissez un profil de base existant';
+
+  @override
+  String get aggregateMissingSource => 'Une source est manquante';
+
+  @override
+  String get aggregateSourceUnavailable =>
+      'Certaines sources sont indisponibles. Vérifiez-les puis actualisez.';
+
+  @override
+  String get aggregateMissingGroup =>
+      'Choisissez un groupe de sélection manuelle existant';
+
+  @override
+  String get aggregateRepair =>
+      'À réparer : sélectionnez à nouveau le nœud modifié ou manquant';
+
+  @override
+  String get aggregateDuplicateName => 'Nom vide ou en double';
+
+  @override
+  String get aggregateExistingDialer => 'Ce nœud dépend déjà d’un proxy amont';
+
+  @override
+  String get aggregateSameHop =>
+      'L’entrée et la sortie doivent être distinctes';
+
+  @override
+  String get aggregateUdpEntry =>
+      'Le protocole de sortie nécessite UDP à l’entrée';
+
+  @override
+  String get aggregateCycle => 'Dépendance proxy circulaire';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      'Le DNS initial dépend d’un proxy non résolu. Configurez un DNS indépendant ou une entrée IP.';
+
+  @override
+  String get aggregateMissingDnsProxy => 'Un proxy requis par le DNS manque';
+
+  @override
+  String get aggregateSourceInUse =>
+      'Cette source est utilisée. Retirez ou remplacez ses références.';
 }

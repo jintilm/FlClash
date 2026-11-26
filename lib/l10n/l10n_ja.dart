@@ -3780,4 +3780,150 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'VPN サービスを起動できませんでした。';
+
+  @override
+  String get aggregateProxies => '集約プロキシ';
+
+  @override
+  String get aggregateSelection => '集約選択';
+
+  @override
+  String get aggregateProfile => '集約プロファイル';
+
+  @override
+  String get aggregateBase => 'ベースプロファイル';
+
+  @override
+  String get aggregateTarget => '追加先のグループ';
+
+  @override
+  String get aggregateSources => '集約するソース';
+
+  @override
+  String get aggregateSource => 'ソース';
+
+  @override
+  String get aggregateSourceFilter => 'ソースで絞り込み';
+
+  @override
+  String get aggregateProtocol => 'プロトコル';
+
+  @override
+  String get aggregateAllNodes => 'すべてのノード';
+
+  @override
+  String get aggregateChains => 'プロキシチェーン';
+
+  @override
+  String get aggregateNewChain => 'チェーンを作成';
+
+  @override
+  String get aggregateEntry => '入口ノード';
+
+  @override
+  String get aggregateExit => '出口ノード';
+
+  @override
+  String get aggregateAsEntry => '入口として使用';
+
+  @override
+  String get aggregateAsExit => '出口として使用';
+
+  @override
+  String get aggregateSwap => '入口と出口を入れ替え';
+
+  @override
+  String get aggregateChoose => '選択';
+
+  @override
+  String get aggregateRouteHint =>
+      'この端末 → 入口 → 出口 → Web サイト。保存後に適用すると使用・テストできます。';
+
+  @override
+  String get aggregateDnsInherited => 'DNS とルーティングはプロキシ依存関係を含めてベースから継承します。';
+
+  @override
+  String get aggregateApply => '集約プロファイルを適用';
+
+  @override
+  String get aggregateApplied => '適用済み';
+
+  @override
+  String get aggregateInactive => '保存済み・未使用';
+
+  @override
+  String get aggregateNotApplied => '下書き・未適用';
+
+  @override
+  String get aggregatePending => '未適用の変更あり';
+
+  @override
+  String get aggregateApplyFailed => '適用できませんでした。エラーと現在のプロファイルを確認してください。';
+
+  @override
+  String get aggregateFavorite => 'お気に入り';
+
+  @override
+  String get aggregateFavorites => 'お気に入りのみ';
+
+  @override
+  String get aggregateExcluded => '集約対象外';
+
+  @override
+  String get aggregateLoading => 'ノードを読み込み中…';
+
+  @override
+  String get aggregateTest => '接続・遅延・出口 IP をテスト';
+
+  @override
+  String get aggregateApplyBeforeTest => '適用後にテストできます';
+
+  @override
+  String get aggregateUnreachable => '接続不可';
+
+  @override
+  String get aggregateNoChains => 'ノードを選んでチェーンを作成してください。';
+
+  @override
+  String get aggregateNoNodes => '利用可能なノードがありません';
+
+  @override
+  String get aggregateMissingBase => '有効なベースプロファイルを選択してください';
+
+  @override
+  String get aggregateMissingSource => 'ソースが見つかりません';
+
+  @override
+  String get aggregateSourceUnavailable => '一部のソースを読み込めません。ソースを確認して更新してください。';
+
+  @override
+  String get aggregateMissingGroup => '既存の手動選択グループを選んでください';
+
+  @override
+  String get aggregateRepair => '修復が必要です。変更・削除されたノードを選び直してください';
+
+  @override
+  String get aggregateDuplicateName => '名前が重複または空です';
+
+  @override
+  String get aggregateExistingDialer => '既存の前置プロキシ依存関係を解決してください';
+
+  @override
+  String get aggregateSameHop => '入口と出口は別のノードにしてください';
+
+  @override
+  String get aggregateUdpEntry => '出口のプロトコルには入口の UDP 対応が必要です';
+
+  @override
+  String get aggregateCycle => 'プロキシの循環依存';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      'DNS の初期解決が未解決のプロキシに依存します。独立した解決経路または IP 入口を設定してください。';
+
+  @override
+  String get aggregateMissingDnsProxy => 'DNS が参照するプロキシがありません';
+
+  @override
+  String get aggregateSourceInUse => 'このソースは集約で使用中です。参照を解除または置換してください。';
 }

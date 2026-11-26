@@ -8,6 +8,7 @@ import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/views/profiles/custom/custom.dart';
+import 'package:fl_clash/views/aggregation/aggregation.dart';
 import 'package:fl_clash/views/profiles/extend/extend.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/services.dart';
@@ -332,7 +333,7 @@ class ProfileItem extends ConsumerWidget {
     if (res != true) {
       return;
     }
-    await profilesAction.deleteProfile(profile.id);
+    await globalState.safeRun(() => profilesAction.deleteProfile(profile.id));
   }
 
   Future<void> _handlePreview(BuildContext context) async {
@@ -371,6 +372,7 @@ class ProfileItem extends ConsumerWidget {
       ProfileType.url => appLocalizations.remote,
       ProfileType.file => appLocalizations.local,
       ProfileType.custom => appLocalizations.custom,
+      ProfileType.aggregate => appLocalizations.aggregateProfile,
     };
   }
 
@@ -430,6 +432,10 @@ class ProfileItem extends ConsumerWidget {
   }
 
   void _handleEdit(BuildContext context) {
+    if (profile.type == ProfileType.aggregate) {
+      BaseNavigator.push(context, AggregateProxiesView(profileId: profile.id));
+      return;
+    }
     if (profile.type == ProfileType.custom) {
       _handlePushCustomProfilePage(context, profile.id);
     } else {
@@ -440,7 +446,9 @@ class ProfileItem extends ConsumerWidget {
   List<PopupMenuItem> _menuItems(BuildContext context, WidgetRef ref) {
     final appLocalizations = context.appLocalizations;
     final isUrl = profile.type == ProfileType.url;
-    final isCustom = profile.type == ProfileType.custom;
+    final isCustom =
+        profile.type == ProfileType.custom ||
+        profile.type == ProfileType.aggregate;
     return [
       PopupMenuItem(
         glyph: AppGlyphs.edit,

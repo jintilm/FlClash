@@ -25,7 +25,7 @@ Profile? profile(Ref ref, int? profileId) {
 @riverpod
 Future<ClashConfig> clashConfig(Ref ref, int profileId) async {
   final type = ref.read(profileProvider(profileId))?.type;
-  if (type == ProfileType.custom) {
+  if (type == ProfileType.custom || type == ProfileType.aggregate) {
     return const ClashConfig();
   }
   final outbounds = await ref
@@ -39,7 +39,11 @@ Future<ClashConfig> clashConfig(Ref ref, int profileId) async {
 Future<ClashConfig?> scriptOutbounds(Ref ref, int profileId) async {
   final scriptId = ref.watch(
     profileProvider(profileId).select(
-      (state) => state?.type == ProfileType.custom ? null : state?.scriptId,
+      (state) =>
+          state?.type == ProfileType.custom ||
+              state?.type == ProfileType.aggregate
+          ? null
+          : state?.scriptId,
     ),
   );
   if (scriptId == null) {
@@ -65,7 +69,9 @@ Future<String?> profileMatchTarget(Ref ref, int profileId) async {
       profileId,
     ).select((state) => (type: state?.type, updated: state?.lastUpdateDate)),
   );
-  if (type == null || type == ProfileType.custom) {
+  if (type == null ||
+      type == ProfileType.custom ||
+      type == ProfileType.aggregate) {
     return null;
   }
   final scripted = await ref.watch(scriptOutboundsProvider(profileId).future);
@@ -106,6 +112,32 @@ ProfileOverrides profileOverrides(Ref ref, int? profileId) {
 @riverpod
 Future<SetupState> setupState(Ref ref, int? profileId) async {
   final profile = ref.watch(profileProvider(profileId));
+  if (profile?.type == ProfileType.aggregate) {
+    final aggregate = profile!.aggregate;
+    final base = ref.watch(profileProvider(aggregate?.baseProfileId));
+    if (aggregate == null ||
+        base == null ||
+        base.type == ProfileType.aggregate) {
+      throw MessageException(currentAppLocalizations.aggregateMissingBase);
+    }
+    final baseState = await ref.watch(setupStateProvider(base.id).future);
+    final sources = ref.watch(profilesProvider);
+    final locals = aggregate.sourceIds.contains(0)
+        ? await ref.watch(customProxiesProvider.future)
+        : const <CustomProxy>[];
+    return baseState.copyWith(
+      profileId: profile.id,
+      profileType: ProfileType.aggregate,
+      aggregate: aggregate,
+      aggregateBase: baseState,
+      aggregateSourceVersions: {
+        for (final source in sources)
+          if (aggregate.sourceIds.contains(source.id))
+            source.id: source.lastUpdateDate?.millisecondsSinceEpoch,
+        if (aggregate.sourceIds.contains(0)) 0: Object.hashAll(locals),
+      },
+    );
+  }
   final scriptId = profile?.scriptId;
   final profileLastUpdateDate = profile?.lastUpdateDate?.millisecondsSinceEpoch;
   final profileType = profile?.type ?? ProfileType.file;
@@ -196,6 +228,7 @@ Map<String, int> profileProviders(Ref ref) {
   final profiles = ref.watch(profilesProvider);
   return {
     for (final profile in profiles)
-      if (profile.type != ProfileType.custom) profile.realLabel: profile.id,
+      if (profile.type == ProfileType.file || profile.type == ProfileType.url)
+        profile.realLabel: profile.id,
   };
 }

@@ -9,6 +9,7 @@ import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/views/dashboard/layout.dart';
 import 'package:fl_clash/views/dashboard/style.dart';
 import 'package:fl_clash/views/profiles/custom/custom.dart';
+import 'package:fl_clash/views/aggregation/aggregation.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -49,6 +50,8 @@ void _openProfile(BuildContext context, Profile? profile) {
       showProfilesSheet(context);
     case Profile(type: ProfileType.custom, :final id):
       showCustomProfileSheet(context, id);
+    case Profile(type: ProfileType.aggregate, :final id):
+      BaseNavigator.push(context, AggregateProxiesView(profileId: id));
     case _:
       showProfileDetailSheet(context);
   }
@@ -62,6 +65,7 @@ String _sourceOf(BuildContext context, ProfileType type) => switch (type) {
   ProfileType.url => context.appLocalizations.remote,
   ProfileType.file => context.appLocalizations.local,
   ProfileType.custom => context.appLocalizations.custom,
+  ProfileType.aggregate => context.appLocalizations.aggregateProfile,
 };
 
 class ProfilesCard extends ConsumerWidget {

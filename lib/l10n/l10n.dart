@@ -6947,6 +6947,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The VPN service could not start.'**
   String get vpnServiceStartFailed;
+
+  /// No description provided for @aggregateProxies.
+  ///
+  /// In en, this message translates to:
+  /// **'Aggregate proxies'**
+  String get aggregateProxies;
+
+  /// No description provided for @aggregateSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Aggregate selection'**
+  String get aggregateSelection;
+
+  /// No description provided for @aggregateProfile.
+  ///
+  /// In en, this message translates to:
+  /// **'Aggregate profile'**
+  String get aggregateProfile;
+
+  /// No description provided for @aggregateBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Base profile'**
+  String get aggregateBase;
+
+  /// No description provided for @aggregateTarget.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to proxy group'**
+  String get aggregateTarget;
+
+  /// No description provided for @aggregateSources.
+  ///
+  /// In en, this message translates to:
+  /// **'Participating sources'**
+  String get aggregateSources;
+
+  /// No description provided for @aggregateSource.
+  ///
+  /// In en, this message translates to:
+  /// **'Source'**
+  String get aggregateSource;
+
+  /// No description provided for @aggregateSourceFilter.
+  ///
+  /// In en, this message translates to:
+  /// **'Filter by source'**
+  String get aggregateSourceFilter;
+
+  /// No description provided for @aggregateProtocol.
+  ///
+  /// In en, this message translates to:
+  /// **'Protocol'**
+  String get aggregateProtocol;
+
+  /// No description provided for @aggregateAllNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'All nodes'**
+  String get aggregateAllNodes;
+
+  /// No description provided for @aggregateChains.
+  ///
+  /// In en, this message translates to:
+  /// **'Proxy chains'**
+  String get aggregateChains;
+
+  /// No description provided for @aggregateNewChain.
+  ///
+  /// In en, this message translates to:
+  /// **'New chain'**
+  String get aggregateNewChain;
+
+  /// No description provided for @aggregateEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry node'**
+  String get aggregateEntry;
+
+  /// No description provided for @aggregateExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Exit node'**
+  String get aggregateExit;
+
+  /// No description provided for @aggregateAsEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as entry'**
+  String get aggregateAsEntry;
+
+  /// No description provided for @aggregateAsExit.
+  ///
+  /// In en, this message translates to:
+  /// **'Use as exit'**
+  String get aggregateAsExit;
+
+  /// No description provided for @aggregateSwap.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap entry and exit'**
+  String get aggregateSwap;
+
+  /// No description provided for @aggregateChoose.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose'**
+  String get aggregateChoose;
+
+  /// No description provided for @aggregateRouteHint.
+  ///
+  /// In en, this message translates to:
+  /// **'This device → Entry → Exit → Website. Save the draft, then apply it to use or test the chain.'**
+  String get aggregateRouteHint;
+
+  /// No description provided for @aggregateDnsInherited.
+  ///
+  /// In en, this message translates to:
+  /// **'DNS and routing are inherited from the base profile, including proxy dependencies.'**
+  String get aggregateDnsInherited;
+
+  /// No description provided for @aggregateApply.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply aggregate profile'**
+  String get aggregateApply;
+
+  /// No description provided for @aggregateApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied'**
+  String get aggregateApplied;
+
+  /// No description provided for @aggregateInactive.
+  ///
+  /// In en, this message translates to:
+  /// **'Saved · Not active'**
+  String get aggregateInactive;
+
+  /// No description provided for @aggregateNotApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Draft · Not applied'**
+  String get aggregateNotApplied;
+
+  /// No description provided for @aggregatePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Changes pending application'**
+  String get aggregatePending;
+
+  /// No description provided for @aggregateApplyFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Application failed. Check the error and the current profile before trying again.'**
+  String get aggregateApplyFailed;
+
+  /// No description provided for @aggregateFavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get aggregateFavorite;
+
+  /// No description provided for @aggregateFavorites.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorites only'**
+  String get aggregateFavorites;
+
+  /// No description provided for @aggregateExcluded.
+  ///
+  /// In en, this message translates to:
+  /// **'Not included'**
+  String get aggregateExcluded;
+
+  /// No description provided for @aggregateLoading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading nodes…'**
+  String get aggregateLoading;
+
+  /// No description provided for @aggregateTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Test connection, delay and exit IP'**
+  String get aggregateTest;
+
+  /// No description provided for @aggregateApplyBeforeTest.
+  ///
+  /// In en, this message translates to:
+  /// **'Apply this configuration before testing'**
+  String get aggregateApplyBeforeTest;
+
+  /// No description provided for @aggregateUnreachable.
+  ///
+  /// In en, this message translates to:
+  /// **'Unreachable'**
+  String get aggregateUnreachable;
+
+  /// No description provided for @aggregateNoChains.
+  ///
+  /// In en, this message translates to:
+  /// **'No chains yet. Choose nodes and create a chain.'**
+  String get aggregateNoChains;
+
+  /// No description provided for @aggregateNoNodes.
+  ///
+  /// In en, this message translates to:
+  /// **'No nodes available'**
+  String get aggregateNoNodes;
+
+  /// No description provided for @aggregateMissingBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an existing base profile'**
+  String get aggregateMissingBase;
+
+  /// No description provided for @aggregateMissingSource.
+  ///
+  /// In en, this message translates to:
+  /// **'A source is missing'**
+  String get aggregateMissingSource;
+
+  /// No description provided for @aggregateSourceUnavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Some sources could not be loaded. Check Sources and refresh.'**
+  String get aggregateSourceUnavailable;
+
+  /// No description provided for @aggregateMissingGroup.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose an existing manual selection group'**
+  String get aggregateMissingGroup;
+
+  /// No description provided for @aggregateRepair.
+  ///
+  /// In en, this message translates to:
+  /// **'Needs repair: select the missing or changed node again'**
+  String get aggregateRepair;
+
+  /// No description provided for @aggregateDuplicateName.
+  ///
+  /// In en, this message translates to:
+  /// **'Duplicate or empty name'**
+  String get aggregateDuplicateName;
+
+  /// No description provided for @aggregateExistingDialer.
+  ///
+  /// In en, this message translates to:
+  /// **'This node already has a dialer dependency; resolve it before aggregation or chaining'**
+  String get aggregateExistingDialer;
+
+  /// No description provided for @aggregateSameHop.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry and exit must be different nodes'**
+  String get aggregateSameHop;
+
+  /// No description provided for @aggregateUdpEntry.
+  ///
+  /// In en, this message translates to:
+  /// **'The exit protocol requires UDP support from the entry'**
+  String get aggregateUdpEntry;
+
+  /// No description provided for @aggregateCycle.
+  ///
+  /// In en, this message translates to:
+  /// **'Circular proxy dependency'**
+  String get aggregateCycle;
+
+  /// No description provided for @aggregateDnsBootstrap.
+  ///
+  /// In en, this message translates to:
+  /// **'DNS bootstrap depends on an unresolved proxy. Configure independent node resolution or an IP entry.'**
+  String get aggregateDnsBootstrap;
+
+  /// No description provided for @aggregateMissingDnsProxy.
+  ///
+  /// In en, this message translates to:
+  /// **'A DNS proxy dependency is missing'**
+  String get aggregateMissingDnsProxy;
+
+  /// No description provided for @aggregateSourceInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This source is used by an aggregate profile. Remove or replace its references first.'**
+  String get aggregateSourceInUse;
 }
 
 class _AppLocalizationsDelegate

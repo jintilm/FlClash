@@ -37,7 +37,17 @@ class ScriptsAction extends _$ScriptsAction {
   }
 
   void _applyIfInUse(int scriptId) {
-    if (ref.read(currentProfileProvider)?.scriptId != scriptId) {
+    final current = ref.read(currentProfileProvider);
+    final ids = {
+      current?.id,
+      current?.aggregate?.baseProfileId,
+      ...?current?.aggregate?.sourceIds,
+    };
+    if (!ref
+        .read(profilesProvider)
+        .any(
+          (profile) => ids.contains(profile.id) && profile.scriptId == scriptId,
+        )) {
       return;
     }
     ref.read(setupActionProvider.notifier).applyProfileDebounce(silence: true);

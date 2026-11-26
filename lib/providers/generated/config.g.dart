@@ -9,6 +9,60 @@ part of '../config.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
+@ProviderFor(AggregateWorkspaceSetting)
+final aggregateWorkspaceSettingProvider = AggregateWorkspaceSettingProvider._();
+
+final class AggregateWorkspaceSettingProvider
+    extends $NotifierProvider<AggregateWorkspaceSetting, AggregateWorkspace> {
+  AggregateWorkspaceSettingProvider._()
+    : super(
+        from: null,
+        argument: null,
+        retry: null,
+        name: r'aggregateWorkspaceSettingProvider',
+        isAutoDispose: true,
+        dependencies: null,
+        $allTransitiveDependencies: null,
+      );
+
+  @override
+  String debugGetCreateSourceHash() => _$aggregateWorkspaceSettingHash();
+
+  @$internal
+  @override
+  AggregateWorkspaceSetting create() => AggregateWorkspaceSetting();
+
+  /// {@macro riverpod.override_with_value}
+  Override overrideWithValue(AggregateWorkspace value) {
+    return $ProviderOverride(
+      origin: this,
+      providerOverride: $SyncValueProvider<AggregateWorkspace>(value),
+    );
+  }
+}
+
+String _$aggregateWorkspaceSettingHash() =>
+    r'090499aaa1ef5c9f0e9ca1ad88abd055f77624a1';
+
+abstract class _$AggregateWorkspaceSetting
+    extends $Notifier<AggregateWorkspace> {
+  AggregateWorkspace build();
+  @$mustCallSuper
+  @override
+  WhenComplete runBuild() {
+    final ref = this.ref as $Ref<AggregateWorkspace, AggregateWorkspace>;
+    final element =
+        ref.element
+            as $ClassProviderElement<
+              AnyNotifier<AggregateWorkspace, AggregateWorkspace>,
+              AggregateWorkspace,
+              Object?,
+              Object?
+            >;
+    return element.handleCreate(ref, build);
+  }
+}
+
 @ProviderFor(AppSetting)
 final appSettingProvider = AppSettingProvider._();
 
@@ -619,4 +673,4 @@ final class _ConfigProvider extends $FunctionalProvider<Config, Config, Config>
   }
 }
 
-String _$_configHash() => r'a9e717216fc1ca6b3526907bd578c4982bb6961a';
+String _$_configHash() => r'c0817caa9b8bcf101ced742ad8c9811e45308887';

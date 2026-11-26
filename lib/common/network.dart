@@ -10,6 +10,11 @@ NetworkInterfaceLister listNetworkInterfaces =
     ({bool includeLoopback = false}) =>
         NetworkInterface.list(includeLoopback: includeLoopback);
 
+Future<Set<String>> networkInterfaceNames() async => {
+  for (final interface in await listNetworkInterfaces(includeLoopback: true))
+    interface.name,
+};
+
 extension NetworkInterfaceExt on NetworkInterface {
   bool get isWifi {
     final nameLowCase = name.toLowerCase();

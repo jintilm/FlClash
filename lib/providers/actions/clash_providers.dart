@@ -266,7 +266,10 @@ class ClashProvidersAction extends _$ClashProvidersAction {
   Future<bool> _currentUses(
     Future<bool> Function(int profileId) isReferenced,
   ) async {
-    final profile = ref.read(currentProfileProvider);
+    var profile = ref.read(currentProfileProvider);
+    if (profile?.aggregate?.baseProfileId case final baseId?) {
+      profile = ref.read(profileProvider(baseId));
+    }
     return profile != null &&
         profile.type == ProfileType.custom &&
         await isReferenced(profile.id);

@@ -1467,6 +1467,25 @@ on/off signal.
 
 ## Database
 
+### Aggregate Profiles
+
+`ProfileType.aggregate` stores its applied `AggregateConfig` in the profile row; the editable draft and favorites live in
+`Config.aggregateWorkspace`. Editing the draft does not reload Core. `AggregateAction` reads each source without switching
+profiles, builds the base through `SetupAction.getProfile`, then composes namespaced nodes and independent two-hop copies
+through `common/aggregation.dart`. The base's DNS, rules, extensions and referenced groups remain together. Sources are
+identified by profile id, provider name and a canonical definition fingerprint excluding the display name; an ambiguous or
+changed definition needs an explicit replacement. Custom profiles can be bases, but never subscription sources.
+
+`provider.snapshot` uses mihomo's provider filters and overrides against managed cached content without installing it as a
+running provider. Explicit refresh downloads through the configured provider transport and writes only validated content
+inside `profiles/providers`. Temporary proxy names keep parsing from taking a running mesh proxy's DNS registration.
+
+Generated chains are fixed two-hop outbounds; pre-existing dialer dependencies cannot be used as chain hops. The composer
+checks references, loops and DNS bootstrap dependencies before application. Aggregate setup asks Core to preserve its
+running config on rejection, restores the previous config file, and reports the result through `AggregateRuntime`; an
+unanswered setup leaves applied state unknown. The normal profile failure behavior is unchanged. Provider load events
+rebuild the aggregate and the existing digest check avoids reapplying identical content.
+
 The app uses Drift/SQLite in `lib/database/`. `schemaVersion` in `lib/database/database.dart` is the migration
 counter; a schema change bumps it and goes into the one step the coming release takes, as the Migrations section of
 `.agents/rules.md` describes.
@@ -1487,7 +1506,7 @@ Tables:
 - `MitmModules` (`mitm_modules`): the Surge modules and Loon plugins of HTTPS decryption, with their argument values;
   their content and the files they download live under `mitm/` (HTTPS Decryption).
 
-`Profiles.type` is `file`, `url` or `custom`, fixed when the profile is created. A rule belongs to whoever its
+`Profiles.type` is `file`, `url`, `custom` or `aggregate`, fixed when the profile is created. A rule belongs to whoever its
 `profile_id` names: no profile makes it global, a file or url profile's rules are what its standard extension adds, and
 a custom profile's rules are all the rules it has. `DisabledRules` lets a profile leave out a global rule. Proxy groups
 and dialers exist only on custom profiles. Every one of these rows cascades with its profile. Rule and proxy-group

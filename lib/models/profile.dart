@@ -6,6 +6,7 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 import 'clash_config.dart';
+import 'aggregation.dart';
 
 part 'generated/profile.freezed.dart';
 part 'generated/profile.g.dart';
@@ -82,6 +83,7 @@ abstract class Profile with _$Profile {
     @Default(ProfileOverrides())
     @JsonKey(fromJson: ProfileOverrides.safeFromJson)
     ProfileOverrides overrides,
+    AggregateConfig? aggregate,
   }) = _Profile;
 
   factory Profile.fromJson(Map<String, Object?> json) =>

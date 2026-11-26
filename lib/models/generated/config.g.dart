@@ -427,6 +427,11 @@ const _$LiquidGlassModeEnumMap = {
 
 _Config _$ConfigFromJson(Map<String, dynamic> json) => _Config(
   currentProfileId: (json['currentProfileId'] as num?)?.toInt(),
+  aggregateWorkspace: json['aggregateWorkspace'] == null
+      ? const AggregateWorkspace()
+      : AggregateWorkspace.fromJson(
+          json['aggregateWorkspace'] as Map<String, dynamic>,
+        ),
   hotKeyActions:
       (json['hotKeyActions'] as List<dynamic>?)
           ?.map((e) => HotKeyAction.fromJson(e as Map<String, dynamic>))
@@ -471,6 +476,7 @@ _Config _$ConfigFromJson(Map<String, dynamic> json) => _Config(
 
 Map<String, dynamic> _$ConfigToJson(_Config instance) => <String, dynamic>{
   'currentProfileId': instance.currentProfileId,
+  'aggregateWorkspace': instance.aggregateWorkspace,
   'hotKeyActions': instance.hotKeyActions,
   'appSettingProps': instance.appSettingProps,
   'davProps': instance.davProps,

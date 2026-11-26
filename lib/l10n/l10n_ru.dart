@@ -3954,4 +3954,157 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get vpnServiceStartFailed => 'Не удалось запустить службу VPN.';
+
+  @override
+  String get aggregateProxies => 'Агрегация прокси';
+
+  @override
+  String get aggregateSelection => 'Выбор прокси';
+
+  @override
+  String get aggregateProfile => 'Общий профиль';
+
+  @override
+  String get aggregateBase => 'Базовый профиль';
+
+  @override
+  String get aggregateTarget => 'Добавить в группу';
+
+  @override
+  String get aggregateSources => 'Источники агрегации';
+
+  @override
+  String get aggregateSource => 'Источник';
+
+  @override
+  String get aggregateSourceFilter => 'Фильтр источников';
+
+  @override
+  String get aggregateProtocol => 'Протокол';
+
+  @override
+  String get aggregateAllNodes => 'Все узлы';
+
+  @override
+  String get aggregateChains => 'Цепочки прокси';
+
+  @override
+  String get aggregateNewChain => 'Создать цепочку';
+
+  @override
+  String get aggregateEntry => 'Входной узел';
+
+  @override
+  String get aggregateExit => 'Выходной узел';
+
+  @override
+  String get aggregateAsEntry => 'Использовать для входа';
+
+  @override
+  String get aggregateAsExit => 'Использовать для выхода';
+
+  @override
+  String get aggregateSwap => 'Поменять вход и выход';
+
+  @override
+  String get aggregateChoose => 'Выбрать';
+
+  @override
+  String get aggregateRouteHint =>
+      'Устройство → Вход → Выход → Сайт. Сохраните и примените цепочку для использования и проверки.';
+
+  @override
+  String get aggregateDnsInherited =>
+      'DNS и маршрутизация наследуются вместе с зависимостями прокси.';
+
+  @override
+  String get aggregateApply => 'Применить профиль';
+
+  @override
+  String get aggregateApplied => 'Применено';
+
+  @override
+  String get aggregateInactive => 'Сохранено · Не активно';
+
+  @override
+  String get aggregateNotApplied => 'Черновик · Не применён';
+
+  @override
+  String get aggregatePending => 'Есть неприменённые изменения';
+
+  @override
+  String get aggregateApplyFailed =>
+      'Не удалось применить. Проверьте ошибку и текущий профиль.';
+
+  @override
+  String get aggregateFavorite => 'Избранное';
+
+  @override
+  String get aggregateFavorites => 'Только избранное';
+
+  @override
+  String get aggregateExcluded => 'Не включён';
+
+  @override
+  String get aggregateLoading => 'Загрузка узлов…';
+
+  @override
+  String get aggregateTest => 'Проверить связь, задержку и выходной IP';
+
+  @override
+  String get aggregateApplyBeforeTest => 'Примените профиль для проверки';
+
+  @override
+  String get aggregateUnreachable => 'Недоступен';
+
+  @override
+  String get aggregateNoChains => 'Выберите узлы и создайте цепочку.';
+
+  @override
+  String get aggregateNoNodes => 'Нет доступных узлов';
+
+  @override
+  String get aggregateMissingBase => 'Выберите существующий базовый профиль';
+
+  @override
+  String get aggregateMissingSource => 'Источник отсутствует';
+
+  @override
+  String get aggregateSourceUnavailable =>
+      'Часть источников недоступна. Проверьте и обновите их.';
+
+  @override
+  String get aggregateMissingGroup =>
+      'Выберите существующую группу ручного выбора';
+
+  @override
+  String get aggregateRepair =>
+      'Нужно исправить: выберите изменённый или отсутствующий узел';
+
+  @override
+  String get aggregateDuplicateName => 'Имя пустое или повторяется';
+
+  @override
+  String get aggregateExistingDialer =>
+      'У узла уже есть зависимость от другого прокси';
+
+  @override
+  String get aggregateSameHop => 'Вход и выход должны отличаться';
+
+  @override
+  String get aggregateUdpEntry => 'Для выходного протокола нужен UDP на входе';
+
+  @override
+  String get aggregateCycle => 'Циклическая зависимость прокси';
+
+  @override
+  String get aggregateDnsBootstrap =>
+      'Начальная DNS-загрузка зависит от неразрешённого прокси. Настройте независимый DNS или IP входа.';
+
+  @override
+  String get aggregateMissingDnsProxy => 'Отсутствует прокси для DNS';
+
+  @override
+  String get aggregateSourceInUse =>
+      'Источник используется общим профилем. Сначала замените ссылки.';
 }

@@ -3524,7 +3524,7 @@ final class ClashConfigProvider
   }
 }
 
-String _$clashConfigHash() => r'ed8cfcf34801fae6f54b28ddcf5ea31bc49ad0ba';
+String _$clashConfigHash() => r'b6350f49f677e3ac746282271e83aad7d428dad7';
 
 final class ClashConfigFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<ClashConfig>, int> {
@@ -3604,7 +3604,7 @@ final class ScriptOutboundsProvider
   }
 }
 
-String _$scriptOutboundsHash() => r'ee0dec9a980bed9f0b2b9f35567391abd126cb8a';
+String _$scriptOutboundsHash() => r'489c95055b137dc4208361043e102f7884afd5ec';
 
 /// The groups a script leaves for a MATCH target; null without a script.
 
@@ -3678,7 +3678,7 @@ final class ProfileMatchTargetProvider
 }
 
 String _$profileMatchTargetHash() =>
-    r'b42cc6c842bb53ac2928a0b2c4abf7943c5e3c54';
+    r'03c026158364ea78253c7014d992203d7dfb9e0a';
 
 final class ProfileMatchTargetFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<String?>, int> {
@@ -3848,7 +3848,7 @@ final class SetupStateProvider
   }
 }
 
-String _$setupStateHash() => r'c3e1a96ff46caa5697b540385eb576098af89318';
+String _$setupStateHash() => r'7d53a195558863391640cc4ff6644459a3a9dfca';
 
 final class SetupStateFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<SetupState>, int?> {
@@ -3917,4 +3917,4 @@ final class ProfileProvidersProvider
   }
 }
 
-String _$profileProvidersHash() => r'689856f32a4b40e6a26b1eedd16db418d140371a';
+String _$profileProvidersHash() => r'63e7b46782235de979e737c257b84bea88f24f43';

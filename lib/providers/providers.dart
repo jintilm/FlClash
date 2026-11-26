@@ -1,4 +1,5 @@
 export 'action.dart';
+export 'aggregation.dart';
 export 'app.dart';
 export 'config.dart';
 export 'core.dart';

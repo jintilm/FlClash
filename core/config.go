@@ -141,9 +141,16 @@ func applyConfig(params *SetupParams) error {
 	configMu.Lock()
 	defer configMu.Unlock()
 
-	applyOptions(params.Options)
+	if !params.PreserveOnFailure {
+		applyOptions(params.Options)
+	}
+	previousNames := config.GetProxyNameList()
 	cfg, err := loadSetupConfig(params)
 	if err != nil {
+		if params.PreserveOnFailure {
+			config.SetProxyNameList(previousNames)
+			return &MethodError{Code: "config_preserved", Message: err.Error()}
+		}
 		// The fallback is what keeps the listeners serving while the host
 		// reports the error, but it applies a config with no proxies in it.
 		// From the UI that is indistinguishable from a subscription that went
@@ -160,6 +167,9 @@ func applyConfig(params *SetupParams) error {
 		cfg = fallback
 	}
 
+	if params.PreserveOnFailure {
+		applyOptions(params.Options)
+	}
 	currentConfig = cfg
 	hub.ApplyConfig(cfg)
 	patchSelectGroup(params.SelectedMap)

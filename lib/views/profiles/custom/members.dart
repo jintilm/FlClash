@@ -322,7 +322,7 @@ Map<String, String> _providerTypes(
   final profiles = ref.watch(profilesProvider);
   return {
     for (final profile in profiles)
-      if (profile.type != ProfileType.custom)
+      if (profile.type == ProfileType.file || profile.type == ProfileType.url)
         profile.realLabel: profile.type == ProfileType.url
             ? appLocalizations.url
             : appLocalizations.file,
