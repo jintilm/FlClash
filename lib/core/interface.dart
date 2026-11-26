@@ -217,6 +217,17 @@ abstract class CoreHandlerInterface {
     );
   }
 
+  Future<Delay> testDraftDelay({
+    required List<Map<String, dynamic>> proxies,
+    required String testUrl,
+    required int timeout,
+  }) => _query(
+    CoreMethod.proxyTestDraft,
+    _model(Delay.fromJson),
+    arguments: {'proxies': proxies, 'test-url': testUrl, 'timeout': timeout},
+    timeout: delayTestGuardDuration,
+  );
+
   Future<Map<int, String>> validateProxies(List<Map<String, dynamic>> proxies) {
     return _query(
       CoreMethod.proxyValidate,

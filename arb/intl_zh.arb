@@ -1157,7 +1157,7 @@
   "aggregateAsExit": "设为出口",
   "aggregateSwap": "交换入口与出口",
   "aggregateChoose": "请选择",
-  "aggregateRouteHint": "本机 → 入口 → 出口 → 目标网站。保存为草稿，应用后即可选用和测试。",
+  "aggregateRouteHint": "本机 → 入口 → 出口 → 目标网站。保存后可测试完整链路，应用后可用于代理流量。",
   "aggregateDnsInherited": "DNS 与分流继承基础配置，并保留其代理依赖。",
   "aggregateApply": "应用聚合配置",
   "aggregateApplied": "已应用",
@@ -1186,5 +1186,10 @@
   "aggregateCycle": "代理引用形成循环",
   "aggregateDnsBootstrap": "DNS 引导依赖尚未解析的代理，请配置独立的节点域名解析或 IP 入口。",
   "aggregateMissingDnsProxy": "DNS 引用的代理不存在",
-  "aggregateSourceInUse": "此来源被聚合配置使用，请先移除或替换引用。"
+  "aggregateSourceInUse": "此来源被聚合配置使用，请先移除或替换引用。",
+  "aggregateTestAll": "测试本页延迟",
+  "aggregateTesting": "测速中…",
+  "aggregateDraftTestHint": "节点和链路均可在应用前测速，测试使用当前 DNS 设置。",
+  "aggregateCoreRequired": "内核尚未连接，请就绪后重试。",
+  "aggregateTestExitIp": "检查出口 IP"
 }

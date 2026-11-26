@@ -1486,6 +1486,13 @@ running config on rejection, restores the previous config file, and reports the 
 unanswered setup leaves applied state unknown. The normal profile failure behavior is unchanged. Provider load events
 rebuild the aggregate and the existing digest check avoids reapplying identical content.
 
+Draft delay tests use `proxy.testDraft`, which constructs temporary adapters and connects a second hop directly through
+the first adapter without registering either in the running tunnel. They use the current DNS settings and share the
+Core's delay-test concurrency limit. `AggregateDelayTest` keeps results by ordered node identities and drops stale replies
+after a Core or test-URL change; the page dispatches a bounded number of workers when testing the visible list. Exit-IP
+checks still require an applied route. Aggregate setup captures all watched inputs before awaiting its base, so disposal
+or a rebuild while that base loads cannot leave the continuation reading an expired `Ref`.
+
 The app uses Drift/SQLite in `lib/database/`. `schemaVersion` in `lib/database/database.dart` is the migration
 counter; a schema change bumps it and goes into the one step the coming release takes, as the Migrations section of
 `.agents/rules.md` describes.

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:drift/native.dart';
 import 'package:fl_clash/database/database.dart' as db;
 import 'package:fl_clash/enum/enum.dart';
@@ -21,6 +23,58 @@ void main() {
   tearDown(() async {
     await testDatabase.close();
   });
+
+  test(
+    'aggregate setup can finish after disposal while the base is pending',
+    () async {
+      const base = Profile(id: 1, autoUpdateDuration: Duration.zero);
+      const aggregate = Profile(
+        id: 2,
+        type: ProfileType.aggregate,
+        autoUpdateDuration: Duration.zero,
+        aggregate: AggregateConfig(baseProfileId: 1, sourceIds: {1, 0}),
+      );
+      final pending = Completer<SetupState>();
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([base, aggregate])),
+          setupStateProvider(1).overrideWith((_) => pending.future),
+          customProxiesProvider.overrideWithBuild(
+            (_, _) => Stream.value(const [
+              CustomProxy(id: 3, definition: {'name': 'Local'}),
+            ]),
+          ),
+        ],
+      );
+      container.listen(customProxiesProvider, (_, _) {});
+      await container.read(customProxiesProvider.future);
+      final future = container.read(setupStateProvider(2).future);
+      final result = expectLater(
+        future,
+        completion(
+          isA<SetupState>().having(
+            (state) => state.aggregateSourceVersions.keys,
+            'sources',
+            containsAll([0, 1]),
+          ),
+        ),
+      );
+      container.dispose();
+      pending.complete(
+        const SetupState(
+          profileId: 1,
+          profileLastUpdateDate: null,
+          profileType: ProfileType.file,
+          rules: [],
+          proxyGroups: [],
+          addedRules: [],
+          script: null,
+          overrides: ProfileOverrides(),
+        ),
+      );
+      await result;
+    },
+  );
 
   testWidgets('a custom setup disposed before its queries return resolves', (
     tester,

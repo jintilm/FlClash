@@ -1272,7 +1272,7 @@
   "aggregateAsExit": "Use as exit",
   "aggregateSwap": "Swap entry and exit",
   "aggregateChoose": "Choose",
-  "aggregateRouteHint": "This device → Entry → Exit → Website. Save the draft, then apply it to use or test the chain.",
+  "aggregateRouteHint": "This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.",
   "aggregateDnsInherited": "DNS and routing are inherited from the base profile, including proxy dependencies.",
   "aggregateApply": "Apply aggregate profile",
   "aggregateApplied": "Applied",
@@ -1301,5 +1301,10 @@
   "aggregateCycle": "Circular proxy dependency",
   "aggregateDnsBootstrap": "DNS bootstrap depends on an unresolved proxy. Configure independent node resolution or an IP entry.",
   "aggregateMissingDnsProxy": "A DNS proxy dependency is missing",
-  "aggregateSourceInUse": "This source is used by an aggregate profile. Remove or replace its references first."
+  "aggregateSourceInUse": "This source is used by an aggregate profile. Remove or replace its references first.",
+  "aggregateTestAll": "Test visible delays",
+  "aggregateTesting": "Testing…",
+  "aggregateDraftTestHint": "Test nodes and chains before applying. Tests use the current DNS settings.",
+  "aggregateCoreRequired": "The core is not connected. Try again when it is ready.",
+  "aggregateTestExitIp": "Check exit IP"
 }

@@ -7059,7 +7059,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateRouteHint.
   ///
   /// In en, this message translates to:
-  /// **'This device → Entry → Exit → Website. Save the draft, then apply it to use or test the chain.'**
+  /// **'This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.'**
   String get aggregateRouteHint;
 
   /// No description provided for @aggregateDnsInherited.
@@ -7235,6 +7235,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This source is used by an aggregate profile. Remove or replace its references first.'**
   String get aggregateSourceInUse;
+
+  /// No description provided for @aggregateTestAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Test visible delays'**
+  String get aggregateTestAll;
+
+  /// No description provided for @aggregateTesting.
+  ///
+  /// In en, this message translates to:
+  /// **'Testing…'**
+  String get aggregateTesting;
+
+  /// No description provided for @aggregateDraftTestHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Test nodes and chains before applying. Tests use the current DNS settings.'**
+  String get aggregateDraftTestHint;
+
+  /// No description provided for @aggregateCoreRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'The core is not connected. Try again when it is ready.'**
+  String get aggregateCoreRequired;
+
+  /// No description provided for @aggregateTestExitIp.
+  ///
+  /// In en, this message translates to:
+  /// **'Check exit IP'**
+  String get aggregateTestExitIp;
 }
 
 class _AppLocalizationsDelegate

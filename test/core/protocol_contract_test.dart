@@ -41,7 +41,7 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
       CoreMethod.coreInitialized => true,
       CoreMethod.trafficCurrent ||
       CoreMethod.trafficTotal => {'up': 12, 'down': 34},
-      CoreMethod.proxyTestDelay => {
+      CoreMethod.proxyTestDelay || CoreMethod.proxyTestDraft => {
         'name': 'DIRECT',
         'url': 'https://example.com',
         'value': 42,
@@ -363,6 +363,30 @@ void main() {
     expect(filters, {1: 'missing closing )'});
     expect(proxies, {1: 'missing closing )'});
   });
+
+  test(
+    'draft delay sends the ordered nodes without selecting a running proxy',
+    () async {
+      final handler = _RecordingCoreHandler();
+      final proxies = <Map<String, dynamic>>[
+        {'name': 'entry', 'type': 'http'},
+        {'name': 'exit', 'type': 'socks5'},
+      ];
+      final result = await handler.testDraftDelay(
+        proxies: proxies,
+        testUrl: 'https://delay.example/204',
+        timeout: 3000,
+      );
+      expect(result.value, 42);
+      expect(handler.calls[CoreMethod.proxyTestDraft], {
+        'proxies': proxies,
+        'test-url': 'https://delay.example/204',
+        'timeout': 3000,
+      });
+      expect(handler.calls, isNot(contains(CoreMethod.configSetup)));
+      expect(handler.calls, isNot(contains(CoreMethod.proxySelect)));
+    },
+  );
 
   test('validateMitm sends the section and reads issues by list', () async {
     final handler = _RecordingCoreHandler();

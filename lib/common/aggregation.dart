@@ -35,6 +35,18 @@ class AggregateSource {
   });
 }
 
+class AggregateDelayTarget {
+  final List<AggregateNode> nodes;
+
+  const AggregateDelayTarget(this.nodes);
+
+  String get key => nodes.map((node) => node.ref.key).join(' → ');
+  bool get testable =>
+      nodes.isNotEmpty &&
+      nodes.length <= 2 &&
+      nodes.every((node) => !node.hasDialer);
+}
+
 enum AggregateIssue {
   missingBase,
   missingSource,

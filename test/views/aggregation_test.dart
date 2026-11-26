@@ -5,6 +5,7 @@ import 'package:fl_clash/common/exception.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
+import 'package:fl_clash/providers/aggregate_delay.dart';
 import 'package:fl_clash/views/aggregation/aggregation.dart';
 import 'package:fl_clash/views/aggregation/chain_editor.dart';
 import 'package:fl_clash/widgets/widgets.dart';
@@ -26,6 +27,21 @@ class _Action extends AggregateAction {
   Future<void> apply() async {
     applications++;
     if (fail) throw const MessageException('Application failed');
+  }
+}
+
+class _Delay extends AggregateDelayTest {
+  final List<AggregateDelayTarget> tested;
+
+  _Delay(this.tested);
+
+  @override
+  AggregateDelayResult build(String targetKey) => const AggregateDelayResult();
+
+  @override
+  Future<void> test(AggregateDelayTarget target) async {
+    tested.add(target);
+    state = AggregateDelayResult(delay: 58, testedAt: DateTime(2026));
   }
 }
 
@@ -60,6 +76,8 @@ void main() {
   testWidgets(
     'shows nodes, edits a draft and only applies through the apply control',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 820));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       final action = _Action();
       final container = ProviderContainer(
         overrides: [
@@ -129,6 +147,8 @@ void main() {
   testWidgets(
     'renders loading and source failures without hiding completed sources',
     (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 820));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
       final loading = Completer<AggregateSource>();
       final container = ProviderContainer(
         overrides: [
@@ -175,6 +195,75 @@ void main() {
         findsOneWidget,
       );
       expect(find.text('Entry'), findsOneWidget);
+      expect(tester.takeException(), isNull);
+    },
+  );
+
+  testWidgets(
+    'draft node and chain delay tests are visible and do not apply configuration',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1000, 900));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
+      final action = _Action();
+      final tested = <AggregateDelayTarget>[];
+      final chain = ProxyChain(
+        id: 'chain',
+        name: 'Two hops',
+        entry: nodes[0].ref,
+        exit: nodes[1].ref,
+      );
+      final workspace = AggregateWorkspace(
+        draft: draft.copyWith(chains: [chain]),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([base])),
+          aggregateActionProvider.overrideWith(() => action),
+          aggregateWorkspaceSettingProvider.overrideWithBuild(
+            (_, _) => workspace,
+          ),
+          aggregateSourceProvider(1).overrideWith(
+            (_) async =>
+                AggregateSource(id: 1, label: base.label, nodes: nodes),
+          ),
+          aggregateSourceProvider(0).overrideWith(
+            (_) async => const AggregateSource(id: 0, label: 'Local'),
+          ),
+          aggregateDelayTestProvider.overrideWith2((_) => _Delay(tested)),
+        ],
+      );
+      addTearDown(container.dispose);
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const TestApp(
+            locale: Locale('en'),
+            child: AggregateProxiesView(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Test visible delays'));
+      await tester.pumpAndSettle();
+      expect(tested.map((target) => target.nodes.single.name), [
+        'Entry',
+        'Exit',
+      ]);
+      expect(find.text('58 ms'), findsNWidgets(2));
+      expect(action.applications, 0);
+      await tester.tap(find.text('Proxy chains').first);
+      await tester.pumpAndSettle();
+      await tester.tap(
+        find.descendant(
+          of: find.byType(AggregateProbeButton),
+          matching: find.byType(TonalButton),
+        ),
+      );
+      await tester.pumpAndSettle();
+      expect(tested.last.nodes.map((node) => node.name), ['Entry', 'Exit']);
+      expect(find.text('58 ms'), findsOneWidget);
+      expect(container.read(aggregateWorkspaceSettingProvider), workspace);
+      expect(action.applications, 0);
       expect(tester.takeException(), isNull);
     },
   );

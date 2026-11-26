@@ -1157,7 +1157,7 @@
   "aggregateAsExit": "Usar como salida",
   "aggregateSwap": "Intercambiar entrada y salida",
   "aggregateChoose": "Elegir",
-  "aggregateRouteHint": "Este dispositivo → Entrada → Salida → Sitio. Guarde y aplique para usar y probar la cadena.",
+  "aggregateRouteHint": "Este dispositivo → Entrada → Salida → Sitio. Guarde para probar la cadena y aplique para usarla.",
   "aggregateDnsInherited": "DNS y rutas se heredan del perfil base con sus dependencias de proxy.",
   "aggregateApply": "Aplicar perfil agregado",
   "aggregateApplied": "Aplicado",
@@ -1186,5 +1186,10 @@
   "aggregateCycle": "Dependencia circular de proxy",
   "aggregateDnsBootstrap": "El DNS inicial depende de un proxy sin resolver. Configure DNS independiente o una entrada IP.",
   "aggregateMissingDnsProxy": "Falta un proxy requerido por DNS",
-  "aggregateSourceInUse": "Esta fuente está en uso. Quite o reemplace las referencias."
+  "aggregateSourceInUse": "Esta fuente está en uso. Quite o reemplace las referencias.",
+  "aggregateTestAll": "Probar latencias visibles",
+  "aggregateTesting": "Probando…",
+  "aggregateDraftTestHint": "Pruebe nodos y cadenas antes de aplicar, usando el DNS actual.",
+  "aggregateCoreRequired": "El núcleo no está conectado. Inténtelo cuando esté listo.",
+  "aggregateTestExitIp": "Comprobar IP de salida"
 }

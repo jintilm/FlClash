@@ -4064,7 +4064,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      'Cet appareil → Entrée → Sortie → Site. Enregistrez puis appliquez pour utiliser et tester la chaîne.';
+      'Cet appareil → Entrée → Sortie → Site. Enregistrez pour tester la chaîne, appliquez pour acheminer le trafic.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4161,4 +4161,21 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get aggregateSourceInUse =>
       'Cette source est utilisée. Retirez ou remplacez ses références.';
+
+  @override
+  String get aggregateTestAll => 'Tester les latences affichées';
+
+  @override
+  String get aggregateTesting => 'Test en cours…';
+
+  @override
+  String get aggregateDraftTestHint =>
+      'Testez les nœuds et chaînes avant application, avec le DNS actuel.';
+
+  @override
+  String get aggregateCoreRequired =>
+      'Le cœur est déconnecté. Réessayez quand il sera prêt.';
+
+  @override
+  String get aggregateTestExitIp => 'Vérifier l’IP de sortie';
 }

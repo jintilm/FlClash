@@ -7,6 +7,7 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/features/form/form.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
+import 'package:fl_clash/providers/aggregate_delay.dart';
 import 'package:fl_clash/providers/outbound_ip.dart';
 import 'package:fl_clash/providers/routed_probe.dart';
 import 'package:fl_clash/state.dart';
@@ -30,6 +31,7 @@ class AggregateProxiesView extends ConsumerStatefulWidget {
 class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
   bool _chains = false;
   bool _busy = false;
+  bool _testing = false;
   bool _favoritesOnly = false;
   int? _source;
   String? _protocol;
@@ -52,6 +54,32 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
       await globalState.safeRun(action);
     } finally {
       if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _testAll(List<AggregateDelayTarget> targets) async {
+    if (_testing) return;
+    final pending = {
+      for (final target in targets.where((target) => target.testable))
+        target.key: target,
+    }.values.iterator;
+    Future<void> worker() async {
+      while (mounted && pending.moveNext()) {
+        final target = pending.current;
+        await ref
+            .read(aggregateDelayTestProvider(target.key).notifier)
+            .test(target);
+      }
+    }
+
+    setState(() => _testing = true);
+    try {
+      await Future.wait([
+        for (var i = 0; i < maxConcurrentDelayTests && i < targets.length; i++)
+          worker(),
+      ]);
+    } finally {
+      if (mounted) setState(() => _testing = false);
     }
   }
 
@@ -187,7 +215,17 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
     final chainNodes = allNodes
         .where((node) => included.contains(node.ref.sourceId))
         .toList();
-    final availableChainNodes = {for (final node in chainNodes) node.ref.key};
+    final availableChainNodes = {
+      for (final node in chainNodes) node.ref.key: node,
+    };
+    AggregateDelayTarget? chainTarget(ProxyChain chain) {
+      final entry = availableChainNodes[chain.entry.key];
+      final exit = availableChainNodes[chain.exit.key];
+      return entry == null || exit == null
+          ? null
+          : AggregateDelayTarget([entry, exit]);
+    }
+
     final nodes = allNodes
         .where(
           (node) =>
@@ -221,6 +259,11 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
             (entry.value.value?.errors.isNotEmpty ?? false))
           entry.key,
     ];
+    final testTargets = _chains
+        ? [for (final chain in draft.chains) ?chainTarget(chain)]
+        : [
+            for (final node in nodes) AggregateDelayTarget([node]),
+          ];
     return Scaffold(
       title: l.aggregateProxies,
       isLoading: _busy,
@@ -401,10 +444,23 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                       value: _chains,
                       onChanged: (value) => setState(() => _chains = value),
                     ),
-                    if (_chains && draft.chains.isNotEmpty)
-                      ListHeader(
-                        title: l.aggregateChains,
-                        actions: [
+                    ListHeader(
+                      title: _chains ? l.aggregateChains : l.aggregateAllNodes,
+                      caption: l.aggregateDraftTestHint,
+                      trailing: TonalButton(
+                        size: TonalButtonSize.section,
+                        glyph: AppGlyphs.bolt,
+                        label: _testing
+                            ? l.aggregateTesting
+                            : l.aggregateTestAll,
+                        onPressed:
+                            _testing ||
+                                !testTargets.any((target) => target.testable)
+                            ? null
+                            : () => _testAll(testTargets),
+                      ),
+                      actions: [
+                        if (_chains && draft.chains.isNotEmpty)
                           IconButtonData(
                             glyph: AppGlyphs.addCircle,
                             tooltip: l.aggregateNewChain,
@@ -412,8 +468,8 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                                 ? null
                                 : () => _editChain(chainNodes),
                           ),
-                        ],
-                      ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -426,8 +482,8 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                   itemBuilder: (context, index) {
                     final chain = draft.chains[index];
                     final missing =
-                        !availableChainNodes.contains(chain.entry.key) ||
-                        !availableChainNodes.contains(chain.exit.key);
+                        !availableChainNodes.containsKey(chain.entry.key) ||
+                        !availableChainNodes.containsKey(chain.exit.key);
                     final loaded =
                         runtimeApplied &&
                         applied?.aggregate == draft &&
@@ -463,8 +519,9 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                         trailing: missing
                             ? const GlyphIcon(AppGlyphs.info)
                             : AggregateProbeButton(
+                                key: ValueKey(chainTarget(chain)!.key),
+                                target: chainTarget(chain)!,
                                 name: aggregateChainName(chain),
-                                type: 'chain',
                                 enabled: loaded,
                               ),
                       ),
@@ -527,12 +584,13 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                                 builder: (_) => const _SourcesSheet(),
                               ),
                         trailing: AggregateProbeButton(
+                          key: ValueKey(node.ref.key),
+                          target: AggregateDelayTarget([node]),
                           name:
                               node.ref.sourceId == draft.baseProfileId &&
                                   node.ref.provider.isEmpty
                               ? node.name
                               : node.runtimeName,
-                          type: node.type,
                           enabled: loaded,
                         ),
                       ),
@@ -635,13 +693,13 @@ class _SourcesSheet extends ConsumerWidget {
 class AggregateProbeButton extends ConsumerStatefulWidget {
   const AggregateProbeButton({
     super.key,
+    required this.target,
     required this.name,
-    required this.type,
     required this.enabled,
   });
 
   final String name;
-  final String type;
+  final AggregateDelayTarget target;
   final bool enabled;
 
   @override
@@ -650,7 +708,6 @@ class AggregateProbeButton extends ConsumerStatefulWidget {
 }
 
 class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
-  DateTime? _testedAt;
   late final RouteTracker _routes;
 
   @override
@@ -670,7 +727,6 @@ class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
         _routes.detach();
       }
     }
-    if (oldWidget.name != widget.name) _testedAt = null;
   }
 
   @override
@@ -680,27 +736,28 @@ class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
   }
 
   Future<void> _test() async {
-    ref.read(outboundIpProbeProvider.notifier).refresh([widget.name]);
     await ref
-        .read(proxiesActionProvider.notifier)
-        .proxyDelayTest(Proxy(name: widget.name, type: widget.type));
-    if (mounted) setState(() => _testedAt = DateTime.now());
+        .read(aggregateDelayTestProvider(widget.target.key).notifier)
+        .test(widget.target);
   }
 
   @override
   Widget build(BuildContext context) {
     final l = context.appLocalizations;
-    final delay = ref.watch(delayProvider(proxyName: widget.name));
-    final phase = ref.watch(delayTestPhaseProvider(proxyName: widget.name));
+    final result = ref.watch(aggregateDelayTestProvider(widget.target.key));
+    final delay = result.delay;
+    final testedAt = result.testedAt;
     final ip = ref.watch(
       outboundIpProbeProvider.select((state) => state.entryOf(widget.name)),
     );
-    final busy = phase != null || ip.phase == ProbePhase.probing;
     return RepaintBoundary(
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (widget.enabled)
+          if (delay != null ||
+              result.error != null ||
+              testedAt != null ||
+              widget.enabled)
             Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -710,26 +767,39 @@ class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
                     delay > 0 ? '$delay ms' : l.aggregateUnreachable,
                     style: AppTextStyle.caption1.of(context),
                   ),
-                if (ip.phase == ProbePhase.fresh && ip.value != null)
+                if (result.error != null)
+                  InfoMessageButton(message: result.error!),
+                if (widget.enabled &&
+                    ip.phase == ProbePhase.fresh &&
+                    ip.value != null)
                   Text(ip.value!.ip, style: AppTextStyle.caption1.of(context)),
-                if (_testedAt != null)
+                if (testedAt != null)
                   Text(
-                    '${_testedAt!.hour.toString().padLeft(2, '0')}:${_testedAt!.minute.toString().padLeft(2, '0')}',
+                    '${testedAt.hour.toString().padLeft(2, '0')}:${testedAt.minute.toString().padLeft(2, '0')}',
                     style: AppTextStyle.caption2.of(context).toLighter,
                   ),
               ],
             ),
-          IconButton(
-            tooltip: widget.enabled
-                ? l.aggregateTest
-                : l.aggregateApplyBeforeTest,
-            onPressed: widget.enabled && !busy
-                ? () => globalState.safeRun(_test)
-                : null,
-            icon: busy
-                ? const ActivityIndicator(size: 16)
-                : const GlyphIcon(AppGlyphs.bolt),
+          if (!widget.target.testable)
+            InfoMessageButton(message: l.aggregateExistingDialer),
+          TonalButton(
+            size: TonalButtonSize.section,
+            glyph: AppGlyphs.bolt,
+            label: result.testing ? l.aggregateTesting : l.delayTest,
+            onPressed: widget.target.testable && !result.testing ? _test : null,
           ),
+          if (widget.enabled)
+            IconButton(
+              tooltip: l.aggregateTestExitIp,
+              onPressed: ip.phase == ProbePhase.probing
+                  ? null
+                  : () => ref.read(outboundIpProbeProvider.notifier).refresh([
+                      widget.name,
+                    ]),
+              icon: ip.phase == ProbePhase.probing
+                  ? const ActivityIndicator(size: 16)
+                  : const GlyphIcon(AppGlyphs.proxies),
+            ),
         ],
       ),
     );

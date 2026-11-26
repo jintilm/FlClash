@@ -4011,7 +4011,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      'Устройство → Вход → Выход → Сайт. Сохраните и примените цепочку для использования и проверки.';
+      'Устройство → Вход → Выход → Сайт. Сохраните для проверки цепочки, примените для передачи трафика.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4107,4 +4107,21 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get aggregateSourceInUse =>
       'Источник используется общим профилем. Сначала замените ссылки.';
+
+  @override
+  String get aggregateTestAll => 'Проверить задержки на странице';
+
+  @override
+  String get aggregateTesting => 'Проверка…';
+
+  @override
+  String get aggregateDraftTestHint =>
+      'Узлы и цепочки можно проверить до применения. Используются текущие настройки DNS.';
+
+  @override
+  String get aggregateCoreRequired =>
+      'Ядро не подключено. Повторите после подключения.';
+
+  @override
+  String get aggregateTestExitIp => 'Проверить выходной IP';
 }

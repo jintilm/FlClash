@@ -3912,7 +3912,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      '이 기기 → 입구 → 출구 → 웹사이트. 초안을 저장하고 적용하면 사용하거나 테스트할 수 있습니다.';
+      '이 기기 → 입구 → 출구 → 웹사이트. 저장 후 전체 체인을 테스트하고 적용 후 트래픽에 사용하세요.';
 
   @override
   String get aggregateDnsInherited => 'DNS와 라우팅은 프록시 의존성을 포함하여 기본 프로필에서 상속됩니다.';
@@ -4001,4 +4001,20 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aggregateSourceInUse => '통합 프로필이 사용 중인 소스입니다. 참조를 먼저 제거하거나 교체하세요.';
+
+  @override
+  String get aggregateTestAll => '표시된 지연 테스트';
+
+  @override
+  String get aggregateTesting => '테스트 중…';
+
+  @override
+  String get aggregateDraftTestHint =>
+      '적용 전에 노드와 체인을 테스트할 수 있습니다. 현재 DNS 설정을 사용합니다.';
+
+  @override
+  String get aggregateCoreRequired => '코어가 연결되지 않았습니다. 준비 후 다시 시도하세요.';
+
+  @override
+  String get aggregateTestExitIp => '출구 IP 확인';
 }

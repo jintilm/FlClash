@@ -3837,7 +3837,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      'この端末 → 入口 → 出口 → Web サイト。保存後に適用すると使用・テストできます。';
+      'この端末 → 入口 → 出口 → Web サイト。保存後にチェーンをテストし、適用後に通信に使用できます。';
 
   @override
   String get aggregateDnsInherited => 'DNS とルーティングはプロキシ依存関係を含めてベースから継承します。';
@@ -3926,4 +3926,19 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aggregateSourceInUse => 'このソースは集約で使用中です。参照を解除または置換してください。';
+
+  @override
+  String get aggregateTestAll => '表示中の遅延をテスト';
+
+  @override
+  String get aggregateTesting => 'テスト中…';
+
+  @override
+  String get aggregateDraftTestHint => '適用前にノードとチェーンをテストできます。現在の DNS 設定を使用します。';
+
+  @override
+  String get aggregateCoreRequired => 'コアが未接続です。準備完了後に再試行してください。';
+
+  @override
+  String get aggregateTestExitIp => '出口 IP を確認';
 }

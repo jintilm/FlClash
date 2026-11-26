@@ -1157,7 +1157,7 @@
   "aggregateAsExit": "出口として使用",
   "aggregateSwap": "入口と出口を入れ替え",
   "aggregateChoose": "選択",
-  "aggregateRouteHint": "この端末 → 入口 → 出口 → Web サイト。保存後に適用すると使用・テストできます。",
+  "aggregateRouteHint": "この端末 → 入口 → 出口 → Web サイト。保存後にチェーンをテストし、適用後に通信に使用できます。",
   "aggregateDnsInherited": "DNS とルーティングはプロキシ依存関係を含めてベースから継承します。",
   "aggregateApply": "集約プロファイルを適用",
   "aggregateApplied": "適用済み",
@@ -1186,5 +1186,10 @@
   "aggregateCycle": "プロキシの循環依存",
   "aggregateDnsBootstrap": "DNS の初期解決が未解決のプロキシに依存します。独立した解決経路または IP 入口を設定してください。",
   "aggregateMissingDnsProxy": "DNS が参照するプロキシがありません",
-  "aggregateSourceInUse": "このソースは集約で使用中です。参照を解除または置換してください。"
+  "aggregateSourceInUse": "このソースは集約で使用中です。参照を解除または置換してください。",
+  "aggregateTestAll": "表示中の遅延をテスト",
+  "aggregateTesting": "テスト中…",
+  "aggregateDraftTestHint": "適用前にノードとチェーンをテストできます。現在の DNS 設定を使用します。",
+  "aggregateCoreRequired": "コアが未接続です。準備完了後に再試行してください。",
+  "aggregateTestExitIp": "出口 IP を確認"
 }

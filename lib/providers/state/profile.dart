@@ -120,11 +120,12 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
         base.type == ProfileType.aggregate) {
       throw MessageException(currentAppLocalizations.aggregateMissingBase);
     }
-    final baseState = await ref.watch(setupStateProvider(base.id).future);
+    final baseFuture = ref.watch(setupStateProvider(base.id).future);
     final sources = ref.watch(profilesProvider);
-    final locals = aggregate.sourceIds.contains(0)
-        ? await ref.watch(customProxiesProvider.future)
-        : const <CustomProxy>[];
+    final localsFuture = aggregate.sourceIds.contains(0)
+        ? ref.watch(customProxiesProvider.future)
+        : Future.value(const <CustomProxy>[]);
+    final (baseState, locals) = await (baseFuture, localsFuture).wait;
     return baseState.copyWith(
       profileId: profile.id,
       profileType: ProfileType.aggregate,

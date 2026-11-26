@@ -4017,7 +4017,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      'This device → Entry → Exit → Website. Save the draft, then apply it to use or test the chain.';
+      'This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4116,4 +4116,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aggregateSourceInUse =>
       'This source is used by an aggregate profile. Remove or replace its references first.';
+
+  @override
+  String get aggregateTestAll => 'Test visible delays';
+
+  @override
+  String get aggregateTesting => 'Testing…';
+
+  @override
+  String get aggregateDraftTestHint =>
+      'Test nodes and chains before applying. Tests use the current DNS settings.';
+
+  @override
+  String get aggregateCoreRequired =>
+      'The core is not connected. Try again when it is ready.';
+
+  @override
+  String get aggregateTestExitIp => 'Check exit IP';
 }

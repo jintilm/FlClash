@@ -4059,7 +4059,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get aggregateRouteHint =>
-      'Este dispositivo → Entrada → Salida → Sitio. Guarde y aplique para usar y probar la cadena.';
+      'Este dispositivo → Entrada → Salida → Sitio. Guarde para probar la cadena y aplique para usarla.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4155,4 +4155,21 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get aggregateSourceInUse =>
       'Esta fuente está en uso. Quite o reemplace las referencias.';
+
+  @override
+  String get aggregateTestAll => 'Probar latencias visibles';
+
+  @override
+  String get aggregateTesting => 'Probando…';
+
+  @override
+  String get aggregateDraftTestHint =>
+      'Pruebe nodos y cadenas antes de aplicar, usando el DNS actual.';
+
+  @override
+  String get aggregateCoreRequired =>
+      'El núcleo no está conectado. Inténtelo cuando esté listo.';
+
+  @override
+  String get aggregateTestExitIp => 'Comprobar IP de salida';
 }

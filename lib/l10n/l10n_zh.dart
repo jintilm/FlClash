@@ -3787,7 +3787,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aggregateChoose => '请选择';
 
   @override
-  String get aggregateRouteHint => '本机 → 入口 → 出口 → 目标网站。保存为草稿，应用后即可选用和测试。';
+  String get aggregateRouteHint => '本机 → 入口 → 出口 → 目标网站。保存后可测试完整链路，应用后可用于代理流量。';
 
   @override
   String get aggregateDnsInherited => 'DNS 与分流继承基础配置，并保留其代理依赖。';
@@ -3875,4 +3875,19 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aggregateSourceInUse => '此来源被聚合配置使用，请先移除或替换引用。';
+
+  @override
+  String get aggregateTestAll => '测试本页延迟';
+
+  @override
+  String get aggregateTesting => '测速中…';
+
+  @override
+  String get aggregateDraftTestHint => '节点和链路均可在应用前测速，测试使用当前 DNS 设置。';
+
+  @override
+  String get aggregateCoreRequired => '内核尚未连接，请就绪后重试。';
+
+  @override
+  String get aggregateTestExitIp => '检查出口 IP';
 }
