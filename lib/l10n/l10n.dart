@@ -7265,6 +7265,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Check exit IP'**
   String get aggregateTestExitIp;
+
+  /// No description provided for @aggregateUseChain.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this chain'**
+  String get aggregateUseChain;
+
+  /// No description provided for @aggregateChainInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'In use'**
+  String get aggregateChainInUse;
+
+  /// No description provided for @aggregateUntested.
+  ///
+  /// In en, this message translates to:
+  /// **'Not tested'**
+  String get aggregateUntested;
+
+  /// No description provided for @aggregateNodeDelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Node latency'**
+  String get aggregateNodeDelay;
+
+  /// No description provided for @aggregateTestChain.
+  ///
+  /// In en, this message translates to:
+  /// **'Test chain'**
+  String get aggregateTestChain;
+
+  /// No description provided for @aggregateExitDelayHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Chain latency is measured through entry {entry}; node latency is the standalone result.'**
+  String aggregateExitDelayHint(String entry);
 }
 
 class _AppLocalizationsDelegate

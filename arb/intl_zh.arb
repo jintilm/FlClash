@@ -1191,5 +1191,11 @@
   "aggregateTesting": "测速中…",
   "aggregateDraftTestHint": "节点和链路均可在应用前测速，测试使用当前 DNS 设置。",
   "aggregateCoreRequired": "内核尚未连接，请就绪后重试。",
-  "aggregateTestExitIp": "检查出口 IP"
+  "aggregateTestExitIp": "检查出口 IP",
+  "aggregateUseChain": "使用此链路",
+  "aggregateChainInUse": "使用中",
+  "aggregateUntested": "未测试",
+  "aggregateNodeDelay": "节点延迟",
+  "aggregateTestChain": "测试链路",
+  "aggregateExitDelayHint": "链路延迟通过入口 {entry} 测得；节点延迟为单独测试结果。"
 }

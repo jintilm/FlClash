@@ -1486,6 +1486,12 @@ running config on rejection, restores the previous config file, and reports the 
 unanswered setup leaves applied state unknown. The normal profile failure behavior is unchanged. Provider load events
 rebuild the aggregate and the existing digest check avoids reapplying identical content.
 
+Explicit application selects the aggregate group in the chosen base selector and `GLOBAL`, and selects the requested
+chain, the previously selected chain if it still exists, or the first chain. Other rule selectors keep their selections.
+The chain row's use action goes through the same apply and rollback path; loading a chain alone is not evidence that
+traffic uses it. Its active label also checks the selected group path and mode. Node pickers reuse standalone delays and,
+when choosing an exit with an entry selected, test the complete ordered pair and label those results separately.
+
 Draft delay tests use `proxy.testDraft`, which constructs temporary adapters and connects a second hop directly through
 the first adapter without registering either in the running tunnel. They use the current DNS settings and share the
 Core's delay-test concurrency limit. `AggregateDelayTest` keeps results by ordered node identities and drops stale replies

@@ -4017,4 +4017,24 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aggregateTestExitIp => '출구 IP 확인';
+
+  @override
+  String get aggregateUseChain => '이 체인 사용';
+
+  @override
+  String get aggregateChainInUse => '사용 중';
+
+  @override
+  String get aggregateUntested => '측정 안 됨';
+
+  @override
+  String get aggregateNodeDelay => '노드 지연';
+
+  @override
+  String get aggregateTestChain => '체인 테스트';
+
+  @override
+  String aggregateExitDelayHint(String entry) {
+    return '체인 지연은 진입 노드 $entry을(를) 통해 측정하며, 노드 지연은 단독 측정 결과입니다.';
+  }
 }

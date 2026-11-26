@@ -119,6 +119,29 @@ List<AggregateNode> aggregateNodes({
 
 String aggregateChainName(ProxyChain chain) => '${chain.name} [${chain.id}]';
 
+Map<String, String> aggregateSelectedMap(
+  AggregateConfig settings,
+  Map<String, String> previous, {
+  String? chainId,
+}) {
+  final chain = chainId == null
+      ? settings.chains.firstWhereOrNull(
+              (chain) =>
+                  aggregateChainName(chain) == previous[settings.groupName],
+            ) ??
+            settings.chains.firstOrNull
+      : settings.chains.firstWhereOrNull((chain) => chain.id == chainId);
+  if (chainId != null && chain == null) {
+    throw AggregateException(AggregateIssue.missingNode, chainId);
+  }
+  return {
+    ...previous,
+    settings.targetGroup: settings.groupName,
+    'GLOBAL': settings.groupName,
+    if (chain != null) settings.groupName: aggregateChainName(chain),
+  };
+}
+
 List<Map<String, dynamic>> aggregateMappings(Object? value) => value is List
     ? [
         for (final item in value)

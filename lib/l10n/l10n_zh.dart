@@ -3890,4 +3890,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aggregateTestExitIp => '检查出口 IP';
+
+  @override
+  String get aggregateUseChain => '使用此链路';
+
+  @override
+  String get aggregateChainInUse => '使用中';
+
+  @override
+  String get aggregateUntested => '未测试';
+
+  @override
+  String get aggregateNodeDelay => '节点延迟';
+
+  @override
+  String get aggregateTestChain => '测试链路';
+
+  @override
+  String aggregateExitDelayHint(String entry) {
+    return '链路延迟通过入口 $entry 测得；节点延迟为单独测试结果。';
+  }
 }

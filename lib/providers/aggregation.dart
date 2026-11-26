@@ -317,7 +317,7 @@ class AggregateAction extends _$AggregateAction {
     );
   }
 
-  Future<void> apply() async {
+  Future<void> apply({String? chainId}) async {
     if (_applying) return;
     _applying = true;
     try {
@@ -352,9 +352,16 @@ class AggregateAction extends _$AggregateAction {
                     label: currentAppLocalizations.aggregateProfile,
                     autoUpdate: false,
                     autoUpdateDuration: defaultUpdateDuration,
-                    selectedMap: base.selectedMap,
                   ))
-              .copyWith(aggregate: settings, lastUpdateDate: DateTime.now());
+              .copyWith(
+                aggregate: settings,
+                lastUpdateDate: DateTime.now(),
+                selectedMap: aggregateSelectedMap(
+                  settings,
+                  previous?.selectedMap ?? base.selectedMap,
+                  chainId: chainId,
+                ),
+              );
       await ref.read(profilesProvider.notifier).save(candidate);
       if (ref.read(currentProfileIdProvider) != previousSelection) {
         throw MessageException(currentAppLocalizations.aggregateInactive);

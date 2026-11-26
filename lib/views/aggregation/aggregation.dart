@@ -17,6 +17,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'chain_editor.dart';
+import 'delay_button.dart';
 
 class AggregateProxiesView extends ConsumerStatefulWidget {
   const AggregateProxiesView({super.key, this.profileId});
@@ -240,6 +241,10 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
         .toList();
     final applied = ref.watch(profileProvider(workspace.profileId));
     final currentId = ref.watch(currentProfileIdProvider);
+    final selectedMap = ref.watch(selectedMapProvider);
+    final mode = ref.watch(
+      patchClashConfigProvider.select((state) => state.mode),
+    );
     final runtime = ref.watch(aggregateRuntimeProvider);
     final runtimeApplied =
         runtime.applied &&
@@ -488,6 +493,17 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                         runtimeApplied &&
                         applied?.aggregate == draft &&
                         currentId == applied?.id;
+                    final inUse =
+                        loaded &&
+                        selectedMap[draft.groupName] ==
+                            aggregateChainName(chain) &&
+                        switch (mode) {
+                          Mode.global =>
+                            selectedMap['GLOBAL'] == draft.groupName,
+                          Mode.rule =>
+                            selectedMap[draft.targetGroup] == draft.groupName,
+                          Mode.direct => false,
+                        };
                     return ContextMenuRegion(
                       menuItems: [
                         PopupMenuItem(
@@ -518,11 +534,34 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                         onTap: () => _editChain(chainNodes, chain: chain),
                         trailing: missing
                             ? const GlyphIcon(AppGlyphs.info)
-                            : AggregateProbeButton(
-                                key: ValueKey(chainTarget(chain)!.key),
-                                target: chainTarget(chain)!,
-                                name: aggregateChainName(chain),
-                                enabled: loaded,
+                            : Row(
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 8,
+                                children: [
+                                  TonalButton(
+                                    size: TonalButtonSize.section,
+                                    glyph: AppGlyphs.checkCircle,
+                                    label: inUse
+                                        ? l.aggregateChainInUse
+                                        : l.aggregateUseChain,
+                                    onPressed: _busy || inUse
+                                        ? null
+                                        : () => _run(
+                                            () => ref
+                                                .read(
+                                                  aggregateActionProvider
+                                                      .notifier,
+                                                )
+                                                .apply(chainId: chain.id),
+                                          ),
+                                  ),
+                                  AggregateProbeButton(
+                                    key: ValueKey(chainTarget(chain)!.key),
+                                    target: chainTarget(chain)!,
+                                    name: aggregateChainName(chain),
+                                    enabled: loaded,
+                                  ),
+                                ],
                               ),
                       ),
                     );
@@ -735,18 +774,9 @@ class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
     super.dispose();
   }
 
-  Future<void> _test() async {
-    await ref
-        .read(aggregateDelayTestProvider(widget.target.key).notifier)
-        .test(widget.target);
-  }
-
   @override
   Widget build(BuildContext context) {
     final l = context.appLocalizations;
-    final result = ref.watch(aggregateDelayTestProvider(widget.target.key));
-    final delay = result.delay;
-    final testedAt = result.testedAt;
     final ip = ref.watch(
       outboundIpProbeProvider.select((state) => state.entryOf(widget.name)),
     );
@@ -754,40 +784,11 @@ class _AggregateProbeButtonState extends ConsumerState<AggregateProbeButton> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (delay != null ||
-              result.error != null ||
-              testedAt != null ||
-              widget.enabled)
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                if (delay != null)
-                  Text(
-                    delay > 0 ? '$delay ms' : l.aggregateUnreachable,
-                    style: AppTextStyle.caption1.of(context),
-                  ),
-                if (result.error != null)
-                  InfoMessageButton(message: result.error!),
-                if (widget.enabled &&
-                    ip.phase == ProbePhase.fresh &&
-                    ip.value != null)
-                  Text(ip.value!.ip, style: AppTextStyle.caption1.of(context)),
-                if (testedAt != null)
-                  Text(
-                    '${testedAt.hour.toString().padLeft(2, '0')}:${testedAt.minute.toString().padLeft(2, '0')}',
-                    style: AppTextStyle.caption2.of(context).toLighter,
-                  ),
-              ],
-            ),
-          if (!widget.target.testable)
-            InfoMessageButton(message: l.aggregateExistingDialer),
-          TonalButton(
-            size: TonalButtonSize.section,
-            glyph: AppGlyphs.bolt,
-            label: result.testing ? l.aggregateTesting : l.delayTest,
-            onPressed: widget.target.testable && !result.testing ? _test : null,
-          ),
+          AggregateDelayButton(target: widget.target),
+          if (widget.enabled &&
+              ip.phase == ProbePhase.fresh &&
+              ip.value != null)
+            Text(ip.value!.ip, style: AppTextStyle.caption1.of(context)),
           if (widget.enabled)
             IconButton(
               tooltip: l.aggregateTestExitIp,

@@ -1,10 +1,15 @@
+import 'package:collection/collection.dart';
 import 'package:fl_clash/common/aggregation.dart';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/features/form/form.dart';
 import 'package:fl_clash/models/models.dart';
+import 'package:fl_clash/providers/aggregate_delay.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import 'delay_button.dart';
 
 class AggregateChainEditor extends StatefulWidget {
   const AggregateChainEditor({
@@ -30,6 +35,16 @@ class _AggregateChainEditorState extends State<AggregateChainEditor> {
   late AggregateNodeRef? _exit = widget.chain?.exit ?? widget.exit;
 
   Future<void> _pick(bool entry) async {
+    final other = entry ? _exit : _entry;
+    final entryNode = entry
+        ? null
+        : widget.nodes.firstWhereOrNull((node) => node.ref.key == _entry?.key);
+    final candidates = widget.nodes
+        .where(
+          (node) =>
+              !node.hasDialer && node.ref.fingerprint != other?.fingerprint,
+        )
+        .toList();
     final result = await showNestedSheet<AggregateNode>(
       context,
       builder: (context) => SelectionSheet<AggregateNode>(
@@ -38,12 +53,22 @@ class _AggregateChainEditorState extends State<AggregateChainEditor> {
             : context.appLocalizations.aggregateExit,
         sections: [
           SelectionSection(
-            items: widget.nodes,
+            label: entryNode == null
+                ? null
+                : context.appLocalizations.aggregateExitDelayHint(
+                    entryNode.name,
+                  ),
+            items: candidates,
             subtitleBuilder: (_, node) => '${node.sourceLabel} · ${node.type}',
           ),
         ],
         labelBuilder: (node) => node.name,
-        selectedOf: (_) => null,
+        titleBuilder: (node, title) =>
+            _NodeChoice(node: node, entry: entryNode, title: title),
+        selectedOf: (_) => candidates.firstWhereOrNull(
+          (node) => node.ref.key == (entry ? _entry : _exit)?.key,
+        ),
+        emptyLabel: context.appLocalizations.aggregateNoNodes,
         onSelected: (node) => Navigator.of(context).pop(node),
       ),
     );
@@ -147,6 +172,53 @@ class _AggregateChainEditorState extends State<AggregateChainEditor> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _NodeChoice extends ConsumerWidget {
+  const _NodeChoice({
+    required this.node,
+    required this.entry,
+    required this.title,
+  });
+
+  final AggregateNode node;
+  final AggregateNode? entry;
+  final Widget title;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l = context.appLocalizations;
+    final single = ref.watch(aggregateDelayTestProvider(node.ref.key));
+    final delay = single.delay;
+    final nodeDelay = delay == null
+        ? l.aggregateUntested
+        : delay > 0
+        ? '$delay ms'
+        : l.aggregateUnreachable;
+    final target = AggregateDelayTarget([?entry, node]);
+    return Row(
+      spacing: 8,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title,
+              if (entry != null)
+                Text(
+                  '${l.aggregateNodeDelay}: $nodeDelay',
+                  style: AppTextStyle.caption1.of(context).toLighter,
+                ),
+            ],
+          ),
+        ),
+        AggregateDelayButton(
+          target: target,
+          label: entry == null ? null : l.aggregateTestChain,
+        ),
+      ],
     );
   }
 }

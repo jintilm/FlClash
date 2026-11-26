@@ -1191,5 +1191,11 @@
   "aggregateTesting": "Test en cours…",
   "aggregateDraftTestHint": "Testez les nœuds et chaînes avant application, avec le DNS actuel.",
   "aggregateCoreRequired": "Le cœur est déconnecté. Réessayez quand il sera prêt.",
-  "aggregateTestExitIp": "Vérifier l’IP de sortie"
+  "aggregateTestExitIp": "Vérifier l’IP de sortie",
+  "aggregateUseChain": "Utiliser cette chaîne",
+  "aggregateChainInUse": "En cours d’utilisation",
+  "aggregateUntested": "Non testé",
+  "aggregateNodeDelay": "Latence du nœud",
+  "aggregateTestChain": "Tester la chaîne",
+  "aggregateExitDelayHint": "La latence de la chaîne est mesurée via l’entrée {entry} ; celle du nœud est mesurée séparément."
 }

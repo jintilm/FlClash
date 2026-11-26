@@ -1191,5 +1191,11 @@
   "aggregateTesting": "테스트 중…",
   "aggregateDraftTestHint": "적용 전에 노드와 체인을 테스트할 수 있습니다. 현재 DNS 설정을 사용합니다.",
   "aggregateCoreRequired": "코어가 연결되지 않았습니다. 준비 후 다시 시도하세요.",
-  "aggregateTestExitIp": "출구 IP 확인"
+  "aggregateTestExitIp": "출구 IP 확인",
+  "aggregateUseChain": "이 체인 사용",
+  "aggregateChainInUse": "사용 중",
+  "aggregateUntested": "측정 안 됨",
+  "aggregateNodeDelay": "노드 지연",
+  "aggregateTestChain": "체인 테스트",
+  "aggregateExitDelayHint": "체인 지연은 진입 노드 {entry}을(를) 통해 측정하며, 노드 지연은 단독 측정 결과입니다."
 }

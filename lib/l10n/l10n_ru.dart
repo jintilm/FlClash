@@ -4124,4 +4124,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get aggregateTestExitIp => 'Проверить выходной IP';
+
+  @override
+  String get aggregateUseChain => 'Использовать цепочку';
+
+  @override
+  String get aggregateChainInUse => 'Используется';
+
+  @override
+  String get aggregateUntested => 'Не проверено';
+
+  @override
+  String get aggregateNodeDelay => 'Задержка узла';
+
+  @override
+  String get aggregateTestChain => 'Проверить цепочку';
+
+  @override
+  String aggregateExitDelayHint(String entry) {
+    return 'Задержка цепочки измеряется через вход $entry; задержка узла измеряется отдельно.';
+  }
 }

@@ -53,6 +53,7 @@ void main() {
         type: ProfileType.file,
         label: 'Base',
         autoUpdateDuration: Duration.zero,
+        selectedMap: {'Proxy': 'entry', 'GLOBAL': 'entry'},
       );
       const subscription = Profile(
         id: 2,
@@ -175,6 +176,9 @@ void main() {
       await container.read(aggregateActionProvider.notifier).apply();
       expect(pushed, hasLength(1));
       expect(pushed.single.preserveOnFailure, isTrue);
+      expect(pushed.single.selectedMap['Proxy'], recipe.groupName);
+      expect(pushed.single.selectedMap['GLOBAL'], recipe.groupName);
+      expect(pushed.single.selectedMap[recipe.groupName], 'Chain [chain]');
       final selected = container.read(currentProfileProvider)!;
       expect(selected.type, ProfileType.aggregate);
       expect((await database.profilesDao.get(selected.id))?.aggregate, recipe);
@@ -187,6 +191,26 @@ void main() {
         (node) => node['name'] == 'Chain [chain]',
       );
       expect(chainExit['dialer-proxy'], '@aggregate-entry:chain');
+      final second = recipe.chains.single.copyWith(
+        id: 'second',
+        name: 'Second',
+      );
+      final updated = recipe.copyWith(chains: [...recipe.chains, second]);
+      container.read(aggregateActionProvider.notifier).setDraft(updated);
+      await container
+          .read(aggregateActionProvider.notifier)
+          .apply(chainId: second.id);
+      expect(
+        pushed.last.selectedMap[recipe.groupName],
+        aggregateChainName(second),
+      );
+      expect(pushed.last.selectedMap['Proxy'], recipe.groupName);
+      expect(
+        (await database.profilesDao.get(
+          selected.id,
+        ))?.selectedMap[recipe.groupName],
+        aggregateChainName(second),
+      );
     },
   );
 }

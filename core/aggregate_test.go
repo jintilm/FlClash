@@ -9,6 +9,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"testing"
 	"time"
@@ -16,6 +17,7 @@ import (
 	"github.com/metacubex/mihomo/adapter"
 	"github.com/metacubex/mihomo/config"
 	"github.com/metacubex/mihomo/constant"
+	"github.com/metacubex/mihomo/rules"
 	"github.com/metacubex/mihomo/tunnel"
 )
 
@@ -94,7 +96,13 @@ func TestAggregateTwoHopRouteConnectsInEntryExitOrder(t *testing.T) {
 		return proxy
 	}
 	entry, exit := makeProxy("aggregate-entry", entryServer, ""), makeProxy("aggregate-exit", exitServer, "aggregate-entry")
-	tunnel.UpdateProxies(map[string]constant.Proxy{"aggregate-entry": entry, "aggregate-exit": exit}, nil)
+	pool := selectorOver(t, "Aggregate", entry, exit)
+	target := selectorOver(t, "Proxy", entry, pool)
+	global := selectorOver(t, "GLOBAL", entry, pool)
+	tunnel.UpdateProxies(map[string]constant.Proxy{
+		"aggregate-entry": entry, "aggregate-exit": exit,
+		"Aggregate": pool, "Proxy": target, "GLOBAL": global,
+	}, nil)
 	t.Cleanup(func() { tunnel.UpdateProxies(nil, nil) })
 	result := runProbe(context.Background(), probeRequest{url: destination.URL, proxyName: "aggregate-exit", timeout: 3 * time.Second, maxBody: 64})
 	if result == nil || result.Error != "" || result.Body != "exit reached" {
@@ -115,6 +123,29 @@ func TestAggregateTwoHopRouteConnectsInEntryExitOrder(t *testing.T) {
 		}
 	default:
 		t.Fatal("exit was bypassed")
+	}
+	match, err := rules.ParseRule("MATCH", "", "Proxy", nil, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tunnel.UpdateRules([]constant.Rule{match}, nil, nil)
+	previousMode := tunnel.Mode()
+	tunnel.OnRunning()
+	t.Cleanup(func() {
+		tunnel.OnSuspend()
+		tunnel.SetMode(previousMode)
+		tunnel.UpdateRules(nil, nil, nil)
+	})
+	patchSelectGroup(map[string]string{"Proxy": "Aggregate", "GLOBAL": "Aggregate", "Aggregate": "aggregate-exit"})
+	for _, mode := range []tunnel.TunnelMode{tunnel.Rule, tunnel.Global} {
+		tunnel.SetMode(mode)
+		result = runProbe(context.Background(), probeRequest{url: destination.URL, timeout: 3 * time.Second, maxBody: 64})
+		if result == nil || result.Error != "" || result.Body != "exit reached" || len(result.Chains) == 0 || result.Chains[0] != "aggregate-exit" || !slices.Contains(result.Chains, "Aggregate") {
+			t.Fatalf("routed probe in %v = %+v", mode, result)
+		}
+		if len(result.hits) == 0 || result.hits[0].Exit != exitName(exit) {
+			t.Fatalf("routed exit in %v = %+v", mode, result.hits)
+		}
 	}
 }
 

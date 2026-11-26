@@ -1191,5 +1191,11 @@
   "aggregateTesting": "Probando…",
   "aggregateDraftTestHint": "Pruebe nodos y cadenas antes de aplicar, usando el DNS actual.",
   "aggregateCoreRequired": "El núcleo no está conectado. Inténtelo cuando esté listo.",
-  "aggregateTestExitIp": "Comprobar IP de salida"
+  "aggregateTestExitIp": "Comprobar IP de salida",
+  "aggregateUseChain": "Usar esta cadena",
+  "aggregateChainInUse": "En uso",
+  "aggregateUntested": "Sin probar",
+  "aggregateNodeDelay": "Latencia del nodo",
+  "aggregateTestChain": "Probar cadena",
+  "aggregateExitDelayHint": "La latencia de la cadena se mide a través de la entrada {entry}; la del nodo se mide por separado."
 }

@@ -73,6 +73,41 @@ void main() {
   );
   final original = base([a.nodes.single.definition]);
 
+  test('applying selects the chain behind both rule and global groups', () {
+    final settings = recipe.copyWith(chains: [chain]);
+    expect(
+      aggregateSelectedMap(settings, {'Proxy': 'Same', 'Other': 'DIRECT'}),
+      {
+        'Proxy': 'Aggregate',
+        'GLOBAL': 'Aggregate',
+        'Aggregate': aggregateChainName(chain),
+        'Other': 'DIRECT',
+      },
+    );
+  });
+
+  test('keeps the chosen chain and supports choosing a different chain', () {
+    final second = chain.copyWith(id: 'second', name: 'Second');
+    final settings = recipe.copyWith(chains: [chain, second]);
+    final previous = {'Aggregate': aggregateChainName(second)};
+    expect(
+      aggregateSelectedMap(settings, previous)['Aggregate'],
+      aggregateChainName(second),
+    );
+    expect(
+      aggregateSelectedMap(settings, previous, chainId: chain.id)['Aggregate'],
+      aggregateChainName(chain),
+    );
+    expect(
+      () => aggregateSelectedMap(settings, previous, chainId: 'missing'),
+      throwsA(isA<AggregateException>()),
+    );
+    expect(
+      aggregateSelectedMap(recipe, {'Proxy': 'Same'})['Proxy'],
+      'Aggregate',
+    );
+  });
+
   test(
     'keeps DNS, rules and original nodes while isolating names and chain instances',
     () {

@@ -19,13 +19,15 @@ import '../helpers/test_profiles.dart';
 class _Action extends AggregateAction {
   int applications = 0;
   bool fail = false;
+  String? selectedChain;
 
   @override
   void initialize([int? profileId]) {}
 
   @override
-  Future<void> apply() async {
+  Future<void> apply({String? chainId}) async {
     applications++;
+    selectedChain = chainId;
     if (fail) throw const MessageException('Application failed');
   }
 }
@@ -264,6 +266,40 @@ void main() {
       expect(find.text('58 ms'), findsOneWidget);
       expect(container.read(aggregateWorkspaceSettingProvider), workspace);
       expect(action.applications, 0);
+      await tester.tap(find.text('Use this chain'));
+      await tester.pumpAndSettle();
+      expect(action.applications, 1);
+      expect(action.selectedChain, chain.id);
+      final applied = base.copyWith(
+        id: 3,
+        type: ProfileType.aggregate,
+        aggregate: workspace.draft,
+        selectedMap: {
+          'Proxy': 'Entry',
+          draft.groupName: aggregateChainName(chain),
+        },
+      );
+      container.read(profilesProvider.notifier).put(applied);
+      container.read(currentProfileIdProvider.notifier).value = applied.id;
+      container.read(aggregateWorkspaceSettingProvider.notifier).value =
+          workspace.copyWith(profileId: applied.id);
+      container
+          .read(aggregateRuntimeProvider.notifier)
+          .record(applied.id, workspace.draft, true);
+      await tester.pumpAndSettle();
+      expect(find.text('In use'), findsNothing);
+      container
+          .read(profilesProvider.notifier)
+          .put(
+            applied.copyWith(
+              selectedMap: {
+                'Proxy': draft.groupName,
+                draft.groupName: aggregateChainName(chain),
+              },
+            ),
+          );
+      await tester.pumpAndSettle();
+      expect(find.text('In use'), findsOneWidget);
       expect(tester.takeException(), isNull);
     },
   );

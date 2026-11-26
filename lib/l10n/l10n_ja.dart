@@ -3941,4 +3941,24 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aggregateTestExitIp => '出口 IP を確認';
+
+  @override
+  String get aggregateUseChain => 'このチェーンを使用';
+
+  @override
+  String get aggregateChainInUse => '使用中';
+
+  @override
+  String get aggregateUntested => '未測定';
+
+  @override
+  String get aggregateNodeDelay => 'ノードの遅延';
+
+  @override
+  String get aggregateTestChain => 'チェーンを測定';
+
+  @override
+  String aggregateExitDelayHint(String entry) {
+    return 'チェーンの遅延は入口 $entry を経由して測定します。ノードの遅延は単独の測定結果です。';
+  }
 }

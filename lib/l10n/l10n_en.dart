@@ -4133,4 +4133,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aggregateTestExitIp => 'Check exit IP';
+
+  @override
+  String get aggregateUseChain => 'Use this chain';
+
+  @override
+  String get aggregateChainInUse => 'In use';
+
+  @override
+  String get aggregateUntested => 'Not tested';
+
+  @override
+  String get aggregateNodeDelay => 'Node latency';
+
+  @override
+  String get aggregateTestChain => 'Test chain';
+
+  @override
+  String aggregateExitDelayHint(String entry) {
+    return 'Chain latency is measured through entry $entry; node latency is the standalone result.';
+  }
 }

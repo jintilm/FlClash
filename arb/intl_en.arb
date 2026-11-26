@@ -1306,5 +1306,18 @@
   "aggregateTesting": "Testing…",
   "aggregateDraftTestHint": "Test nodes and chains before applying. Tests use the current DNS settings.",
   "aggregateCoreRequired": "The core is not connected. Try again when it is ready.",
-  "aggregateTestExitIp": "Check exit IP"
+  "aggregateTestExitIp": "Check exit IP",
+  "aggregateUseChain": "Use this chain",
+  "aggregateChainInUse": "In use",
+  "aggregateUntested": "Not tested",
+  "aggregateNodeDelay": "Node latency",
+  "aggregateTestChain": "Test chain",
+  "aggregateExitDelayHint": "Chain latency is measured through entry {entry}; node latency is the standalone result.",
+  "@aggregateExitDelayHint": {
+    "placeholders": {
+      "entry": {
+        "type": "String"
+      }
+    }
+  }
 }

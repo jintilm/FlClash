@@ -1191,5 +1191,11 @@
   "aggregateTesting": "Проверка…",
   "aggregateDraftTestHint": "Узлы и цепочки можно проверить до применения. Используются текущие настройки DNS.",
   "aggregateCoreRequired": "Ядро не подключено. Повторите после подключения.",
-  "aggregateTestExitIp": "Проверить выходной IP"
+  "aggregateTestExitIp": "Проверить выходной IP",
+  "aggregateUseChain": "Использовать цепочку",
+  "aggregateChainInUse": "Используется",
+  "aggregateUntested": "Не проверено",
+  "aggregateNodeDelay": "Задержка узла",
+  "aggregateTestChain": "Проверить цепочку",
+  "aggregateExitDelayHint": "Задержка цепочки измеряется через вход {entry}; задержка узла измеряется отдельно."
 }
