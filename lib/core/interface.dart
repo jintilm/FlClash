@@ -352,7 +352,7 @@ abstract class CoreHandlerInterface {
   }
 
   Future<ChainStatus> getChainStatus({
-    required String proxy,
+    String proxy = '',
     required String target,
   }) => _query(
     CoreMethod.connectionChainStatus,

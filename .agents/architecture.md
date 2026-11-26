@@ -1492,10 +1492,13 @@ The chain row's use action goes through the same apply and rollback path; loadin
 traffic uses it. Its active label also checks the selected group path and mode. Node pickers reuse standalone delays and,
 when choosing an exit with an entry selected, test the complete ordered pair and label those results separately.
 
-The dashboard's `AggregateEntryCard` polls `connection.chainStatus` only while visible. Core reads the exit adapter's
-actual `dialer-proxy` and the live tracker manager: an internal entry transport and a user connection through the exit
-are separate records, and the entry does not add its bytes to the global traffic totals again. A selection alone is not
-traffic evidence. Counts and byte totals cover only the currently open transports; mode changes can leave old ones open.
+The dashboard's `AggregateRouteCard` polls `connection.chainStatus` only while visible. With no pinned proxy, Core
+resolves the target group's current leaf in rule mode, `GLOBAL` in global mode, or `DIRECT` in direct mode. Load balancers
+stay groups rather than displaying one arbitrary member. The card shows that node or its matching applied chain, never a
+fallback to the first saved chain. Single-node counts and bytes come from its live trackers. For a chain, Core reads the
+actual `dialer-proxy`: its internal entry transport and a user connection through the exit are separate records, and
+entry bytes do not add to the global traffic totals again. Selection alone is not traffic evidence. Counts and byte
+totals cover only currently open connections and exclude other nodes left open after a selection change.
 The card requires the applied recipe and current route counters, and discards late replies after hiding or route changes.
 Generated entry names include the saved node name so the internal connection is searchable in the live feed, and an
 identity of both hops so a transport left on an older pair is not attributed to its replacement.

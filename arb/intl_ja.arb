@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "遅延の小さい順",
   "aggregateSortDescending": "遅延の大きい順",
   "aggregateResort": "並べ替えを更新",
-  "aggregateSortHint": "未測定と失敗は末尾。一括測定後に順序を更新します。"
+  "aggregateSortHint": "未測定と失敗は末尾。一括測定後に順序を更新します。",
+  "aggregateCurrentProxy": "現在のプロキシ",
+  "aggregateSingleProxy": "単一ノード",
+  "aggregateHopConnections": "入口 / 出口",
+  "aggregateProxyTrafficHint": "接続数と通信量は現在のプロキシの有効な接続のみを集計します。ルールモードでは設定された接続先グループに従います。"
 }

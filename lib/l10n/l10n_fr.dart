@@ -4253,4 +4253,17 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get aggregateSortHint =>
       'Non testés et échecs à la fin. Tri après les tests groupés.';
+
+  @override
+  String get aggregateCurrentProxy => 'Proxy actuel';
+
+  @override
+  String get aggregateSingleProxy => 'Nœud unique';
+
+  @override
+  String get aggregateHopConnections => 'Entrée / Sortie';
+
+  @override
+  String get aggregateProxyTrafficHint =>
+      'Les compteurs concernent les connexions ouvertes de ce proxy. En mode règles, ils suivent le groupe cible configuré.';
 }

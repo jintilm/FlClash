@@ -9,64 +9,58 @@ part of '../aggregation.dart';
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
 
-@ProviderFor(aggregateCurrentChain)
-final aggregateCurrentChainProvider = AggregateCurrentChainProvider._();
+@ProviderFor(aggregateRouteContext)
+final aggregateRouteContextProvider = AggregateRouteContextProvider._();
 
-final class AggregateCurrentChainProvider
+final class AggregateRouteContextProvider
     extends
         $FunctionalProvider<
-          ({ProxyChain chain, int profileId, AggregateConfig settings})?,
-          ({ProxyChain chain, int profileId, AggregateConfig settings})?,
-          ({ProxyChain chain, int profileId, AggregateConfig settings})?
+          ({int profileId, AggregateConfig settings})?,
+          ({int profileId, AggregateConfig settings})?,
+          ({int profileId, AggregateConfig settings})?
         >
-    with
-        $Provider<
-          ({ProxyChain chain, int profileId, AggregateConfig settings})?
-        > {
-  AggregateCurrentChainProvider._()
+    with $Provider<({int profileId, AggregateConfig settings})?> {
+  AggregateRouteContextProvider._()
     : super(
         from: null,
         argument: null,
         retry: null,
-        name: r'aggregateCurrentChainProvider',
+        name: r'aggregateRouteContextProvider',
         isAutoDispose: true,
         dependencies: null,
         $allTransitiveDependencies: null,
       );
 
   @override
-  String debugGetCreateSourceHash() => _$aggregateCurrentChainHash();
+  String debugGetCreateSourceHash() => _$aggregateRouteContextHash();
 
   @$internal
   @override
-  $ProviderElement<
-    ({ProxyChain chain, int profileId, AggregateConfig settings})?
-  >
-  $createElement($ProviderPointer pointer) => $ProviderElement(pointer);
+  $ProviderElement<({int profileId, AggregateConfig settings})?> $createElement(
+    $ProviderPointer pointer,
+  ) => $ProviderElement(pointer);
 
   @override
-  ({ProxyChain chain, int profileId, AggregateConfig settings})? create(
-    Ref ref,
-  ) {
-    return aggregateCurrentChain(ref);
+  ({int profileId, AggregateConfig settings})? create(Ref ref) {
+    return aggregateRouteContext(ref);
   }
 
   /// {@macro riverpod.override_with_value}
   Override overrideWithValue(
-    ({ProxyChain chain, int profileId, AggregateConfig settings})? value,
+    ({int profileId, AggregateConfig settings})? value,
   ) {
     return $ProviderOverride(
       origin: this,
       providerOverride:
-          $SyncValueProvider<
-            ({ProxyChain chain, int profileId, AggregateConfig settings})?
-          >(value),
+          $SyncValueProvider<({int profileId, AggregateConfig settings})?>(
+            value,
+          ),
     );
   }
 }
 
-String _$aggregateCurrentChainHash() =>
-    r'acafb5ec3e3bab9144574af8a41c018f50052f05';
+String _$aggregateRouteContextHash() =>
+    r'01ef0c61d0d94abf05c909ab36925d56b8932b2c';
 
 @ProviderFor(AggregateRuntime)
 final aggregateRuntimeProvider = AggregateRuntimeProvider._();

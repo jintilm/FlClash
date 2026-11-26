@@ -11,6 +11,29 @@ import '../helpers/test_profiles.dart';
 
 void main() {
   test(
+    'dashboard context remains available for an aggregate with only single nodes',
+    () {
+      const profile = Profile(
+        id: 3,
+        type: ProfileType.aggregate,
+        autoUpdateDuration: Duration.zero,
+        aggregate: AggregateConfig(targetGroup: 'Proxy'),
+      );
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([profile])),
+          currentProfileIdProvider.overrideWithBuild((_, _) => 3),
+        ],
+      );
+      addTearDown(container.dispose);
+      expect(container.read(aggregateRouteContextProvider), (
+        profileId: 3,
+        settings: profile.aggregate!,
+      ));
+    },
+  );
+
+  test(
     'aggregate profile recipe survives database storage and draft edits stay separate',
     () async {
       final database = db.Database(NativeDatabase.memory());

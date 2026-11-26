@@ -40,6 +40,9 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
     final result = switch (method) {
       CoreMethod.coreInitialized => true,
       CoreMethod.connectionChainStatus => {
+        'proxy': 'SG to LT',
+        'proxy-type': 'Http',
+        'target': 'Proxy',
         'core-epoch': 3,
         'route-version': 7,
         'running': true,
@@ -229,6 +232,7 @@ void main() {
       target: 'Proxy',
     );
     expect(status.entry, 'SG [entry:chain]');
+    expect(status.proxy, 'SG to LT');
     expect(status.entryConnections, 2);
     expect(status.exitConnections, 4);
     expect(status.upload, 1200);
@@ -237,6 +241,11 @@ void main() {
     expect(status.routeVersion, 7);
     expect(handler.calls[CoreMethod.connectionChainStatus], {
       'proxy': 'SG to LT',
+      'target': 'Proxy',
+    });
+    await handler.getChainStatus(target: 'Proxy');
+    expect(handler.calls[CoreMethod.connectionChainStatus], {
+      'proxy': '',
       'target': 'Proxy',
     });
   });

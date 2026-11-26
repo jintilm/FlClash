@@ -4199,4 +4199,17 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get aggregateSortHint =>
       'Непроверенные и сбои в конце. Порядок обновляется после пакетного теста.';
+
+  @override
+  String get aggregateCurrentProxy => 'Текущий прокси';
+
+  @override
+  String get aggregateSingleProxy => 'Один узел';
+
+  @override
+  String get aggregateHopConnections => 'Вход / Выход';
+
+  @override
+  String get aggregateProxyTrafficHint =>
+      'Счётчики отражают открытые соединения этого прокси. В режиме правил используется настроенная целевая группа.';
 }

@@ -5,7 +5,7 @@ import 'package:fl_clash/core/interface.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/providers.dart';
-import 'package:fl_clash/views/dashboard/widgets/aggregate_entry.dart';
+import 'package:fl_clash/views/dashboard/widgets/aggregate_route.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,6 +48,9 @@ void main() {
     routeVersion: 2,
     running: true,
     selected: true,
+    proxy: 'SG to LT [one]',
+    proxyType: 'Http',
+    target: 'Proxy',
     entry: 'SG [entry:one]',
     entryConnections: 1,
     exitConnections: 2,
@@ -68,10 +71,9 @@ void main() {
           (_, _) =>
               (profileId: 3, settings: settings, applied: true, error: null),
         ),
-        aggregateCurrentChainProvider.overrideWithValue((
+        aggregateRouteContextProvider.overrideWithValue((
           profileId: 3,
           settings: settings,
-          chain: chain,
         )),
       ],
     );
@@ -86,7 +88,7 @@ void main() {
           locale: Locale('en'),
           child: Align(
             alignment: Alignment.topCenter,
-            child: SizedBox(width: 700, child: AggregateEntryCard()),
+            child: SizedBox(width: 700, child: AggregateRouteCard()),
           ),
         ),
       ),
@@ -116,6 +118,35 @@ void main() {
     expect(find.text('Traffic observed'), findsNothing);
     await tester.pumpWidget(const SizedBox.shrink());
   });
+
+  testWidgets(
+    'single nodes show their connections instead of an unused chain',
+    (tester) async {
+      when(
+        () => core.getChainStatus(
+          proxy: any(named: 'proxy'),
+          target: any(named: 'target'),
+        ),
+      ).thenAnswer(
+        (_) async => active.copyWith(
+          proxy: 'SG 229',
+          entry: '',
+          entryConnections: 0,
+          exitConnections: 13,
+        ),
+      );
+      await mount(tester);
+      expect(find.text('Current proxy'), findsOneWidget);
+      expect(find.text('SG 229'), findsOneWidget);
+      expect(find.text('Single node'), findsOneWidget);
+      expect(find.text('13'), findsOneWidget);
+      expect(find.text('SG → LT'), findsNothing);
+      expect(find.text('Not selected'), findsNothing);
+      expect(find.text('Traffic observed'), findsOneWidget);
+      verify(() => core.getChainStatus(target: 'Proxy')).called(1);
+      await tester.pumpWidget(const SizedBox.shrink());
+    },
+  );
 
   testWidgets(
     'shows real traffic and clears it on a route change or failed poll',

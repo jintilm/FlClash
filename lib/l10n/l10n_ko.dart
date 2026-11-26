@@ -4090,4 +4090,17 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String get aggregateSortHint => '미측정 및 실패는 마지막에 표시되며 일괄 테스트 후 정렬됩니다.';
+
+  @override
+  String get aggregateCurrentProxy => '현재 프록시';
+
+  @override
+  String get aggregateSingleProxy => '단일 노드';
+
+  @override
+  String get aggregateHopConnections => '진입 / 출구';
+
+  @override
+  String get aggregateProxyTrafficHint =>
+      '현재 프록시의 열린 연결 수와 트래픽만 표시합니다. 규칙 모드에서는 설정된 대상 그룹을 따릅니다.';
 }

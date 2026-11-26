@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "Latencia: menor a mayor",
   "aggregateSortDescending": "Latencia: mayor a menor",
   "aggregateResort": "Actualizar orden",
-  "aggregateSortHint": "Sin probar y fallidos al final. Se ordena tras la prueba por lotes."
+  "aggregateSortHint": "Sin probar y fallidos al final. Se ordena tras la prueba por lotes.",
+  "aggregateCurrentProxy": "Proxy actual",
+  "aggregateSingleProxy": "Nodo único",
+  "aggregateHopConnections": "Entrada / Salida",
+  "aggregateProxyTrafficHint": "Los contadores incluyen las conexiones abiertas de este proxy. En modo regla, siguen el grupo de destino configurado."
 }

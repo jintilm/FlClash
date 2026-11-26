@@ -3962,4 +3962,16 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aggregateSortHint => '未测试和失败置后，批量测速结束后更新顺序。';
+
+  @override
+  String get aggregateCurrentProxy => '当前代理';
+
+  @override
+  String get aggregateSingleProxy => '单节点';
+
+  @override
+  String get aggregateHopConnections => '入口 / 出口';
+
+  @override
+  String get aggregateProxyTrafficHint => '连接数和流量仅统计当前代理的活动连接；规则模式下跟随配置的接入代理组。';
 }

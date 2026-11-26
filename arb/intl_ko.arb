@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "지연 낮은 순",
   "aggregateSortDescending": "지연 높은 순",
   "aggregateResort": "정렬 새로고침",
-  "aggregateSortHint": "미측정 및 실패는 마지막에 표시되며 일괄 테스트 후 정렬됩니다."
+  "aggregateSortHint": "미측정 및 실패는 마지막에 표시되며 일괄 테스트 후 정렬됩니다.",
+  "aggregateCurrentProxy": "현재 프록시",
+  "aggregateSingleProxy": "단일 노드",
+  "aggregateHopConnections": "진입 / 출구",
+  "aggregateProxyTrafficHint": "현재 프록시의 열린 연결 수와 트래픽만 표시합니다. 규칙 모드에서는 설정된 대상 그룹을 따릅니다."
 }

@@ -8,7 +8,7 @@ import 'package:fl_clash/views/dashboard/dashboard.dart';
 import 'package:fl_clash/views/dashboard/layout.dart';
 import 'package:fl_clash/views/dashboard/widgets/card.dart';
 import 'package:fl_clash/views/dashboard/widgets/widgets.dart';
-import 'package:fl_clash/views/dashboard/widgets/aggregate_entry.dart';
+import 'package:fl_clash/views/dashboard/widgets/aggregate_route.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -169,8 +169,8 @@ void main() {
     for (final size in const [Size(1220, 824), Size(360, 800)]) {
       await pumpDashboard(tester, size);
       await tester.pump(const Duration(milliseconds: 500));
-      expect(find.byType(AggregateEntryCard), findsOneWidget);
-      expect(find.text('SG → LT'), findsOneWidget);
+      expect(find.byType(AggregateRouteCard), findsOneWidget);
+      expect(find.text('Current proxy'), findsOneWidget);
       expect(tester.takeException(), isNull);
       await teardown(tester);
     }

@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "Latence croissante",
   "aggregateSortDescending": "Latence décroissante",
   "aggregateResort": "Actualiser l’ordre",
-  "aggregateSortHint": "Non testés et échecs à la fin. Tri après les tests groupés."
+  "aggregateSortHint": "Non testés et échecs à la fin. Tri après les tests groupés.",
+  "aggregateCurrentProxy": "Proxy actuel",
+  "aggregateSingleProxy": "Nœud unique",
+  "aggregateHopConnections": "Entrée / Sortie",
+  "aggregateProxyTrafficHint": "Les compteurs concernent les connexions ouvertes de ce proxy. En mode règles, ils suivent le groupe cible configuré."
 }

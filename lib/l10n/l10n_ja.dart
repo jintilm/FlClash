@@ -4013,4 +4013,17 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get aggregateSortHint => '未測定と失敗は末尾。一括測定後に順序を更新します。';
+
+  @override
+  String get aggregateCurrentProxy => '現在のプロキシ';
+
+  @override
+  String get aggregateSingleProxy => '単一ノード';
+
+  @override
+  String get aggregateHopConnections => '入口 / 出口';
+
+  @override
+  String get aggregateProxyTrafficHint =>
+      '接続数と通信量は現在のプロキシの有効な接続のみを集計します。ルールモードでは設定された接続先グループに従います。';
 }

@@ -1350,5 +1350,9 @@
         "type": "String"
       }
     }
-  }
+  },
+  "aggregateCurrentProxy": "Current proxy",
+  "aggregateSingleProxy": "Single node",
+  "aggregateHopConnections": "Entry / Exit",
+  "aggregateProxyTrafficHint": "Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group."
 }

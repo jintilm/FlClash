@@ -4208,4 +4208,17 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aggregateSortHint =>
       'Untested and failed last. Order updates after batch tests.';
+
+  @override
+  String get aggregateCurrentProxy => 'Current proxy';
+
+  @override
+  String get aggregateSingleProxy => 'Single node';
+
+  @override
+  String get aggregateHopConnections => 'Entry / Exit';
+
+  @override
+  String get aggregateProxyTrafficHint =>
+      'Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group.';
 }

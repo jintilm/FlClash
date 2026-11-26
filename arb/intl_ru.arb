@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "Задержка по возрастанию",
   "aggregateSortDescending": "Задержка по убыванию",
   "aggregateResort": "Обновить порядок",
-  "aggregateSortHint": "Непроверенные и сбои в конце. Порядок обновляется после пакетного теста."
+  "aggregateSortHint": "Непроверенные и сбои в конце. Порядок обновляется после пакетного теста.",
+  "aggregateCurrentProxy": "Текущий прокси",
+  "aggregateSingleProxy": "Один узел",
+  "aggregateHopConnections": "Вход / Выход",
+  "aggregateProxyTrafficHint": "Счётчики отражают открытые соединения этого прокси. В режиме правил используется настроенная целевая группа."
 }

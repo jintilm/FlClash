@@ -1212,5 +1212,9 @@
   "aggregateSortAscending": "延迟从低到高",
   "aggregateSortDescending": "延迟从高到低",
   "aggregateResort": "重新排序",
-  "aggregateSortHint": "未测试和失败置后，批量测速结束后更新顺序。"
+  "aggregateSortHint": "未测试和失败置后，批量测速结束后更新顺序。",
+  "aggregateCurrentProxy": "当前代理",
+  "aggregateSingleProxy": "单节点",
+  "aggregateHopConnections": "入口 / 出口",
+  "aggregateProxyTrafficHint": "连接数和流量仅统计当前代理的活动连接；规则模式下跟随配置的接入代理组。"
 }

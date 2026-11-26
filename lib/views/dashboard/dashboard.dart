@@ -13,7 +13,7 @@ import 'layout.dart';
 import 'style.dart';
 import 'widget_registry.dart';
 import 'widgets/widgets.dart';
-import 'widgets/aggregate_entry.dart';
+import 'widgets/aggregate_route.dart';
 
 // Narrower columns leave a pair of service cells too tight for a status, so
 // the grid stacks them in one.
@@ -137,7 +137,7 @@ class _DesktopDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasChain = ref.watch(aggregateCurrentChainProvider) != null;
+    final hasAggregate = ref.watch(aggregateRouteContextProvider) != null;
     final density = DashboardDensityScope.of(context);
     final compact = density.isCompact;
     final scale = DashboardDensityScope.scaleOf(context);
@@ -199,8 +199,8 @@ class _DesktopDashboard extends ConsumerWidget {
                   topHeight,
                   const RepaintBoundary(child: CurrentOutboundCard()),
                 ),
-                if (hasChain)
-                  const RepaintBoundary(child: AggregateEntryCard()),
+                if (hasAggregate)
+                  const RepaintBoundary(child: AggregateRouteCard()),
                 sized(
                   topHeight,
                   row(const [
@@ -235,10 +235,10 @@ class _DesktopDashboard extends ConsumerWidget {
               (1, SpeedCard(direction: TrafficDirection.download)),
             ]),
           ),
-          if (hasChain)
+          if (hasAggregate)
             sized(
               96 * scale,
-              const RepaintBoundary(child: AggregateEntryCard()),
+              const RepaintBoundary(child: AggregateRouteCard()),
             ),
           sized(
             controlHeight,
@@ -265,7 +265,7 @@ class _DesktopDashboard extends ConsumerWidget {
             controlHeight +
             middleHeight +
             gap * 3 +
-            (hasChain ? 96 * scale + gap : 0);
+            (hasAggregate ? 96 * scale + gap : 0);
         final tablesFit = constraints.maxHeight >= rowsHeight + tablesHeight;
         final fills = constraints.maxHeight >= rowsHeight + summaryHeight;
         return SingleChildScrollView(
@@ -330,7 +330,7 @@ class _MobileDashboard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final hasChain = ref.watch(aggregateCurrentChainProvider) != null;
+    final hasAggregate = ref.watch(aggregateRouteContextProvider) != null;
     final saved = ref.watch(
       dashboardStateProvider.select((state) => state.dashboardWidgets),
     );
@@ -374,8 +374,9 @@ class _MobileDashboard extends ConsumerWidget {
                         key: cardKeyOf(widget),
                         child: widget.card,
                       ),
-                      if (hasChain && widget == DashboardWidget.currentOutbound)
-                        const RepaintBoundary(child: AggregateEntryCard()),
+                      if (hasAggregate &&
+                          widget == DashboardWidget.currentOutbound)
+                        const RepaintBoundary(child: AggregateRouteCard()),
                     ],
                   ],
                 ),

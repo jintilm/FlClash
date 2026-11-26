@@ -7396,6 +7396,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Untested and failed last. Order updates after batch tests.'**
   String get aggregateSortHint;
+
+  /// No description provided for @aggregateCurrentProxy.
+  ///
+  /// In en, this message translates to:
+  /// **'Current proxy'**
+  String get aggregateCurrentProxy;
+
+  /// No description provided for @aggregateSingleProxy.
+  ///
+  /// In en, this message translates to:
+  /// **'Single node'**
+  String get aggregateSingleProxy;
+
+  /// No description provided for @aggregateHopConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Entry / Exit'**
+  String get aggregateHopConnections;
+
+  /// No description provided for @aggregateProxyTrafficHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group.'**
+  String get aggregateProxyTrafficHint;
 }
 
 class _AppLocalizationsDelegate
