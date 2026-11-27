@@ -5,6 +5,8 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"net/http/httptest"
+	"reflect"
 	"testing"
 	"time"
 
@@ -14,6 +16,101 @@ import (
 	"github.com/metacubex/mihomo/tunnel"
 	"github.com/metacubex/mihomo/tunnel/statistic"
 )
+
+func TestMultiHopStatusTracksEveryTransportInOrder(t *testing.T) {
+	for _, count := range []int{3, maxAggregateHops} {
+		t.Run(fmt.Sprint(count), func(t *testing.T) {
+			servers := make([]*httptest.Server, count)
+			targets := make([]chan string, count)
+			proxies := make(map[string]constant.Proxy)
+			for i := range count {
+				targets[i] = make(chan string, 8)
+				servers[i] = aggregateConnectServer(t, targets[i])
+				definition := draftHttpNode(servers[i])
+				definition["name"] = fmt.Sprintf("Hop %d", i+1)
+				if i > 0 {
+					definition["dialer-proxy"] = fmt.Sprintf("Hop %d", i)
+				}
+				proxy, err := adapter.ParseProxy(definition, adapter.WithTunnelForAPI(tunnel.Tunnel))
+				if err != nil {
+					t.Fatal(err)
+				}
+				proxies[proxy.Name()] = proxy
+				t.Cleanup(func() { proxy.Close() })
+			}
+			exit := proxies[fmt.Sprintf("Hop %d", count)]
+			proxies["Proxy"] = selectorOver(t, "Proxy", exit)
+			tunnel.UpdateProxies(proxies, nil)
+			previousMode := tunnel.Mode()
+			tunnel.SetMode(tunnel.Rule)
+			t.Cleanup(func() { tunnel.SetMode(previousMode); tunnel.UpdateProxies(nil, nil) })
+			destination := probeServer(t, func(w http.ResponseWriter, r *http.Request) {
+				fmt.Fprint(w, "all hops reached\n")
+				w.(http.Flusher).Flush()
+				<-r.Context().Done()
+			})
+			metadata := &constant.Metadata{Type: constant.HTTP, NetWork: constant.TCP}
+			if err := metadata.SetRemoteAddress(destination.Listener.Addr().String()); err != nil {
+				t.Fatal(err)
+			}
+			conn, err := exit.DialContext(context.Background(), metadata)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tracker := statistic.NewTCPTracker(conn, statistic.DefaultManager, metadata, nil, 0, 0, true)
+			t.Cleanup(func() { tracker.Close() })
+			tracker.SetDeadline(time.Now().Add(3 * time.Second))
+			fmt.Fprint(tracker, "GET / HTTP/1.1\r\nHost: localhost\r\nConnection: close\r\n\r\n")
+			reader := bufio.NewReader(tracker)
+			for {
+				line, err := reader.ReadString('\n')
+				if err != nil {
+					t.Fatal(err)
+				}
+				if line == "all hops reached\n" {
+					break
+				}
+			}
+			status := handleChainStatus(ChainStatusParams{Target: "Proxy"})
+			if len(status.Hops) != count || status.Entry != "Hop 1" || status.Proxy != exit.Name() || !status.Selected {
+				t.Fatalf("status: %+v", status)
+			}
+			for i, hop := range status.Hops {
+				if hop.Name != fmt.Sprintf("Hop %d", i+1) || hop.Connections != 1 || hop.Upload <= 0 || hop.Download <= 0 {
+					t.Fatalf("hop: %+v", hop)
+				}
+				want := destination.Listener.Addr().String()
+				if i < count-1 {
+					want = servers[i+1].Listener.Addr().String()
+				}
+				select {
+				case target := <-targets[i]:
+					if target != want {
+						t.Fatalf("hop %d: %s, want %s", i+1, target, want)
+					}
+				default:
+					t.Fatalf("hop %d bypassed", i+1)
+				}
+			}
+			if status.Upload != status.Hops[0].Upload || status.Download != status.Hops[0].Download {
+				t.Fatal("traffic added for every hop")
+			}
+			tracker.Close()
+			deadline := time.Now().Add(time.Second)
+			for status = handleChainStatus(ChainStatusParams{Target: "Proxy"}); time.Now().Before(deadline); status = handleChainStatus(ChainStatusParams{Target: "Proxy"}) {
+				live := false
+				for _, hop := range status.Hops {
+					live = live || hop.Connections > 0
+				}
+				if !live {
+					return
+				}
+				time.Sleep(time.Millisecond)
+			}
+			t.Fatalf("connections did not close: %+v", status)
+		})
+	}
+}
 
 func TestChainStatusMeasuresTheRealEntryTransport(t *testing.T) {
 	entryServer := aggregateConnectServer(t, make(chan string, 8))
@@ -79,7 +176,7 @@ func TestChainStatusMeasuresTheRealEntryTransport(t *testing.T) {
 	if !active.Selected || active.EntryConnections != 1 || active.ExitConnections != 1 || active.Upload <= 0 || active.Download <= 0 {
 		t.Fatalf("active: %+v", active)
 	}
-	if current := handleChainStatus(ChainStatusParams{Target: "Proxy"}); current != active {
+	if current := handleChainStatus(ChainStatusParams{Target: "Proxy"}); !reflect.DeepEqual(current, active) {
 		t.Fatalf("automatic chain: %+v, pinned: %+v", current, active)
 	}
 	found := false

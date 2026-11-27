@@ -156,7 +156,9 @@ class _RouteStatusState extends ConsumerState<_RouteStatus>
     final routeLabel = status == null || status.proxy.isEmpty
         ? '—'
         : chain != null
-        ? '${chain.entry.name} → ${chain.exit.name}'
+        ? chain.hops.map((hop) => hop.name).join(' → ')
+        : status.hops.length > 1
+        ? status.hops.map((hop) => hop.name).join(' → ')
         : hasEntry
         ? '${status.entry} → ${status.proxy}'
         : status.proxy;
@@ -169,6 +171,8 @@ class _RouteStatusState extends ConsumerState<_RouteStatus>
         : l.aggregateSingleProxy;
     final connections = status == null
         ? '—'
+        : status.hops.isNotEmpty
+        ? status.hops.map((hop) => '${hop.connections}').join(' / ')
         : hasEntry
         ? '${status.entryConnections} / ${status.exitConnections}'
         : '${status.exitConnections}';
@@ -181,7 +185,11 @@ class _RouteStatusState extends ConsumerState<_RouteStatus>
           final wide = width >= 640;
           final values = <Widget>[
             _RouteMetric(
-              label: hasEntry ? l.aggregateHopConnections : l.liveConnections,
+              label: status != null && status.hops.length > 2
+                  ? l.aggregateAllHopConnections
+                  : hasEntry
+                  ? l.aggregateHopConnections
+                  : l.liveConnections,
               value: connections,
               compact: !wide,
             ),

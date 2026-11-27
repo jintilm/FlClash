@@ -3905,14 +3905,14 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aggregateAsExit => '출구로 사용';
 
   @override
-  String get aggregateSwap => '입구와 출구 바꾸기';
+  String get aggregateSwap => '홉 순서 뒤집기';
 
   @override
   String get aggregateChoose => '선택';
 
   @override
   String get aggregateRouteHint =>
-      '이 기기 → 입구 → 출구 → 웹사이트. 저장 후 전체 체인을 테스트하고 적용 후 트래픽에 사용하세요.';
+      '이 기기 → 진입 → 중계 → 출구 → 웹사이트. 저장 후 전체 체인을 테스트하고 적용 후 트래픽에 사용합니다.';
 
   @override
   String get aggregateDnsInherited => 'DNS와 라우팅은 프록시 의존성을 포함하여 기본 프로필에서 상속됩니다.';
@@ -3984,10 +3984,10 @@ class AppLocalizationsKo extends AppLocalizations {
   String get aggregateExistingDialer => '이 노드의 기존 전단 프록시 의존성을 먼저 해결하세요';
 
   @override
-  String get aggregateSameHop => '입구와 출구는 서로 달라야 합니다';
+  String get aggregateSameHop => '체인에서 같은 노드를 반복할 수 없습니다.';
 
   @override
-  String get aggregateUdpEntry => '출구 프로토콜에는 입구의 UDP 지원이 필요합니다';
+  String get aggregateUdpEntry => '이 홉의 프로토콜은 앞선 홉의 UDP 지원이 필요합니다';
 
   @override
   String get aggregateCycle => '순환 프록시 의존성';
@@ -4035,7 +4035,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return '기존 노드 측정 결과를 표시합니다. 미측정 체인은 진입 노드 $entry을(를) 통해 자동 측정합니다.';
+    return '기존 노드 결과를 표시합니다. 미측정 경로는 $entry을(를) 순서대로 거쳐 자동 측정합니다.';
   }
 
   @override
@@ -4103,4 +4103,28 @@ class AppLocalizationsKo extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       '현재 프록시의 열린 연결 수와 트래픽만 표시합니다. 규칙 모드에서는 설정된 대상 그룹을 따릅니다.';
+
+  @override
+  String aggregateRelay(int hop) {
+    return '중계 노드 ($hop번째 홉)';
+  }
+
+  @override
+  String get aggregateAddRelay => '중계 추가';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return '2~$max홉을 지원합니다. 정렬에서 드래그하고 노드 메뉴에서 삭제하세요. 홉이 늘면 지연이 증가할 수 있습니다.';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return '체인은 최대 $max홉을 지원합니다.';
+  }
+
+  @override
+  String get aggregatePrefixMissing => '경로를 테스트하려면 앞선 홉을 먼저 선택하세요.';
+
+  @override
+  String get aggregateAllHopConnections => '홉별 연결';
 }

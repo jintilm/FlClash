@@ -3781,13 +3781,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aggregateAsExit => '设为出口';
 
   @override
-  String get aggregateSwap => '交换入口与出口';
+  String get aggregateSwap => '反转节点顺序';
 
   @override
   String get aggregateChoose => '请选择';
 
   @override
-  String get aggregateRouteHint => '本机 → 入口 → 出口 → 目标网站。保存后可测试完整链路，应用后可用于代理流量。';
+  String get aggregateRouteHint =>
+      '本机 → 入口 → 中转节点 → 出口 → 目标网站。保存后可测试完整链路，应用后可用于代理流量。';
 
   @override
   String get aggregateDnsInherited => 'DNS 与分流继承基础配置，并保留其代理依赖。';
@@ -3859,10 +3860,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aggregateExistingDialer => '此节点已有前置代理依赖，请先处理后再聚合或组链';
 
   @override
-  String get aggregateSameHop => '入口与出口不能是同一个节点';
+  String get aggregateSameHop => '同一条链路不能重复使用同一个节点。';
 
   @override
-  String get aggregateUdpEntry => '出口协议需要入口支持 UDP';
+  String get aggregateUdpEntry => '此跳的协议要求前一跳支持 UDP';
 
   @override
   String get aggregateCycle => '代理引用形成循环';
@@ -3908,7 +3909,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return '沿用已有节点延迟；未测链路会通过入口 $entry 自动测速。';
+    return '沿用已有节点延迟；未测路径会依次经过 $entry 自动测速。';
   }
 
   @override
@@ -3974,4 +3975,28 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get aggregateProxyTrafficHint => '连接数和流量仅统计当前代理的活动连接；规则模式下跟随配置的接入代理组。';
+
+  @override
+  String aggregateRelay(int hop) {
+    return '中转节点（第 $hop 跳）';
+  }
+
+  @override
+  String get aggregateAddRelay => '添加中转节点';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return '支持 2～$max 跳。点击排序可拖动节点，右键或长按节点可删除。增加跳数可能提高延迟。';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return '一条链路最多支持 $max 跳。';
+  }
+
+  @override
+  String get aggregatePrefixMissing => '先选择前面的节点，才能测试这段链路。';
+
+  @override
+  String get aggregateAllHopConnections => '逐跳连接';
 }

@@ -1270,9 +1270,9 @@
   "aggregateExit": "Exit node",
   "aggregateAsEntry": "Use as entry",
   "aggregateAsExit": "Use as exit",
-  "aggregateSwap": "Swap entry and exit",
+  "aggregateSwap": "Reverse hop order",
   "aggregateChoose": "Choose",
-  "aggregateRouteHint": "This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.",
+  "aggregateRouteHint": "This device → Entry → Relays → Exit → Website. Save to test the complete chain; apply to use it for traffic.",
   "aggregateDnsInherited": "DNS and routing are inherited from the base profile, including proxy dependencies.",
   "aggregateApply": "Apply aggregate profile",
   "aggregateApplied": "Applied",
@@ -1296,8 +1296,8 @@
   "aggregateRepair": "Needs repair: select the missing or changed node again",
   "aggregateDuplicateName": "Duplicate or empty name",
   "aggregateExistingDialer": "This node already has a dialer dependency; resolve it before aggregation or chaining",
-  "aggregateSameHop": "Entry and exit must be different nodes",
-  "aggregateUdpEntry": "The exit protocol requires UDP support from the entry",
+  "aggregateSameHop": "A node cannot appear more than once in a chain.",
+  "aggregateUdpEntry": "This hop’s protocol requires the preceding hop to support UDP",
   "aggregateCycle": "Circular proxy dependency",
   "aggregateDnsBootstrap": "DNS bootstrap depends on an unresolved proxy. Configure independent node resolution or an IP entry.",
   "aggregateMissingDnsProxy": "A DNS proxy dependency is missing",
@@ -1312,7 +1312,7 @@
   "aggregateUntested": "Not tested",
   "aggregateNodeDelay": "Node latency",
   "aggregateTestChain": "Test chain",
-  "aggregateExitDelayHint": "Existing node results are shown. Missing chain results are tested automatically through entry {entry}.",
+  "aggregateExitDelayHint": "Existing node results are shown. Missing path results are tested automatically through {entry}.",
   "@aggregateExitDelayHint": {
     "placeholders": {
       "entry": {
@@ -1354,5 +1354,32 @@
   "aggregateCurrentProxy": "Current proxy",
   "aggregateSingleProxy": "Single node",
   "aggregateHopConnections": "Entry / Exit",
-  "aggregateProxyTrafficHint": "Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group."
+  "aggregateProxyTrafficHint": "Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group.",
+  "aggregateRelay": "Relay hop {hop}",
+  "aggregateAddRelay": "Add relay",
+  "aggregateMultiHopHint": "Supports 2–{max} hops. Use Sort to drag nodes; use a node’s context menu to remove it. More hops can increase latency.",
+  "aggregateHopLimit": "A chain supports at most {max} hops.",
+  "aggregatePrefixMissing": "Choose the preceding hops first to test this path.",
+  "aggregateAllHopConnections": "Connections by hop",
+  "@aggregateRelay": {
+    "placeholders": {
+      "hop": {
+        "type": "int"
+      }
+    }
+  },
+  "@aggregateMultiHopHint": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  },
+  "@aggregateHopLimit": {
+    "placeholders": {
+      "max": {
+        "type": "int"
+      }
+    }
+  }
 }

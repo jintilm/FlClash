@@ -119,6 +119,55 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('shows every hop and its connection count in order', (
+    tester,
+  ) async {
+    final multi = chain.copyWith(
+      relays: [
+        const AggregateNodeRef(sourceId: 1, fingerprint: 'jp', name: 'JP'),
+      ],
+    );
+    container
+        .read(aggregateRuntimeProvider.notifier)
+        .record(3, settings.copyWith(chains: [multi]), true);
+    container.updateOverrides([
+      coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+      coreStatusProvider.overrideWithBuild((_, _) => CoreStatus.connected),
+      routeTrackerProvider.overrideWith(_Route.new),
+      aggregateRuntimeProvider.overrideWithBuild(
+        (_, _) => (
+          profileId: 3,
+          settings: settings.copyWith(chains: [multi]),
+          applied: true,
+          error: null,
+        ),
+      ),
+      aggregateRouteContextProvider.overrideWithValue((
+        profileId: 3,
+        settings: settings.copyWith(chains: [multi]),
+      )),
+    ]);
+    when(
+      () => core.getChainStatus(
+        proxy: any(named: 'proxy'),
+        target: any(named: 'target'),
+      ),
+    ).thenAnswer(
+      (_) async => active.copyWith(
+        hops: [
+          const ChainHopStatus(name: 'SG [entry:one]', connections: 1),
+          const ChainHopStatus(name: 'JP [hop2:one]', connections: 2),
+          const ChainHopStatus(name: 'SG to LT [one]', connections: 3),
+        ],
+      ),
+    );
+    await mount(tester);
+    expect(find.text('SG → JP → LT'), findsOneWidget);
+    expect(find.text('Connections by hop'), findsOneWidget);
+    expect(find.text('1 / 2 / 3'), findsOneWidget);
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets(
     'single nodes show their connections instead of an unused chain',
     (tester) async {

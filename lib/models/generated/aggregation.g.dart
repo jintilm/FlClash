@@ -27,6 +27,11 @@ _ProxyChain _$ProxyChainFromJson(Map<String, dynamic> json) => _ProxyChain(
   name: json['name'] as String,
   entry: AggregateNodeRef.fromJson(json['entry'] as Map<String, dynamic>),
   exit: AggregateNodeRef.fromJson(json['exit'] as Map<String, dynamic>),
+  relays:
+      (json['relays'] as List<dynamic>?)
+          ?.map((e) => AggregateNodeRef.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ProxyChainToJson(_ProxyChain instance) =>
@@ -35,6 +40,7 @@ Map<String, dynamic> _$ProxyChainToJson(_ProxyChain instance) =>
       'name': instance.name,
       'entry': instance.entry,
       'exit': instance.exit,
+      'relays': instance.relays,
     };
 
 _AggregateConfig _$AggregateConfigFromJson(Map<String, dynamic> json) =>

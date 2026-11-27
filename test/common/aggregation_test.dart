@@ -73,6 +73,149 @@ void main() {
   );
   final original = base([a.nodes.single.definition]);
 
+  test('legacy two-hop recipes and new relay lists both round-trip', () {
+    final old = jsonDecode(jsonEncode(chain.toJson())) as Map<String, dynamic>;
+    old.remove('relays');
+    expect(ProxyChain.fromJson(old).hops, [chain.entry, chain.exit]);
+    final multi = chain.copyWith(
+      relays: [chain.entry.copyWith(fingerprint: 'middle')],
+    );
+    final restored = ProxyChain.fromJson(
+      jsonDecode(jsonEncode(multi.toJson())) as Map<String, dynamic>,
+    );
+    expect(restored.hops, [chain.entry, multi.relays.single, chain.exit]);
+    expect(restored, multi);
+  });
+
+  for (final count in [3, maxAggregateHops]) {
+    test('composes $count hops in order without changing the sources', () {
+      final middle = source(3, [
+        for (var i = 0; i < count - 2; i++)
+          node('Relay $i', '192.0.2.${10 + i}'),
+      ]);
+      final multi = chain.copyWith(
+        relays: middle.nodes.map((node) => node.ref).toList(),
+      );
+      final settings = recipe.copyWith(sourceIds: {1, 2, 3}, chains: [multi]);
+      final before = jsonEncode(original);
+      final result = composeAggregate((
+        settings: settings,
+        base: original,
+        sources: [a, b, middle],
+        interfaces: const {},
+      ));
+      final definitions = {
+        for (final node in aggregateMappings(result['proxies']))
+          node['name']: node,
+      };
+      for (var i = 0; i < count; i++) {
+        final node = definitions[aggregateHopName(multi, i)]!;
+        expect(
+          node['dialer-proxy'],
+          i == 0 ? null : aggregateHopName(multi, i - 1),
+        );
+        expect(
+          node['server'],
+          [
+            a.nodes.single,
+            ...middle.nodes,
+            b.nodes.single,
+          ][i].definition['server'],
+        );
+      }
+      expect(result['dns'], original['dns']);
+      expect(result['rules'], original['rules']);
+      expect(jsonEncode(original), before);
+      final changed = multi.copyWith(
+        relays: [...multi.relays]
+          ..[0] = multi.relays.first.copyWith(fingerprint: 'changed'),
+      );
+      expect(aggregateEntryName(changed), isNot(aggregateEntryName(multi)));
+      expect(
+        AggregateDelayTarget([
+          a.nodes.single,
+          ...middle.nodes,
+          b.nodes.single,
+        ]).testable,
+        isTrue,
+      );
+    });
+  }
+
+  test('rejects repeated or missing relay hops and chains above the limit', () {
+    void build(ProxyChain chain) => composeAggregate((
+      settings: recipe.copyWith(chains: [chain]),
+      base: original,
+      sources: [a, b],
+      interfaces: const {},
+    ));
+    expect(
+      () => build(chain.copyWith(relays: [chain.entry])),
+      throwsA(
+        isA<AggregateException>().having(
+          (e) => e.issue,
+          'issue',
+          AggregateIssue.sameHop,
+        ),
+      ),
+    );
+    expect(
+      () => build(
+        chain.copyWith(relays: [chain.entry.copyWith(fingerprint: 'missing')]),
+      ),
+      throwsA(
+        isA<AggregateException>().having(
+          (e) => e.issue,
+          'issue',
+          AggregateIssue.missingNode,
+        ),
+      ),
+    );
+    expect(
+      () => build(
+        chain.copyWith(relays: List.filled(maxAggregateHops, chain.entry)),
+      ),
+      throwsA(
+        isA<AggregateException>().having(
+          (e) => e.issue,
+          'issue',
+          AggregateIssue.hopLimit,
+        ),
+      ),
+    );
+  });
+
+  test('validates UDP requirements at an intermediate hop', () {
+    final middle = source(3, [
+      {'name': 'TCP relay', 'type': 'http', 'server': '192.0.2.3', 'port': 80},
+      {
+        'name': 'QUIC relay',
+        'type': 'hysteria2',
+        'server': '192.0.2.4',
+        'port': 443,
+        'password': 'test',
+      },
+    ]);
+    final multi = chain.copyWith(
+      relays: middle.nodes.map((node) => node.ref).toList(),
+    );
+    expect(
+      () => composeAggregate((
+        settings: recipe.copyWith(sourceIds: {1, 2, 3}, chains: [multi]),
+        base: original,
+        sources: [a, b, middle],
+        interfaces: const {},
+      )),
+      throwsA(
+        isA<AggregateException>().having(
+          (e) => e.issue,
+          'issue',
+          AggregateIssue.udpEntry,
+        ),
+      ),
+    );
+  });
+
   test('entry transport names change when either hop changes', () {
     final originalName = aggregateEntryName(chain);
     expect(

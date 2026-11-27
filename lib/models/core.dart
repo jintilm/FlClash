@@ -417,10 +417,24 @@ abstract class ChainStatus with _$ChainStatus {
     @JsonKey(name: 'exit-connections') @Default(0) int exitConnections,
     @Default(0) int upload,
     @Default(0) int download,
+    @Default([]) List<ChainHopStatus> hops,
   }) = _ChainStatus;
 
   factory ChainStatus.fromJson(Map<String, Object?> json) =>
       _$ChainStatusFromJson(json);
+}
+
+@freezed
+abstract class ChainHopStatus with _$ChainHopStatus {
+  const factory ChainHopStatus({
+    required String name,
+    @Default(0) int connections,
+    @Default(0) int upload,
+    @Default(0) int download,
+  }) = _ChainHopStatus;
+
+  factory ChainHopStatus.fromJson(Map<String, Object?> json) =>
+      _$ChainHopStatusFromJson(json);
 }
 
 /// [exit] is the Core's name for where a connection left, only compared whole.

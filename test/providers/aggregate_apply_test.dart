@@ -92,6 +92,19 @@ void main() {
             },
           ],
         ).single;
+        final relay = aggregateNodes(
+          sourceId: 2,
+          label: 'Subscription',
+          provider: '',
+          definitions: [
+            {
+              'name': 'relay',
+              'type': 'http',
+              'server': '192.0.2.3',
+              'port': 80,
+            },
+          ],
+        ).single;
         final recipe = AggregateConfig(
           baseProfileId: 1,
           sourceIds: {1, 2},
@@ -102,6 +115,7 @@ void main() {
               name: 'Chain',
               entry: entry.ref,
               exit: exit.ref,
+              relays: [if (coldStart) relay.ref],
             ),
           ],
         );
@@ -147,7 +161,7 @@ void main() {
         });
         when(() => core.readConfig(any())).thenAnswer(
           (_) async => {
-            'proxies': [exit.definition],
+            'proxies': [exit.definition, if (coldStart) relay.definition],
             'rule': <String>[],
           },
         );
@@ -236,8 +250,21 @@ void main() {
         );
         expect(
           chainExit['dialer-proxy'],
-          aggregateEntryName(recipe.chains.single),
+          aggregateHopName(
+            recipe.chains.single,
+            recipe.chains.single.hops.length - 2,
+          ),
         );
+        if (coldStart) {
+          final relayNode = (output['proxies'] as List).cast<Map>().singleWhere(
+            (node) => node['name'] == aggregateHopName(recipe.chains.single, 1),
+          );
+          expect(
+            relayNode['dialer-proxy'],
+            aggregateEntryName(recipe.chains.single),
+          );
+          expect(relayNode['server'], '192.0.2.3');
+        }
         final second = recipe.chains.single.copyWith(
           id: 'second',
           name: 'Second',

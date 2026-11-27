@@ -592,6 +592,11 @@ _ChainStatus _$ChainStatusFromJson(Map<String, dynamic> json) => _ChainStatus(
   exitConnections: (json['exit-connections'] as num?)?.toInt() ?? 0,
   upload: (json['upload'] as num?)?.toInt() ?? 0,
   download: (json['download'] as num?)?.toInt() ?? 0,
+  hops:
+      (json['hops'] as List<dynamic>?)
+          ?.map((e) => ChainHopStatus.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$ChainStatusToJson(_ChainStatus instance) =>
@@ -606,6 +611,23 @@ Map<String, dynamic> _$ChainStatusToJson(_ChainStatus instance) =>
       'entry': instance.entry,
       'entry-connections': instance.entryConnections,
       'exit-connections': instance.exitConnections,
+      'upload': instance.upload,
+      'download': instance.download,
+      'hops': instance.hops,
+    };
+
+_ChainHopStatus _$ChainHopStatusFromJson(Map<String, dynamic> json) =>
+    _ChainHopStatus(
+      name: json['name'] as String,
+      connections: (json['connections'] as num?)?.toInt() ?? 0,
+      upload: (json['upload'] as num?)?.toInt() ?? 0,
+      download: (json['download'] as num?)?.toInt() ?? 0,
+    );
+
+Map<String, dynamic> _$ChainHopStatusToJson(_ChainHopStatus instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'connections': instance.connections,
       'upload': instance.upload,
       'download': instance.download,
     };

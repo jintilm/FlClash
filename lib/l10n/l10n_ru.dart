@@ -4004,14 +4004,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get aggregateAsExit => 'Использовать для выхода';
 
   @override
-  String get aggregateSwap => 'Поменять вход и выход';
+  String get aggregateSwap => 'Обратить порядок узлов';
 
   @override
   String get aggregateChoose => 'Выбрать';
 
   @override
   String get aggregateRouteHint =>
-      'Устройство → Вход → Выход → Сайт. Сохраните для проверки цепочки, примените для передачи трафика.';
+      'Это устройство → Вход → Промежуточные узлы → Выход → Сайт. Сохраните для проверки всей цепочки, примените для трафика.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4089,10 +4089,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'У узла уже есть зависимость от другого прокси';
 
   @override
-  String get aggregateSameHop => 'Вход и выход должны отличаться';
+  String get aggregateSameHop => 'Один узел не может повторяться в цепочке.';
 
   @override
-  String get aggregateUdpEntry => 'Для выходного протокола нужен UDP на входе';
+  String get aggregateUdpEntry =>
+      'Протокол этого узла требует поддержки UDP предыдущим узлом';
 
   @override
   String get aggregateCycle => 'Циклическая зависимость прокси';
@@ -4142,7 +4143,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Показаны прежние результаты узлов. Непроверенные цепочки автоматически проверяются через вход $entry.';
+    return 'Показаны прежние результаты узлов. Непроверенные пути проверяются автоматически через $entry в указанном порядке.';
   }
 
   @override
@@ -4212,4 +4213,29 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       'Счётчики отражают открытые соединения этого прокси. В режиме правил используется настроенная целевая группа.';
+
+  @override
+  String aggregateRelay(int hop) {
+    return 'Промежуточный узел (шаг $hop)';
+  }
+
+  @override
+  String get aggregateAddRelay => 'Добавить узел';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return 'От 2 до $max узлов. Перетаскивайте их в режиме сортировки, удаляйте через меню узла. Дополнительные узлы могут увеличить задержку.';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return 'Цепочка поддерживает не более $max узлов.';
+  }
+
+  @override
+  String get aggregatePrefixMissing =>
+      'Сначала выберите предыдущие узлы для проверки пути.';
+
+  @override
+  String get aggregateAllHopConnections => 'Соединения по узлам';
 }

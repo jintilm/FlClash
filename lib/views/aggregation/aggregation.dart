@@ -292,11 +292,13 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
       for (final node in chainNodes) node.ref.key: node,
     };
     AggregateDelayTarget? chainTarget(ProxyChain chain) {
-      final entry = availableChainNodes[chain.entry.key];
-      final exit = availableChainNodes[chain.exit.key];
-      return entry == null || exit == null
-          ? null
-          : AggregateDelayTarget([entry, exit]);
+      final nodes = <AggregateNode>[];
+      for (final hop in chain.hops) {
+        final node = availableChainNodes[hop.key];
+        if (node == null) return null;
+        nodes.add(node);
+      }
+      return AggregateDelayTarget(nodes);
     }
 
     final filteredNodes = allNodes
@@ -602,9 +604,9 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                   itemCount: chains.length,
                   itemBuilder: (context, index) {
                     final chain = chains[index];
-                    final missing =
-                        !availableChainNodes.containsKey(chain.entry.key) ||
-                        !availableChainNodes.containsKey(chain.exit.key);
+                    final missing = chain.hops.any(
+                      (hop) => !availableChainNodes.containsKey(hop.key),
+                    );
                     final loaded =
                         runtimeApplied &&
                         applied?.aggregate == draft &&
@@ -645,7 +647,7 @@ class _AggregateProxiesViewState extends ConsumerState<AggregateProxiesView> {
                       child: ListItem(
                         title: Text(chain.name),
                         subtitle: Text(
-                          '${chain.entry.name}〔${sources[chain.entry.sourceId]?.value?.label ?? chain.entry.sourceId}〕 → ${chain.exit.name}〔${sources[chain.exit.sourceId]?.value?.label ?? chain.exit.sourceId}〕${missing ? '\n${l.aggregateRepair}' : ''}',
+                          '${chain.hops.map((hop) => '${hop.name}〔${sources[hop.sourceId]?.value?.label ?? hop.sourceId}〕').join(' → ')}${missing ? '\n${l.aggregateRepair}' : ''}',
                         ),
                         onTap: () => _editChain(chainNodes, chain: chain),
                         trailing: missing

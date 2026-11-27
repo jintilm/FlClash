@@ -453,6 +453,7 @@ String aggregateErrorMessage(AggregateException error) {
     AggregateIssue.duplicateName => l.aggregateDuplicateName,
     AggregateIssue.existingDialer => l.aggregateExistingDialer,
     AggregateIssue.sameHop => l.aggregateSameHop,
+    AggregateIssue.hopLimit => l.aggregateHopLimit(maxAggregateHops),
     AggregateIssue.udpEntry => l.aggregateUdpEntry,
     AggregateIssue.cycle => l.aggregateCycle,
     AggregateIssue.dnsBootstrap => l.aggregateDnsBootstrap,

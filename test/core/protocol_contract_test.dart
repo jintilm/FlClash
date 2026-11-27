@@ -52,6 +52,26 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
         'exit-connections': 4,
         'upload': 1200,
         'download': 3400,
+        'hops': [
+          {
+            'name': 'SG [entry:chain]',
+            'connections': 2,
+            'upload': 1200,
+            'download': 3400,
+          },
+          {
+            'name': 'JP [relay:chain]',
+            'connections': 3,
+            'upload': 1100,
+            'download': 3300,
+          },
+          {
+            'name': 'SG to LT',
+            'connections': 4,
+            'upload': 1000,
+            'download': 3200,
+          },
+        ],
       },
       CoreMethod.trafficCurrent ||
       CoreMethod.trafficTotal => {'up': 12, 'down': 34},
@@ -239,6 +259,12 @@ void main() {
     expect(status.download, 3400);
     expect(status.coreEpoch, 3);
     expect(status.routeVersion, 7);
+    expect(status.hops.map((hop) => hop.connections), [2, 3, 4]);
+    expect(status.hops.map((hop) => hop.name), [
+      'SG [entry:chain]',
+      'JP [relay:chain]',
+      'SG to LT',
+    ]);
     expect(handler.calls[CoreMethod.connectionChainStatus], {
       'proxy': 'SG to LT',
       'target': 'Proxy',

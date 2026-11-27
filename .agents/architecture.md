@@ -1471,7 +1471,7 @@ on/off signal.
 
 `ProfileType.aggregate` stores its applied `AggregateConfig` in the profile row; the editable draft and favorites live in
 `Config.aggregateWorkspace`. Editing the draft does not reload Core. `AggregateAction` reads each source without switching
-profiles, builds the base through `SetupAction.getProfile`, then composes namespaced nodes and independent two-hop copies
+profiles, builds the base through `SetupAction.getProfile`, then composes namespaced nodes and independent chain copies
 through `common/aggregation.dart`. The base's DNS, rules, extensions and referenced groups remain together. Sources are
 identified by profile id, provider name and a canonical definition fingerprint excluding the display name; an ambiguous or
 changed definition needs an explicit replacement. Custom profiles can be bases, but never subscription sources.
@@ -1480,7 +1480,11 @@ changed definition needs an explicit replacement. Custom profiles can be bases, 
 running provider. Explicit refresh downloads through the configured provider transport and writes only validated content
 inside `profiles/providers`. Temporary proxy names keep parsing from taking a running mesh proxy's DNS registration.
 
-Generated chains are fixed two-hop outbounds; pre-existing dialer dependencies cannot be used as chain hops. The composer
+Generated chains contain two to five ordered hops. `ProxyChain.relays` defaults to empty, keeping stored two-hop recipes
+compatible; `hops` joins entry, relays and exit. The editor adds intermediates, reorders all hops in its sort mode, and
+tests candidates through the already chosen prefix. Repeated nodes and pre-existing dialer dependencies cannot be used
+as chain hops. The composer checks UDP requirements at every adjacent pair, and each generated hop dials through its
+predecessor. Dart's `maxAggregateHops` matches the limit enforced by `proxy.testDraft` in Go. The composer
 checks references, loops and DNS bootstrap dependencies before application. Aggregate setup asks Core to preserve its
 running config on rejection, restores the previous config file, and reports the result through `AggregateRuntime`; an
 unanswered setup leaves applied state unknown. The normal profile failure behavior is unchanged. Provider load events
@@ -1490,8 +1494,8 @@ Explicit application selects the aggregate group in the chosen base selector and
 chain, the previously selected chain if it still exists, or the first chain. Other rule selectors keep their selections.
 The chain row's use action goes through the same apply and rollback path; loading a chain alone is not evidence that
 traffic uses it. Its active label also checks the selected group path and mode. Node pickers reuse standalone delays and,
-when choosing an exit with an entry selected, test the complete ordered pair and label those results separately. Opening
-the exit picker reuses completed results for that ordered pair and automatically measures missing results with bounded
+when choosing a later hop with its predecessors selected, test that complete prefix and label those results separately. Opening
+the picker reuses completed results for that ordered prefix and automatically measures missing results with bounded
 workers. Closing the picker stops dispatch and skips work still waiting for a delay-test slot; already running tests
 can finish into the shared cache. A Core disconnect or a changed test URL stops that picker run.
 
@@ -1500,14 +1504,16 @@ resolves the target group's current leaf in rule mode, `GLOBAL` in global mode, 
 stay groups rather than displaying one arbitrary member. The card shows that node or its matching applied chain, never a
 fallback to the first saved chain. Single-node counts and bytes come from its live trackers. For a chain, Core reads the
 actual `dialer-proxy`: its internal entry transport and a user connection through the exit are separate records, and
-entry bytes do not add to the global traffic totals again. Selection alone is not traffic evidence. Counts and byte
+entry bytes do not add to the global traffic totals again. `hops` carries each transport's connections and bytes in
+entry-to-exit order; the summary counts use the first and last, and summary traffic uses only the first transport so it
+does not count the same payload once per layer. Selection alone is not traffic evidence. Counts and byte
 totals cover only currently open connections and exclude other nodes left open after a selection change.
 The card requires the applied recipe and current route counters, and discards late replies after hiding or route changes.
 Generated entry names include the saved node name so the internal connection is searchable in the live feed, and an
-identity of both hops so a transport left on an older pair is not attributed to its replacement.
+identity of every hop so a transport left on an older path is not attributed to its replacement.
 
-Draft delay tests use `proxy.testDraft`, which constructs temporary adapters and connects a second hop directly through
-the first adapter without registering either in the running tunnel. They use the current DNS settings and share the
+Draft delay tests use `proxy.testDraft`, which constructs temporary adapters and connects each hop directly through
+its predecessor without registering them in the running tunnel. They use the current DNS settings and share the
 Core's delay-test concurrency limit. `AggregateDelayTest` keeps results by ordered node identities and drops stale replies
 after a Core or test-URL change; the page dispatches a bounded number of workers when testing the visible list. Exit-IP
 checks still require an applied route. Aggregate setup captures all watched inputs before awaiting its base, so disposal

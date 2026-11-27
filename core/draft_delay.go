@@ -3,6 +3,7 @@ package core
 import (
 	"context"
 	"crypto/rand"
+	"encoding/json"
 	"fmt"
 	"maps"
 
@@ -11,6 +12,8 @@ import (
 	"github.com/metacubex/mihomo/constant"
 )
 
+const maxAggregateHops = 5
+
 type DraftDelayParams struct {
 	Proxies []map[string]any `json:"proxies"`
 	TestURL string           `json:"test-url"`
@@ -18,13 +21,24 @@ type DraftDelayParams struct {
 }
 
 func handleTestDraftDelay(params DraftDelayParams) (*Delay, error) {
-	if len(params.Proxies) < 1 || len(params.Proxies) > 2 {
-		return nil, fmt.Errorf("a draft test requires one or two nodes")
+	if len(params.Proxies) < 1 || len(params.Proxies) > maxAggregateHops {
+		return nil, fmt.Errorf("a draft test requires one to %d nodes", maxAggregateHops)
 	}
+	seen := make(map[string]bool)
 	for _, mapping := range params.Proxies {
 		if dialer, _ := mapping["dialer-proxy"].(string); dialer != "" {
 			return nil, fmt.Errorf("draft node already has a dialer dependency")
 		}
+		identity := maps.Clone(mapping)
+		delete(identity, "name")
+		encoded, err := json.Marshal(identity)
+		if err != nil {
+			return nil, err
+		}
+		if seen[string(encoded)] {
+			return nil, fmt.Errorf("a draft chain cannot repeat a node")
+		}
+		seen[string(encoded)] = true
 	}
 	timeout := timeoutFromMillis(params.Timeout, defaultDelayTestTimeout)
 	if !delayTestSlots.acquireWithin(context.Background(), timeout) {
@@ -46,10 +60,10 @@ func handleTestDraftDelay(params DraftDelayParams) (*Delay, error) {
 			return nil, fmt.Errorf("draft hop %d: %w", index+1, err)
 		}
 		defer proxy.Close()
-		if index == 1 && !previous.SupportUDP() {
+		if index > 0 && !previous.SupportUDP() {
 			switch definition["type"] {
 			case "hysteria", "hysteria2", "tuic", "wireguard":
-				return nil, fmt.Errorf("entry does not support UDP")
+				return nil, fmt.Errorf("draft hop %d does not support UDP for hop %d", index, index+1)
 			}
 		}
 		previous = proxy

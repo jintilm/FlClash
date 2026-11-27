@@ -7047,7 +7047,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateSwap.
   ///
   /// In en, this message translates to:
-  /// **'Swap entry and exit'**
+  /// **'Reverse hop order'**
   String get aggregateSwap;
 
   /// No description provided for @aggregateChoose.
@@ -7059,7 +7059,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateRouteHint.
   ///
   /// In en, this message translates to:
-  /// **'This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.'**
+  /// **'This device → Entry → Relays → Exit → Website. Save to test the complete chain; apply to use it for traffic.'**
   String get aggregateRouteHint;
 
   /// No description provided for @aggregateDnsInherited.
@@ -7203,13 +7203,13 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateSameHop.
   ///
   /// In en, this message translates to:
-  /// **'Entry and exit must be different nodes'**
+  /// **'A node cannot appear more than once in a chain.'**
   String get aggregateSameHop;
 
   /// No description provided for @aggregateUdpEntry.
   ///
   /// In en, this message translates to:
-  /// **'The exit protocol requires UDP support from the entry'**
+  /// **'This hop’s protocol requires the preceding hop to support UDP'**
   String get aggregateUdpEntry;
 
   /// No description provided for @aggregateCycle.
@@ -7299,7 +7299,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateExitDelayHint.
   ///
   /// In en, this message translates to:
-  /// **'Existing node results are shown. Missing chain results are tested automatically through entry {entry}.'**
+  /// **'Existing node results are shown. Missing path results are tested automatically through {entry}.'**
   String aggregateExitDelayHint(String entry);
 
   /// No description provided for @aggregateEntryStatus.
@@ -7420,6 +7420,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group.'**
   String get aggregateProxyTrafficHint;
+
+  /// No description provided for @aggregateRelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Relay hop {hop}'**
+  String aggregateRelay(int hop);
+
+  /// No description provided for @aggregateAddRelay.
+  ///
+  /// In en, this message translates to:
+  /// **'Add relay'**
+  String get aggregateAddRelay;
+
+  /// No description provided for @aggregateMultiHopHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Supports 2–{max} hops. Use Sort to drag nodes; use a node’s context menu to remove it. More hops can increase latency.'**
+  String aggregateMultiHopHint(int max);
+
+  /// No description provided for @aggregateHopLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'A chain supports at most {max} hops.'**
+  String aggregateHopLimit(int max);
+
+  /// No description provided for @aggregatePrefixMissing.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose the preceding hops first to test this path.'**
+  String get aggregatePrefixMissing;
+
+  /// No description provided for @aggregateAllHopConnections.
+  ///
+  /// In en, this message translates to:
+  /// **'Connections by hop'**
+  String get aggregateAllHopConnections;
 }
 
 class _AppLocalizationsDelegate

@@ -3,6 +3,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'generated/aggregation.freezed.dart';
 part 'generated/aggregation.g.dart';
 
+const maxAggregateHops = 5;
+
 @freezed
 abstract class AggregateNodeRef with _$AggregateNodeRef {
   const factory AggregateNodeRef({
@@ -23,10 +25,15 @@ abstract class ProxyChain with _$ProxyChain {
     required String name,
     required AggregateNodeRef entry,
     required AggregateNodeRef exit,
+    @Default([]) List<AggregateNodeRef> relays,
   }) = _ProxyChain;
 
   factory ProxyChain.fromJson(Map<String, dynamic> json) =>
       _$ProxyChainFromJson(json);
+}
+
+extension ProxyChainExt on ProxyChain {
+  List<AggregateNodeRef> get hops => [entry, ...relays, exit];
 }
 
 @freezed

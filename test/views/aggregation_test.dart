@@ -192,7 +192,7 @@ void main() {
       await tester.tap(find.text('New chain'));
       await tester.pumpAndSettle();
       expect(find.byType(AggregateChainEditor), findsOneWidget);
-      await tester.tap(find.byTooltip('Swap entry and exit'));
+      await tester.tap(find.byTooltip('Reverse hop order'));
       await tester.pumpAndSettle();
       expect(container.read(aggregateWorkspaceSettingProvider).draft, draft);
       expect(action.applications, 0);

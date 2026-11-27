@@ -4052,14 +4052,14 @@ class AppLocalizationsEs extends AppLocalizations {
   String get aggregateAsExit => 'Usar como salida';
 
   @override
-  String get aggregateSwap => 'Intercambiar entrada y salida';
+  String get aggregateSwap => 'Invertir los saltos';
 
   @override
   String get aggregateChoose => 'Elegir';
 
   @override
   String get aggregateRouteHint =>
-      'Este dispositivo → Entrada → Salida → Sitio. Guarde para probar la cadena y aplique para usarla.';
+      'Este dispositivo → Entrada → Relevos → Salida → Sitio. Guarda para probar la cadena completa; aplica para usarla.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4136,11 +4136,11 @@ class AppLocalizationsEs extends AppLocalizations {
       'Este nodo ya depende de un proxy previo';
 
   @override
-  String get aggregateSameHop => 'La entrada y salida deben ser distintas';
+  String get aggregateSameHop => 'Un nodo no puede repetirse en una cadena.';
 
   @override
   String get aggregateUdpEntry =>
-      'El protocolo de salida requiere UDP en la entrada';
+      'El protocolo de este salto requiere que el anterior admita UDP';
 
   @override
   String get aggregateCycle => 'Dependencia circular de proxy';
@@ -4190,7 +4190,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Se muestran los resultados existentes de los nodos. Las cadenas sin medir se prueban automáticamente a través de la entrada $entry.';
+    return 'Se muestran los resultados existentes. Las rutas sin medir se prueban automáticamente a través de $entry, en ese orden.';
   }
 
   @override
@@ -4260,4 +4260,29 @@ class AppLocalizationsEs extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       'Los contadores incluyen las conexiones abiertas de este proxy. En modo regla, siguen el grupo de destino configurado.';
+
+  @override
+  String aggregateRelay(int hop) {
+    return 'Relevo (salto $hop)';
+  }
+
+  @override
+  String get aggregateAddRelay => 'Añadir relevo';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return 'Admite de 2 a $max saltos. Usa Ordenar para arrastrar nodos y su menú para eliminarlos. Más saltos pueden aumentar la latencia.';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return 'Una cadena admite hasta $max saltos.';
+  }
+
+  @override
+  String get aggregatePrefixMissing =>
+      'Elige primero los saltos anteriores para probar esta ruta.';
+
+  @override
+  String get aggregateAllHopConnections => 'Conexiones por salto';
 }

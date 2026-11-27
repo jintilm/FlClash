@@ -3830,14 +3830,14 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aggregateAsExit => '出口として使用';
 
   @override
-  String get aggregateSwap => '入口と出口を入れ替え';
+  String get aggregateSwap => 'ホップの順序を反転';
 
   @override
   String get aggregateChoose => '選択';
 
   @override
   String get aggregateRouteHint =>
-      'この端末 → 入口 → 出口 → Web サイト。保存後にチェーンをテストし、適用後に通信に使用できます。';
+      'この端末 → 入口 → 中継 → 出口 → サイト。保存後にチェーン全体を測定でき、適用後に通信に使用できます。';
 
   @override
   String get aggregateDnsInherited => 'DNS とルーティングはプロキシ依存関係を含めてベースから継承します。';
@@ -3909,10 +3909,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get aggregateExistingDialer => '既存の前置プロキシ依存関係を解決してください';
 
   @override
-  String get aggregateSameHop => '入口と出口は別のノードにしてください';
+  String get aggregateSameHop => '同じノードをチェーン内で繰り返し使用できません。';
 
   @override
-  String get aggregateUdpEntry => '出口のプロトコルには入口の UDP 対応が必要です';
+  String get aggregateUdpEntry => 'このホップのプロトコルには前のホップの UDP 対応が必要です';
 
   @override
   String get aggregateCycle => 'プロキシの循環依存';
@@ -3959,7 +3959,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return '既存のノード測定結果を表示します。未測定のチェーンは入口 $entry を経由して自動測定します。';
+    return '既存のノード測定結果を表示します。未測定の経路は $entry を順に経由して自動測定します。';
   }
 
   @override
@@ -4026,4 +4026,28 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       '接続数と通信量は現在のプロキシの有効な接続のみを集計します。ルールモードでは設定された接続先グループに従います。';
+
+  @override
+  String aggregateRelay(int hop) {
+    return '中継ノード（$hop ホップ目）';
+  }
+
+  @override
+  String get aggregateAddRelay => '中継を追加';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return '2～$max ホップに対応。並べ替えでドラッグし、ノードのメニューから削除できます。ホップ数が増えると遅延が増える場合があります。';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return 'チェーンは最大 $max ホップです。';
+  }
+
+  @override
+  String get aggregatePrefixMissing => '先に前のホップを選択して経路をテストしてください。';
+
+  @override
+  String get aggregateAllHopConnections => 'ホップごとの接続';
 }

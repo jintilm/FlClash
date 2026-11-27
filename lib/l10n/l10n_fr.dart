@@ -4057,14 +4057,14 @@ class AppLocalizationsFr extends AppLocalizations {
   String get aggregateAsExit => 'Utiliser comme sortie';
 
   @override
-  String get aggregateSwap => 'Inverser entrée et sortie';
+  String get aggregateSwap => 'Inverser les sauts';
 
   @override
   String get aggregateChoose => 'Choisir';
 
   @override
   String get aggregateRouteHint =>
-      'Cet appareil → Entrée → Sortie → Site. Enregistrez pour tester la chaîne, appliquez pour acheminer le trafic.';
+      'Cet appareil → Entrée → Relais → Sortie → Site. Enregistrez pour tester la chaîne complète ; appliquez pour le trafic.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4142,11 +4142,11 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get aggregateSameHop =>
-      'L’entrée et la sortie doivent être distinctes';
+      'Un nœud ne peut apparaître plusieurs fois dans une chaîne.';
 
   @override
   String get aggregateUdpEntry =>
-      'Le protocole de sortie nécessite UDP à l’entrée';
+      'Le protocole de ce saut nécessite la prise en charge UDP du saut précédent';
 
   @override
   String get aggregateCycle => 'Dépendance proxy circulaire';
@@ -4196,7 +4196,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Les résultats existants des nœuds sont affichés. Les chaînes non testées sont mesurées automatiquement via l’entrée $entry.';
+    return 'Les résultats existants sont affichés. Les chemins non testés sont mesurés automatiquement via $entry, dans cet ordre.';
   }
 
   @override
@@ -4266,4 +4266,29 @@ class AppLocalizationsFr extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       'Les compteurs concernent les connexions ouvertes de ce proxy. En mode règles, ils suivent le groupe cible configuré.';
+
+  @override
+  String aggregateRelay(int hop) {
+    return 'Relais (saut $hop)';
+  }
+
+  @override
+  String get aggregateAddRelay => 'Ajouter un relais';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return 'De 2 à $max sauts. Utilisez Trier pour déplacer les nœuds et leur menu pour les supprimer. Plus de sauts peuvent augmenter la latence.';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return 'Une chaîne accepte au maximum $max sauts.';
+  }
+
+  @override
+  String get aggregatePrefixMissing =>
+      'Sélectionnez les sauts précédents pour tester ce chemin.';
+
+  @override
+  String get aggregateAllHopConnections => 'Connexions par saut';
 }

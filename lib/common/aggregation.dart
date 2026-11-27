@@ -43,7 +43,9 @@ class AggregateDelayTarget {
   String get key => nodes.map((node) => node.ref.key).join(' → ');
   bool get testable =>
       nodes.isNotEmpty &&
-      nodes.length <= 2 &&
+      nodes.length <= maxAggregateHops &&
+      nodes.map((node) => node.ref.fingerprint).toSet().length ==
+          nodes.length &&
       nodes.every((node) => !node.hasDialer);
 }
 
@@ -84,6 +86,7 @@ enum AggregateIssue {
   duplicateName,
   existingDialer,
   sameHop,
+  hopLimit,
   udpEntry,
   cycle,
   dnsBootstrap,
@@ -146,8 +149,18 @@ List<AggregateNode> aggregateNodes({
 
 String aggregateChainName(ProxyChain chain) => '${chain.name} [${chain.id}]';
 
-String aggregateEntryName(ProxyChain chain) =>
-    '${chain.entry.name} · ${chain.name} [entry:${chain.id}:${sha256.convert(utf8.encode('${chain.entry.key}/${chain.exit.key}')).toString().substring(0, 10)}]';
+String aggregateEntryName(ProxyChain chain) => aggregateHopName(chain, 0);
+
+String aggregateHopName(ProxyChain chain, int index) {
+  final hops = chain.hops;
+  if (index == hops.length - 1) return aggregateChainName(chain);
+  final identity = sha256
+      .convert(utf8.encode(hops.map((hop) => hop.key).join('/')))
+      .toString()
+      .substring(0, 10);
+  final role = index == 0 ? 'entry' : 'hop${index + 1}';
+  return '${hops[index].name} · ${chain.name} [$role:${chain.id}:$identity]';
+}
 
 Map<String, String> aggregateSelectedMap(
   AggregateConfig settings,
@@ -267,42 +280,44 @@ Map<String, dynamic> composeAggregate(AggregateBuildInput input) {
     if (!chainIds.add(chain.id) || chain.name.trim().isEmpty) {
       throw AggregateException(AggregateIssue.duplicateName, chain.name);
     }
-    final entry = resolve(chain.entry);
-    final exit = resolve(chain.exit);
-    if (entry.ref.fingerprint == exit.ref.fingerprint) {
+    final hops = chain.hops;
+    if (hops.length > maxAggregateHops) {
+      throw AggregateException(AggregateIssue.hopLimit, chain.name);
+    }
+    final chainNodes = hops.map(resolve).toList();
+    if (hops.map((hop) => hop.fingerprint).toSet().length != hops.length) {
       throw AggregateException(AggregateIssue.sameHop, chain.name);
     }
-    for (final node in [entry, exit]) {
+    for (final (index, node) in chainNodes.indexed) {
       if (node.hasDialer) {
         throw AggregateException(AggregateIssue.existingDialer, node.name);
       }
+      final previous = index == 0 ? null : chainNodes[index - 1];
+      if (previous != null &&
+          const {
+            'hysteria',
+            'hysteria2',
+            'tuic',
+            'wireguard',
+          }.contains(node.type) &&
+          previous.definition['udp'] != true &&
+          !const {
+            'hysteria',
+            'hysteria2',
+            'tuic',
+            'wireguard',
+          }.contains(previous.type)) {
+        throw AggregateException(AggregateIssue.udpEntry, previous.name);
+      }
+      final name = aggregateHopName(chain, index);
+      reserve(name);
+      proxies.add({
+        ...node.definition,
+        'name': name,
+        if (index > 0) 'dialer-proxy': aggregateHopName(chain, index - 1),
+      });
     }
-    if (const {
-          'hysteria',
-          'hysteria2',
-          'tuic',
-          'wireguard',
-        }.contains(exit.type) &&
-        entry.definition['udp'] != true &&
-        !const {
-          'hysteria',
-          'hysteria2',
-          'tuic',
-          'wireguard',
-        }.contains(entry.type)) {
-      throw AggregateException(AggregateIssue.udpEntry, entry.name);
-    }
-    final entryName = aggregateEntryName(chain);
-    final exitName = aggregateChainName(chain);
-    reserve(entryName);
-    reserve(exitName);
-    proxies.add({...entry.definition, 'name': entryName});
-    proxies.add({
-      ...exit.definition,
-      'name': exitName,
-      'dialer-proxy': entryName,
-    });
-    pool.add(exitName);
+    pool.add(aggregateChainName(chain));
   }
   if (pool.isEmpty) throw const AggregateException(AggregateIssue.empty);
   target['proxies'] = [...?target['proxies'] as List?, settings.groupName];

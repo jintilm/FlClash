@@ -295,7 +295,7 @@ as String,
 /// @nodoc
 mixin _$ProxyChain {
 
- String get id; String get name; AggregateNodeRef get entry; AggregateNodeRef get exit;
+ String get id; String get name; AggregateNodeRef get entry; AggregateNodeRef get exit; List<AggregateNodeRef> get relays;
 /// Create a copy of ProxyChain
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -309,20 +309,20 @@ $ProxyChainCopyWith<ProxyChain> get copyWith => _$ProxyChainCopyWithImpl<ProxyCh
 @override
 bool operator ==(Object other) {
   final _this = this as ProxyChain;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProxyChain&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.entry, _this.entry) || other.entry == _this.entry)&&(identical(other.exit, _this.exit) || other.exit == _this.exit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProxyChain&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.entry, _this.entry) || other.entry == _this.entry)&&(identical(other.exit, _this.exit) || other.exit == _this.exit)&&const DeepCollectionEquality().equals(other.relays, _this.relays));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ProxyChain;
-  return Object.hash(runtimeType,_this.id,_this.name,_this.entry,_this.exit);
+  return Object.hash(runtimeType,_this.id,_this.name,_this.entry,_this.exit,const DeepCollectionEquality().hash(_this.relays));
 }
 
 @override
 String toString() {
   final _this = this as ProxyChain;
-  return 'ProxyChain(id: ${_this.id}, name: ${_this.name}, entry: ${_this.entry}, exit: ${_this.exit})';
+  return 'ProxyChain(id: ${_this.id}, name: ${_this.name}, entry: ${_this.entry}, exit: ${_this.exit}, relays: ${_this.relays})';
 }
 
 
@@ -333,7 +333,7 @@ abstract mixin class $ProxyChainCopyWith<$Res>  {
   factory $ProxyChainCopyWith(ProxyChain value, $Res Function(ProxyChain) _then) = _$ProxyChainCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, AggregateNodeRef entry, AggregateNodeRef exit
+ String id, String name, AggregateNodeRef entry, AggregateNodeRef exit, List<AggregateNodeRef> relays
 });
 
 
@@ -350,13 +350,14 @@ class _$ProxyChainCopyWithImpl<$Res>
 
 /// Create a copy of ProxyChain
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? entry = null,Object? exit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? entry = null,Object? exit = null,Object? relays = null,}) {
   return _then(ProxyChain(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,entry: null == entry ? _self.entry : entry // ignore: cast_nullable_to_non_nullable
 as AggregateNodeRef,exit: null == exit ? _self.exit : exit // ignore: cast_nullable_to_non_nullable
-as AggregateNodeRef,
+as AggregateNodeRef,relays: null == relays ? _self.relays : relays // ignore: cast_nullable_to_non_nullable
+as List<AggregateNodeRef>,
   ));
 }
 /// Create a copy of ProxyChain
@@ -459,10 +460,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit,  List<AggregateNodeRef> relays)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProxyChain() when $default != null:
-return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
+return $default(_that.id,_that.name,_that.entry,_that.exit,_that.relays);case _:
   return orElse();
 
 }
@@ -480,10 +481,10 @@ return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit,  List<AggregateNodeRef> relays)  $default,) {final _that = this;
 switch (_that) {
 case _ProxyChain():
-return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
+return $default(_that.id,_that.name,_that.entry,_that.exit,_that.relays);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -500,10 +501,10 @@ return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  AggregateNodeRef entry,  AggregateNodeRef exit,  List<AggregateNodeRef> relays)?  $default,) {final _that = this;
 switch (_that) {
 case _ProxyChain() when $default != null:
-return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
+return $default(_that.id,_that.name,_that.entry,_that.exit,_that.relays);case _:
   return null;
 
 }
@@ -515,13 +516,20 @@ return $default(_that.id,_that.name,_that.entry,_that.exit);case _:
 @JsonSerializable()
 
 class _ProxyChain implements ProxyChain {
-  const _ProxyChain({required this.id, required this.name, required this.entry, required this.exit});
+  const _ProxyChain({required this.id, required this.name, required this.entry, required this.exit,  List<AggregateNodeRef> relays = const []}): _relays = relays;
   factory _ProxyChain.fromJson(Map<String, dynamic> json) => _$ProxyChainFromJson(json);
 
 @override final  String id;
 @override final  String name;
 @override final  AggregateNodeRef entry;
 @override final  AggregateNodeRef exit;
+ final  List<AggregateNodeRef> _relays;
+@override@JsonKey() List<AggregateNodeRef> get relays {
+  if (_relays is EqualUnmodifiableListView) return _relays;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_relays);
+}
+
 
 /// Create a copy of ProxyChain
 /// with the given fields replaced by the non-null parameter values.
@@ -536,18 +544,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProxyChain&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.entry, entry) || other.entry == entry)&&(identical(other.exit, exit) || other.exit == exit));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProxyChain&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.entry, entry) || other.entry == entry)&&(identical(other.exit, exit) || other.exit == exit)&&const DeepCollectionEquality().equals(other.relays, _relays));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,name,entry,exit);
+    return Object.hash(runtimeType,id,name,entry,exit,const DeepCollectionEquality().hash(_relays));
 }
 
 @override
 String toString() {
-    return 'ProxyChain(id: $id, name: $name, entry: $entry, exit: $exit)';
+    return 'ProxyChain(id: $id, name: $name, entry: $entry, exit: $exit, relays: $relays)';
 }
 
 
@@ -558,7 +566,7 @@ abstract mixin class _$ProxyChainCopyWith<$Res> implements $ProxyChainCopyWith<$
   factory _$ProxyChainCopyWith(_ProxyChain value, $Res Function(_ProxyChain) _then) = __$ProxyChainCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, AggregateNodeRef entry, AggregateNodeRef exit
+ String id, String name, AggregateNodeRef entry, AggregateNodeRef exit, List<AggregateNodeRef> relays
 });
 
 
@@ -575,13 +583,14 @@ class __$ProxyChainCopyWithImpl<$Res>
 
 /// Create a copy of ProxyChain
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? entry = null,Object? exit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? entry = null,Object? exit = null,Object? relays = null,}) {
   return _then(_ProxyChain(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,entry: null == entry ? _self.entry : entry // ignore: cast_nullable_to_non_nullable
 as AggregateNodeRef,exit: null == exit ? _self.exit : exit // ignore: cast_nullable_to_non_nullable
-as AggregateNodeRef,
+as AggregateNodeRef,relays: null == relays ? _self._relays : relays // ignore: cast_nullable_to_non_nullable
+as List<AggregateNodeRef>,
   ));
 }
 

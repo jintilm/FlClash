@@ -6666,7 +6666,7 @@ as bool,
 /// @nodoc
 mixin _$ChainStatus {
 
-@JsonKey(name: 'core-epoch') int get coreEpoch;@JsonKey(name: 'route-version') int get routeVersion; bool get running; bool get selected; String get proxy;@JsonKey(name: 'proxy-type') String get proxyType; String get target; String get entry;@JsonKey(name: 'entry-connections') int get entryConnections;@JsonKey(name: 'exit-connections') int get exitConnections; int get upload; int get download;
+@JsonKey(name: 'core-epoch') int get coreEpoch;@JsonKey(name: 'route-version') int get routeVersion; bool get running; bool get selected; String get proxy;@JsonKey(name: 'proxy-type') String get proxyType; String get target; String get entry;@JsonKey(name: 'entry-connections') int get entryConnections;@JsonKey(name: 'exit-connections') int get exitConnections; int get upload; int get download; List<ChainHopStatus> get hops;
 /// Create a copy of ChainStatus
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -6680,20 +6680,20 @@ $ChainStatusCopyWith<ChainStatus> get copyWith => _$ChainStatusCopyWithImpl<Chai
 @override
 bool operator ==(Object other) {
   final _this = this as ChainStatus;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChainStatus&&(identical(other.coreEpoch, _this.coreEpoch) || other.coreEpoch == _this.coreEpoch)&&(identical(other.routeVersion, _this.routeVersion) || other.routeVersion == _this.routeVersion)&&(identical(other.running, _this.running) || other.running == _this.running)&&(identical(other.selected, _this.selected) || other.selected == _this.selected)&&(identical(other.proxy, _this.proxy) || other.proxy == _this.proxy)&&(identical(other.proxyType, _this.proxyType) || other.proxyType == _this.proxyType)&&(identical(other.target, _this.target) || other.target == _this.target)&&(identical(other.entry, _this.entry) || other.entry == _this.entry)&&(identical(other.entryConnections, _this.entryConnections) || other.entryConnections == _this.entryConnections)&&(identical(other.exitConnections, _this.exitConnections) || other.exitConnections == _this.exitConnections)&&(identical(other.upload, _this.upload) || other.upload == _this.upload)&&(identical(other.download, _this.download) || other.download == _this.download));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChainStatus&&(identical(other.coreEpoch, _this.coreEpoch) || other.coreEpoch == _this.coreEpoch)&&(identical(other.routeVersion, _this.routeVersion) || other.routeVersion == _this.routeVersion)&&(identical(other.running, _this.running) || other.running == _this.running)&&(identical(other.selected, _this.selected) || other.selected == _this.selected)&&(identical(other.proxy, _this.proxy) || other.proxy == _this.proxy)&&(identical(other.proxyType, _this.proxyType) || other.proxyType == _this.proxyType)&&(identical(other.target, _this.target) || other.target == _this.target)&&(identical(other.entry, _this.entry) || other.entry == _this.entry)&&(identical(other.entryConnections, _this.entryConnections) || other.entryConnections == _this.entryConnections)&&(identical(other.exitConnections, _this.exitConnections) || other.exitConnections == _this.exitConnections)&&(identical(other.upload, _this.upload) || other.upload == _this.upload)&&(identical(other.download, _this.download) || other.download == _this.download)&&const DeepCollectionEquality().equals(other.hops, _this.hops));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as ChainStatus;
-  return Object.hash(runtimeType,_this.coreEpoch,_this.routeVersion,_this.running,_this.selected,_this.proxy,_this.proxyType,_this.target,_this.entry,_this.entryConnections,_this.exitConnections,_this.upload,_this.download);
+  return Object.hash(runtimeType,_this.coreEpoch,_this.routeVersion,_this.running,_this.selected,_this.proxy,_this.proxyType,_this.target,_this.entry,_this.entryConnections,_this.exitConnections,_this.upload,_this.download,const DeepCollectionEquality().hash(_this.hops));
 }
 
 @override
 String toString() {
   final _this = this as ChainStatus;
-  return 'ChainStatus(coreEpoch: ${_this.coreEpoch}, routeVersion: ${_this.routeVersion}, running: ${_this.running}, selected: ${_this.selected}, proxy: ${_this.proxy}, proxyType: ${_this.proxyType}, target: ${_this.target}, entry: ${_this.entry}, entryConnections: ${_this.entryConnections}, exitConnections: ${_this.exitConnections}, upload: ${_this.upload}, download: ${_this.download})';
+  return 'ChainStatus(coreEpoch: ${_this.coreEpoch}, routeVersion: ${_this.routeVersion}, running: ${_this.running}, selected: ${_this.selected}, proxy: ${_this.proxy}, proxyType: ${_this.proxyType}, target: ${_this.target}, entry: ${_this.entry}, entryConnections: ${_this.entryConnections}, exitConnections: ${_this.exitConnections}, upload: ${_this.upload}, download: ${_this.download}, hops: ${_this.hops})';
 }
 
 
@@ -6704,7 +6704,7 @@ abstract mixin class $ChainStatusCopyWith<$Res>  {
   factory $ChainStatusCopyWith(ChainStatus value, $Res Function(ChainStatus) _then) = _$ChainStatusCopyWithImpl;
 @useResult
 $Res call({
-@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String proxy,@JsonKey(name: 'proxy-type') String proxyType, String target, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download
+@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String proxy,@JsonKey(name: 'proxy-type') String proxyType, String target, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download, List<ChainHopStatus> hops
 });
 
 
@@ -6721,7 +6721,7 @@ class _$ChainStatusCopyWithImpl<$Res>
 
 /// Create a copy of ChainStatus
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? proxy = null,Object? proxyType = null,Object? target = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? proxy = null,Object? proxyType = null,Object? target = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,Object? hops = null,}) {
   return _then(ChainStatus(
 coreEpoch: null == coreEpoch ? _self.coreEpoch : coreEpoch // ignore: cast_nullable_to_non_nullable
 as int,routeVersion: null == routeVersion ? _self.routeVersion : routeVersion // ignore: cast_nullable_to_non_nullable
@@ -6735,7 +6735,8 @@ as String,entryConnections: null == entryConnections ? _self.entryConnections : 
 as int,exitConnections: null == exitConnections ? _self.exitConnections : exitConnections // ignore: cast_nullable_to_non_nullable
 as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
 as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
-as int,
+as int,hops: null == hops ? _self.hops : hops // ignore: cast_nullable_to_non_nullable
+as List<ChainHopStatus>,
   ));
 }
 
@@ -6820,10 +6821,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download,  List<ChainHopStatus> hops)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChainStatus() when $default != null:
-return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download,_that.hops);case _:
   return orElse();
 
 }
@@ -6841,10 +6842,10 @@ return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download,  List<ChainHopStatus> hops)  $default,) {final _that = this;
 switch (_that) {
 case _ChainStatus():
-return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download,_that.hops);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -6861,10 +6862,10 @@ return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function(@JsonKey(name: 'core-epoch')  int coreEpoch, @JsonKey(name: 'route-version')  int routeVersion,  bool running,  bool selected,  String proxy, @JsonKey(name: 'proxy-type')  String proxyType,  String target,  String entry, @JsonKey(name: 'entry-connections')  int entryConnections, @JsonKey(name: 'exit-connections')  int exitConnections,  int upload,  int download,  List<ChainHopStatus> hops)?  $default,) {final _that = this;
 switch (_that) {
 case _ChainStatus() when $default != null:
-return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download);case _:
+return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,_that.proxy,_that.proxyType,_that.target,_that.entry,_that.entryConnections,_that.exitConnections,_that.upload,_that.download,_that.hops);case _:
   return null;
 
 }
@@ -6876,7 +6877,7 @@ return $default(_that.coreEpoch,_that.routeVersion,_that.running,_that.selected,
 @JsonSerializable()
 
 class _ChainStatus implements ChainStatus {
-  const _ChainStatus({@JsonKey(name: 'core-epoch') this.coreEpoch = 0, @JsonKey(name: 'route-version') this.routeVersion = 0, this.running = false, this.selected = false, this.proxy = '', @JsonKey(name: 'proxy-type') this.proxyType = '', this.target = '', this.entry = '', @JsonKey(name: 'entry-connections') this.entryConnections = 0, @JsonKey(name: 'exit-connections') this.exitConnections = 0, this.upload = 0, this.download = 0});
+  const _ChainStatus({@JsonKey(name: 'core-epoch') this.coreEpoch = 0, @JsonKey(name: 'route-version') this.routeVersion = 0, this.running = false, this.selected = false, this.proxy = '', @JsonKey(name: 'proxy-type') this.proxyType = '', this.target = '', this.entry = '', @JsonKey(name: 'entry-connections') this.entryConnections = 0, @JsonKey(name: 'exit-connections') this.exitConnections = 0, this.upload = 0, this.download = 0,  List<ChainHopStatus> hops = const []}): _hops = hops;
   factory _ChainStatus.fromJson(Map<String, dynamic> json) => _$ChainStatusFromJson(json);
 
 @override@JsonKey(name: 'core-epoch') final  int coreEpoch;
@@ -6891,6 +6892,13 @@ class _ChainStatus implements ChainStatus {
 @override@JsonKey(name: 'exit-connections') final  int exitConnections;
 @override@JsonKey() final  int upload;
 @override@JsonKey() final  int download;
+ final  List<ChainHopStatus> _hops;
+@override@JsonKey() List<ChainHopStatus> get hops {
+  if (_hops is EqualUnmodifiableListView) return _hops;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_hops);
+}
+
 
 /// Create a copy of ChainStatus
 /// with the given fields replaced by the non-null parameter values.
@@ -6905,18 +6913,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChainStatus&&(identical(other.coreEpoch, coreEpoch) || other.coreEpoch == coreEpoch)&&(identical(other.routeVersion, routeVersion) || other.routeVersion == routeVersion)&&(identical(other.running, running) || other.running == running)&&(identical(other.selected, selected) || other.selected == selected)&&(identical(other.proxy, proxy) || other.proxy == proxy)&&(identical(other.proxyType, proxyType) || other.proxyType == proxyType)&&(identical(other.target, target) || other.target == target)&&(identical(other.entry, entry) || other.entry == entry)&&(identical(other.entryConnections, entryConnections) || other.entryConnections == entryConnections)&&(identical(other.exitConnections, exitConnections) || other.exitConnections == exitConnections)&&(identical(other.upload, upload) || other.upload == upload)&&(identical(other.download, download) || other.download == download));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChainStatus&&(identical(other.coreEpoch, coreEpoch) || other.coreEpoch == coreEpoch)&&(identical(other.routeVersion, routeVersion) || other.routeVersion == routeVersion)&&(identical(other.running, running) || other.running == running)&&(identical(other.selected, selected) || other.selected == selected)&&(identical(other.proxy, proxy) || other.proxy == proxy)&&(identical(other.proxyType, proxyType) || other.proxyType == proxyType)&&(identical(other.target, target) || other.target == target)&&(identical(other.entry, entry) || other.entry == entry)&&(identical(other.entryConnections, entryConnections) || other.entryConnections == entryConnections)&&(identical(other.exitConnections, exitConnections) || other.exitConnections == exitConnections)&&(identical(other.upload, upload) || other.upload == upload)&&(identical(other.download, download) || other.download == download)&&const DeepCollectionEquality().equals(other.hops, _hops));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,coreEpoch,routeVersion,running,selected,proxy,proxyType,target,entry,entryConnections,exitConnections,upload,download);
+    return Object.hash(runtimeType,coreEpoch,routeVersion,running,selected,proxy,proxyType,target,entry,entryConnections,exitConnections,upload,download,const DeepCollectionEquality().hash(_hops));
 }
 
 @override
 String toString() {
-    return 'ChainStatus(coreEpoch: $coreEpoch, routeVersion: $routeVersion, running: $running, selected: $selected, proxy: $proxy, proxyType: $proxyType, target: $target, entry: $entry, entryConnections: $entryConnections, exitConnections: $exitConnections, upload: $upload, download: $download)';
+    return 'ChainStatus(coreEpoch: $coreEpoch, routeVersion: $routeVersion, running: $running, selected: $selected, proxy: $proxy, proxyType: $proxyType, target: $target, entry: $entry, entryConnections: $entryConnections, exitConnections: $exitConnections, upload: $upload, download: $download, hops: $hops)';
 }
 
 
@@ -6927,7 +6935,7 @@ abstract mixin class _$ChainStatusCopyWith<$Res> implements $ChainStatusCopyWith
   factory _$ChainStatusCopyWith(_ChainStatus value, $Res Function(_ChainStatus) _then) = __$ChainStatusCopyWithImpl;
 @override @useResult
 $Res call({
-@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String proxy,@JsonKey(name: 'proxy-type') String proxyType, String target, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download
+@JsonKey(name: 'core-epoch') int coreEpoch,@JsonKey(name: 'route-version') int routeVersion, bool running, bool selected, String proxy,@JsonKey(name: 'proxy-type') String proxyType, String target, String entry,@JsonKey(name: 'entry-connections') int entryConnections,@JsonKey(name: 'exit-connections') int exitConnections, int upload, int download, List<ChainHopStatus> hops
 });
 
 
@@ -6944,7 +6952,7 @@ class __$ChainStatusCopyWithImpl<$Res>
 
 /// Create a copy of ChainStatus
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? proxy = null,Object? proxyType = null,Object? target = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? coreEpoch = null,Object? routeVersion = null,Object? running = null,Object? selected = null,Object? proxy = null,Object? proxyType = null,Object? target = null,Object? entry = null,Object? entryConnections = null,Object? exitConnections = null,Object? upload = null,Object? download = null,Object? hops = null,}) {
   return _then(_ChainStatus(
 coreEpoch: null == coreEpoch ? _self.coreEpoch : coreEpoch // ignore: cast_nullable_to_non_nullable
 as int,routeVersion: null == routeVersion ? _self.routeVersion : routeVersion // ignore: cast_nullable_to_non_nullable
@@ -6956,6 +6964,286 @@ as String,target: null == target ? _self.target : target // ignore: cast_nullabl
 as String,entry: null == entry ? _self.entry : entry // ignore: cast_nullable_to_non_nullable
 as String,entryConnections: null == entryConnections ? _self.entryConnections : entryConnections // ignore: cast_nullable_to_non_nullable
 as int,exitConnections: null == exitConnections ? _self.exitConnections : exitConnections // ignore: cast_nullable_to_non_nullable
+as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
+as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
+as int,hops: null == hops ? _self._hops : hops // ignore: cast_nullable_to_non_nullable
+as List<ChainHopStatus>,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
+mixin _$ChainHopStatus {
+
+ String get name; int get connections; int get upload; int get download;
+/// Create a copy of ChainHopStatus
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ChainHopStatusCopyWith<ChainHopStatus> get copyWith => _$ChainHopStatusCopyWithImpl<ChainHopStatus>(this as ChainHopStatus, _$identity);
+
+  /// Serializes this ChainHopStatus to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as ChainHopStatus;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChainHopStatus&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.connections, _this.connections) || other.connections == _this.connections)&&(identical(other.upload, _this.upload) || other.upload == _this.upload)&&(identical(other.download, _this.download) || other.download == _this.download));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as ChainHopStatus;
+  return Object.hash(runtimeType,_this.name,_this.connections,_this.upload,_this.download);
+}
+
+@override
+String toString() {
+  final _this = this as ChainHopStatus;
+  return 'ChainHopStatus(name: ${_this.name}, connections: ${_this.connections}, upload: ${_this.upload}, download: ${_this.download})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ChainHopStatusCopyWith<$Res>  {
+  factory $ChainHopStatusCopyWith(ChainHopStatus value, $Res Function(ChainHopStatus) _then) = _$ChainHopStatusCopyWithImpl;
+@useResult
+$Res call({
+ String name, int connections, int upload, int download
+});
+
+
+
+
+}
+/// @nodoc
+class _$ChainHopStatusCopyWithImpl<$Res>
+    implements $ChainHopStatusCopyWith<$Res> {
+  _$ChainHopStatusCopyWithImpl(this._self, this._then);
+
+  final ChainHopStatus _self;
+  final $Res Function(ChainHopStatus) _then;
+
+/// Create a copy of ChainHopStatus
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? connections = null,Object? upload = null,Object? download = null,}) {
+  return _then(ChainHopStatus(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,connections: null == connections ? _self.connections : connections // ignore: cast_nullable_to_non_nullable
+as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
+as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ChainHopStatus].
+extension ChainHopStatusPatterns on ChainHopStatus {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ChainHopStatus value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ChainHopStatus() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ChainHopStatus value)  $default,){
+final _that = this;
+switch (_that) {
+case _ChainHopStatus():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ChainHopStatus value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ChainHopStatus() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  int connections,  int upload,  int download)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ChainHopStatus() when $default != null:
+return $default(_that.name,_that.connections,_that.upload,_that.download);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  int connections,  int upload,  int download)  $default,) {final _that = this;
+switch (_that) {
+case _ChainHopStatus():
+return $default(_that.name,_that.connections,_that.upload,_that.download);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  int connections,  int upload,  int download)?  $default,) {final _that = this;
+switch (_that) {
+case _ChainHopStatus() when $default != null:
+return $default(_that.name,_that.connections,_that.upload,_that.download);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ChainHopStatus implements ChainHopStatus {
+  const _ChainHopStatus({required this.name, this.connections = 0, this.upload = 0, this.download = 0});
+  factory _ChainHopStatus.fromJson(Map<String, dynamic> json) => _$ChainHopStatusFromJson(json);
+
+@override final  String name;
+@override@JsonKey() final  int connections;
+@override@JsonKey() final  int upload;
+@override@JsonKey() final  int download;
+
+/// Create a copy of ChainHopStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ChainHopStatusCopyWith<_ChainHopStatus> get copyWith => __$ChainHopStatusCopyWithImpl<_ChainHopStatus>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ChainHopStatusToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChainHopStatus&&(identical(other.name, name) || other.name == name)&&(identical(other.connections, connections) || other.connections == connections)&&(identical(other.upload, upload) || other.upload == upload)&&(identical(other.download, download) || other.download == download));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,name,connections,upload,download);
+}
+
+@override
+String toString() {
+    return 'ChainHopStatus(name: $name, connections: $connections, upload: $upload, download: $download)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ChainHopStatusCopyWith<$Res> implements $ChainHopStatusCopyWith<$Res> {
+  factory _$ChainHopStatusCopyWith(_ChainHopStatus value, $Res Function(_ChainHopStatus) _then) = __$ChainHopStatusCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, int connections, int upload, int download
+});
+
+
+
+
+}
+/// @nodoc
+class __$ChainHopStatusCopyWithImpl<$Res>
+    implements _$ChainHopStatusCopyWith<$Res> {
+  __$ChainHopStatusCopyWithImpl(this._self, this._then);
+
+  final _ChainHopStatus _self;
+  final $Res Function(_ChainHopStatus) _then;
+
+/// Create a copy of ChainHopStatus
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? connections = null,Object? upload = null,Object? download = null,}) {
+  return _then(_ChainHopStatus(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,connections: null == connections ? _self.connections : connections // ignore: cast_nullable_to_non_nullable
 as int,upload: null == upload ? _self.upload : upload // ignore: cast_nullable_to_non_nullable
 as int,download: null == download ? _self.download : download // ignore: cast_nullable_to_non_nullable
 as int,

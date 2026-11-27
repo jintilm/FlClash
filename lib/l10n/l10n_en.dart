@@ -4010,14 +4010,14 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aggregateAsExit => 'Use as exit';
 
   @override
-  String get aggregateSwap => 'Swap entry and exit';
+  String get aggregateSwap => 'Reverse hop order';
 
   @override
   String get aggregateChoose => 'Choose';
 
   @override
   String get aggregateRouteHint =>
-      'This device → Entry → Exit → Website. Save to test the complete chain; apply to use it for traffic.';
+      'This device → Entry → Relays → Exit → Website. Save to test the complete chain; apply to use it for traffic.';
 
   @override
   String get aggregateDnsInherited =>
@@ -4097,11 +4097,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'This node already has a dialer dependency; resolve it before aggregation or chaining';
 
   @override
-  String get aggregateSameHop => 'Entry and exit must be different nodes';
+  String get aggregateSameHop =>
+      'A node cannot appear more than once in a chain.';
 
   @override
   String get aggregateUdpEntry =>
-      'The exit protocol requires UDP support from the entry';
+      'This hop’s protocol requires the preceding hop to support UDP';
 
   @override
   String get aggregateCycle => 'Circular proxy dependency';
@@ -4151,7 +4152,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Existing node results are shown. Missing chain results are tested automatically through entry $entry.';
+    return 'Existing node results are shown. Missing path results are tested automatically through $entry.';
   }
 
   @override
@@ -4221,4 +4222,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aggregateProxyTrafficHint =>
       'Counts and traffic cover this proxy’s open connections. In rule mode, this follows the configured target group.';
+
+  @override
+  String aggregateRelay(int hop) {
+    return 'Relay hop $hop';
+  }
+
+  @override
+  String get aggregateAddRelay => 'Add relay';
+
+  @override
+  String aggregateMultiHopHint(int max) {
+    return 'Supports 2–$max hops. Use Sort to drag nodes; use a node’s context menu to remove it. More hops can increase latency.';
+  }
+
+  @override
+  String aggregateHopLimit(int max) {
+    return 'A chain supports at most $max hops.';
+  }
+
+  @override
+  String get aggregatePrefixMissing =>
+      'Choose the preceding hops first to test this path.';
+
+  @override
+  String get aggregateAllHopConnections => 'Connections by hop';
 }

@@ -14,18 +14,26 @@ type ChainStatusParams struct {
 }
 
 type ChainStatus struct {
-	CoreEpoch        uint64 `json:"core-epoch"`
-	RouteVersion     uint64 `json:"route-version"`
-	Running          bool   `json:"running"`
-	Selected         bool   `json:"selected"`
-	Proxy            string `json:"proxy"`
-	ProxyType        string `json:"proxy-type"`
-	Target           string `json:"target"`
-	Entry            string `json:"entry"`
-	EntryConnections int    `json:"entry-connections"`
-	ExitConnections  int    `json:"exit-connections"`
-	Upload           int64  `json:"upload"`
-	Download         int64  `json:"download"`
+	CoreEpoch        uint64           `json:"core-epoch"`
+	RouteVersion     uint64           `json:"route-version"`
+	Running          bool             `json:"running"`
+	Selected         bool             `json:"selected"`
+	Proxy            string           `json:"proxy"`
+	ProxyType        string           `json:"proxy-type"`
+	Target           string           `json:"target"`
+	Entry            string           `json:"entry"`
+	EntryConnections int              `json:"entry-connections"`
+	ExitConnections  int              `json:"exit-connections"`
+	Upload           int64            `json:"upload"`
+	Download         int64            `json:"download"`
+	Hops             []ChainHopStatus `json:"hops"`
+}
+
+type ChainHopStatus struct {
+	Name        string `json:"name"`
+	Connections int    `json:"connections"`
+	Upload      int64  `json:"upload"`
+	Download    int64  `json:"download"`
 }
 
 func handleChainStatus(params ChainStatusParams) ChainStatus {
@@ -50,25 +58,36 @@ func handleChainStatus(params ChainStatusParams) ChainStatus {
 	}
 	result.Proxy, result.ProxyType = exit.Name(), exit.Type().String()
 	result.Selected = selected != nil && exitName(selected) == exitName(exit)
-	if entry := lookupProxy(exit.ProxyInfo().DialerProxy); entry != nil {
-		result.Entry = entry.Name()
+	seen := map[string]bool{}
+	for hop := exit; hop != nil && !seen[hop.Name()]; hop = statusOutbound(lookupProxy(hop.ProxyInfo().DialerProxy)) {
+		seen[hop.Name()] = true
+		result.Hops = append(result.Hops, ChainHopStatus{Name: hop.Name()})
+	}
+	slices.Reverse(result.Hops)
+	if len(result.Hops) > 1 {
+		result.Entry = result.Hops[0].Name
+	}
+	positions := make(map[string]int, len(result.Hops))
+	for index, hop := range result.Hops {
+		positions[hop.Name] = index
 	}
 	statistic.DefaultManager.Range(func(tracker statistic.Tracker) bool {
 		info := tracker.Info()
-		if result.Entry != "" && info.Metadata.Type == constant.INNER && slices.Contains(info.Chain, result.Entry) {
-			result.EntryConnections++
-			result.Upload += info.UploadTotal.Load()
-			result.Download += info.DownloadTotal.Load()
-		}
-		if slices.Contains(info.Chain, result.Proxy) {
-			result.ExitConnections++
-			if result.Entry == "" {
-				result.Upload += info.UploadTotal.Load()
-				result.Download += info.DownloadTotal.Load()
+		for _, name := range info.Chain {
+			if index, ok := positions[name]; ok && (index == len(result.Hops)-1 || info.Metadata.Type == constant.INNER) {
+				hop := &result.Hops[index]
+				hop.Connections++
+				hop.Upload += info.UploadTotal.Load()
+				hop.Download += info.DownloadTotal.Load()
 			}
 		}
 		return true
 	})
+	result.ExitConnections = result.Hops[len(result.Hops)-1].Connections
+	if result.Entry != "" {
+		result.EntryConnections = result.Hops[0].Connections
+	}
+	result.Upload, result.Download = result.Hops[0].Upload, result.Hops[0].Download
 	return result
 }
 
