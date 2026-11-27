@@ -25,6 +25,63 @@ void main() {
   });
 
   test(
+    'a first aggregate setup survives source updates before the base resolves',
+    () async {
+      const base = Profile(id: 1, autoUpdateDuration: Duration.zero);
+      const aggregate = Profile(
+        id: 2,
+        type: ProfileType.aggregate,
+        autoUpdateDuration: Duration.zero,
+        aggregate: AggregateConfig(baseProfileId: 1, sourceIds: {1, 3}),
+      );
+      const source = Profile(id: 3, autoUpdateDuration: Duration.zero);
+      final pending = Completer<SetupState>();
+      final profiles = TestProfiles([base, aggregate, source]);
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => profiles),
+          setupStateProvider(1).overrideWith((_) => pending.future),
+        ],
+      );
+      addTearDown(container.dispose);
+      final future = readSetupState(container, 2);
+      final result = expectLater(
+        future,
+        completion(
+          isA<SetupState>().having(
+            (state) => state.aggregateSourceVersions[3],
+            'source version',
+            1000,
+          ),
+        ),
+      );
+      profiles.replace([
+        base,
+        aggregate,
+        source.copyWith(
+          lastUpdateDate: DateTime.fromMillisecondsSinceEpoch(1000),
+        ),
+      ]);
+      await container.pump();
+      pending.complete(
+        const SetupState(
+          profileId: 1,
+          profileLastUpdateDate: null,
+          profileType: ProfileType.file,
+          rules: [],
+          proxyGroups: [],
+          addedRules: [],
+          script: null,
+          overrides: ProfileOverrides(),
+        ),
+      );
+      await result;
+      await container.pump();
+      expect(container.exists(setupStateProvider(2)), isFalse);
+    },
+  );
+
+  test(
     'aggregate setup can finish after disposal while the base is pending',
     () async {
       const base = Profile(id: 1, autoUpdateDuration: Duration.zero);
@@ -73,6 +130,80 @@ void main() {
         ),
       );
       await result;
+    },
+  );
+
+  test(
+    'first setup waits for cold local proxies and releases them after completion',
+    () async {
+      const base = Profile(id: 1, autoUpdateDuration: Duration.zero);
+      const aggregate = Profile(
+        id: 2,
+        type: ProfileType.aggregate,
+        autoUpdateDuration: Duration.zero,
+        aggregate: AggregateConfig(baseProfileId: 1, sourceIds: {0, 1}),
+      );
+      final locals = StreamController<List<CustomProxy>>();
+      final container = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([base, aggregate])),
+          customProxiesProvider.overrideWithBuild((_, _) => locals.stream),
+        ],
+      );
+      addTearDown(container.dispose);
+      addTearDown(locals.close);
+      final result = readSetupState(container, 2);
+      await container.pump();
+      expect(locals.hasListener, isTrue);
+      locals.add(const [
+        CustomProxy(id: 9, definition: {'name': 'Local'}),
+      ]);
+      expect((await result).aggregateSourceVersions, contains(0));
+      await container.pump();
+      expect(container.exists(setupStateProvider(2)), isFalse);
+      expect(locals.hasListener, isFalse);
+    },
+  );
+
+  test(
+    'failed setup releases its subscription and the next read can succeed',
+    () async {
+      final pending = Completer<SetupState>();
+      var failed = true;
+      final container = ProviderContainer(
+        retry: (_, _) => null,
+        overrides: [
+          setupStateProvider(2).overrideWith(
+            (_) => failed
+                ? Future<SetupState>.error(StateError('source failed'))
+                : pending.future,
+          ),
+        ],
+      );
+      addTearDown(container.dispose);
+      await expectLater(
+        readSetupState(container, 2),
+        throwsA(isA<StateError>()),
+      );
+      await container.pump();
+      expect(container.exists(setupStateProvider(2)), isFalse);
+      failed = false;
+      final result = readSetupState(container, 2);
+      pending.complete(
+        const SetupState(
+          profileId: 2,
+          profileLastUpdateDate: null,
+          profileType: ProfileType.file,
+          rules: [],
+          proxyGroups: [],
+          addedRules: [],
+          script: null,
+          overrides: ProfileOverrides(),
+        ),
+      );
+      expect((await result).profileId, 2);
+      await container.pump();
+      expect(container.exists(setupStateProvider(2)), isFalse);
     },
   );
 

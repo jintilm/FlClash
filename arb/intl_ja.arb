@@ -1197,7 +1197,7 @@
   "aggregateUntested": "未測定",
   "aggregateNodeDelay": "ノードの遅延",
   "aggregateTestChain": "チェーンを測定",
-  "aggregateExitDelayHint": "チェーンの遅延は入口 {entry} を経由して測定します。ノードの遅延は単独の測定結果です。",
+  "aggregateExitDelayHint": "既存のノード測定結果を表示します。未測定のチェーンは入口 {entry} を経由して自動測定します。",
   "aggregateEntryStatus": "入口の状態",
   "aggregateEntryUnknown": "状態不明",
   "aggregateEntryNotLoaded": "チェーン未読込",

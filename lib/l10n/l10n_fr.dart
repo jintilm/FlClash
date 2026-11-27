@@ -4196,7 +4196,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'La latence de la chaîne est mesurée via l’entrée $entry ; celle du nœud est mesurée séparément.';
+    return 'Les résultats existants des nœuds sont affichés. Les chaînes non testées sont mesurées automatiquement via l’entrée $entry.';
   }
 
   @override

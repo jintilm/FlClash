@@ -437,7 +437,7 @@ class SetupAction extends _$SetupAction {
     final profileId = ref.read(currentProfileIdProvider);
     final SetupState setupState;
     try {
-      setupState = await ref.read(setupStateProvider(profileId).future);
+      setupState = await readSetupState(ref.container, profileId);
     } catch (_) {
       return false;
     }
@@ -683,7 +683,7 @@ class SetupAction extends _$SetupAction {
 
   Future<String> getProfileWithId(int profileId) async {
     try {
-      final setupState = await ref.read(setupStateProvider(profileId).future);
+      final setupState = await readSetupState(ref.container, profileId);
       final patchClashConfig = ref.read(patchClashConfigProvider);
       final res = await getProfile(
         setupState: setupState,
@@ -808,7 +808,7 @@ class SetupAction extends _$SetupAction {
     SetupState? setupState;
     final realProfile = await globalState.safeRun(() async {
       try {
-        final state = await ref.read(setupStateProvider(profile?.id).future);
+        final state = await readSetupState(ref.container, profile?.id);
         setupState = state;
         return await getProfile(
           setupState: state,

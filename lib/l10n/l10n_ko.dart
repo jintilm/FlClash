@@ -4035,7 +4035,7 @@ class AppLocalizationsKo extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return '체인 지연은 진입 노드 $entry을(를) 통해 측정하며, 노드 지연은 단독 측정 결과입니다.';
+    return '기존 노드 측정 결과를 표시합니다. 미측정 체인은 진입 노드 $entry을(를) 통해 자동 측정합니다.';
   }
 
   @override

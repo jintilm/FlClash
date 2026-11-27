@@ -284,7 +284,7 @@ final class AggregateActionProvider
   }
 }
 
-String _$aggregateActionHash() => r'8e54bc922c9c5354005d15bcc7a4e9a464d6c117';
+String _$aggregateActionHash() => r'0c522e44f011eb7f5260f8835e825efe8d74b668';
 
 abstract class _$AggregateAction extends $Notifier<void> {
   void build();

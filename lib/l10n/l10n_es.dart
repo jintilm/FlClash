@@ -4190,7 +4190,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'La latencia de la cadena se mide a través de la entrada $entry; la del nodo se mide por separado.';
+    return 'Se muestran los resultados existentes de los nodos. Las cadenas sin medir se prueban automáticamente a través de la entrada $entry.';
   }
 
   @override

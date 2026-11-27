@@ -1,9 +1,13 @@
+import 'dart:async';
+
 import 'package:collection/collection.dart';
 import 'package:fl_clash/common/aggregation.dart';
 import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/features/form/form.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/aggregate_delay.dart';
+import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
@@ -11,7 +15,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'delay_button.dart';
 
-class AggregateChainEditor extends StatefulWidget {
+class AggregateChainEditor extends ConsumerStatefulWidget {
   const AggregateChainEditor({
     super.key,
     required this.nodes,
@@ -26,10 +30,11 @@ class AggregateChainEditor extends StatefulWidget {
   final AggregateNodeRef? exit;
 
   @override
-  State<AggregateChainEditor> createState() => _AggregateChainEditorState();
+  ConsumerState<AggregateChainEditor> createState() =>
+      _AggregateChainEditorState();
 }
 
-class _AggregateChainEditorState extends State<AggregateChainEditor> {
+class _AggregateChainEditorState extends ConsumerState<AggregateChainEditor> {
   late String _name = widget.chain?.name ?? '';
   late AggregateNodeRef? _entry = widget.chain?.entry ?? widget.entry;
   late AggregateNodeRef? _exit = widget.chain?.exit ?? widget.exit;
@@ -45,7 +50,8 @@ class _AggregateChainEditorState extends State<AggregateChainEditor> {
               !node.hasDialer && node.ref.fingerprint != other?.fingerprint,
         )
         .toList();
-    final result = await showNestedSheet<AggregateNode>(
+    var pickerOpen = true;
+    final selection = showNestedSheet<AggregateNode>(
       context,
       builder: (context) => SelectionSheet<AggregateNode>(
         title: entry
@@ -72,14 +78,57 @@ class _AggregateChainEditorState extends State<AggregateChainEditor> {
         onSelected: (node) => Navigator.of(context).pop(node),
       ),
     );
-    if (result == null || !mounted) return;
+    if (!entry) {
+      unawaited(
+        _testCandidates(candidates, entryNode, () => mounted && pickerOpen),
+      );
+    }
+    final AggregateNode? result;
+    try {
+      result = await selection;
+    } finally {
+      pickerOpen = false;
+    }
+    final chosen = result;
+    if (chosen == null || !mounted) return;
     setState(() {
       if (entry) {
-        _entry = result.ref;
+        _entry = chosen.ref;
       } else {
-        _exit = result.ref;
+        _exit = chosen.ref;
       }
     });
+  }
+
+  Future<void> _testCandidates(
+    List<AggregateNode> candidates,
+    AggregateNode? entry,
+    bool Function() pickerOpen,
+  ) async {
+    final testUrl = ref.read(realTestUrlProvider(null));
+    bool isCurrent() =>
+        pickerOpen() &&
+        ref.read(coreStatusProvider) == CoreStatus.connected &&
+        ref.read(realTestUrlProvider(null)) == testUrl;
+    final pending = candidates.iterator;
+    Future<void> worker() async {
+      while (isCurrent() && pending.moveNext()) {
+        final target = AggregateDelayTarget([?entry, pending.current]);
+        if (!target.testable) continue;
+        await ref
+            .read(aggregateDelayTestProvider(target.key).notifier)
+            .testIfNeeded(target, isCurrent: isCurrent);
+      }
+    }
+
+    await Future.wait([
+      for (
+        var index = 0;
+        index < maxConcurrentDelayTests && index < candidates.length;
+        index++
+      )
+        worker(),
+    ]);
   }
 
   String _label(AggregateNodeRef? value) {

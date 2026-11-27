@@ -1490,7 +1490,10 @@ Explicit application selects the aggregate group in the chosen base selector and
 chain, the previously selected chain if it still exists, or the first chain. Other rule selectors keep their selections.
 The chain row's use action goes through the same apply and rollback path; loading a chain alone is not evidence that
 traffic uses it. Its active label also checks the selected group path and mode. Node pickers reuse standalone delays and,
-when choosing an exit with an entry selected, test the complete ordered pair and label those results separately.
+when choosing an exit with an entry selected, test the complete ordered pair and label those results separately. Opening
+the exit picker reuses completed results for that ordered pair and automatically measures missing results with bounded
+workers. Closing the picker stops dispatch and skips work still waiting for a delay-test slot; already running tests
+can finish into the shared cache. A Core disconnect or a changed test URL stops that picker run.
 
 The dashboard's `AggregateRouteCard` polls `connection.chainStatus` only while visible. With no pinned proxy, Core
 resolves the target group's current leaf in rule mode, `GLOBAL` in global mode, or `DIRECT` in direct mode. Load balancers
@@ -1509,6 +1512,11 @@ Core's delay-test concurrency limit. `AggregateDelayTest` keeps results by order
 after a Core or test-URL change; the page dispatches a bounded number of workers when testing the visible list. Exit-IP
 checks still require an applied route. Aggregate setup captures all watched inputs before awaiting its base, so disposal
 or a rebuild while that base loads cannot leave the continuation reading an expired `Ref`.
+
+Actions await setup through `readSetupState`, whose container subscription holds the provider and its dependencies until
+the answer or error, then closes in `finally`. A bare read of `.future` releases that subscription immediately: if a
+source changes before the first result, Riverpod invalidates the unobserved provider and disposes its pending future
+instead of rebuilding. Keeping the subscription preserves reactivity as well as the first-load lifetime.
 
 Aggregate delay sorting snapshots existing measurements only on a sort request or after the visible batch completes;
 individual replies never move a row under the pointer. Successful delays lead in either direction, then untested nodes,

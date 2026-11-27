@@ -4142,7 +4142,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Задержка цепочки измеряется через вход $entry; задержка узла измеряется отдельно.';
+    return 'Показаны прежние результаты узлов. Непроверенные цепочки автоматически проверяются через вход $entry.';
   }
 
   @override

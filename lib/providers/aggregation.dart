@@ -159,7 +159,7 @@ class AggregateAction extends _$AggregateAction {
 
   Future<Map<String, dynamic>> sourceConfig(Profile profile) async {
     if (profile.type == ProfileType.custom) {
-      final state = await ref.read(setupStateProvider(profile.id).future);
+      final state = await readSetupState(ref.container, profile.id);
       final built = await ref
           .read(setupActionProvider.notifier)
           .getProfile(
@@ -339,7 +339,7 @@ class AggregateAction extends _$AggregateAction {
       if (base == null || base.type == ProfileType.aggregate) {
         throw const AggregateException(AggregateIssue.missingBase);
       }
-      final baseState = await ref.read(setupStateProvider(base.id).future);
+      final baseState = await readSetupState(ref.container, base.id);
       final built = await buildProfile(
         settings,
         baseState,

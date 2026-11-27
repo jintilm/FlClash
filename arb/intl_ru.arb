@@ -1197,7 +1197,7 @@
   "aggregateUntested": "Не проверено",
   "aggregateNodeDelay": "Задержка узла",
   "aggregateTestChain": "Проверить цепочку",
-  "aggregateExitDelayHint": "Задержка цепочки измеряется через вход {entry}; задержка узла измеряется отдельно.",
+  "aggregateExitDelayHint": "Показаны прежние результаты узлов. Непроверенные цепочки автоматически проверяются через вход {entry}.",
   "aggregateEntryStatus": "Состояние входа",
   "aggregateEntryUnknown": "Состояние неизвестно",
   "aggregateEntryNotLoaded": "Цепочка не загружена",

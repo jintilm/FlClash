@@ -1197,7 +1197,7 @@
   "aggregateUntested": "Sin probar",
   "aggregateNodeDelay": "Latencia del nodo",
   "aggregateTestChain": "Probar cadena",
-  "aggregateExitDelayHint": "La latencia de la cadena se mide a través de la entrada {entry}; la del nodo se mide por separado.",
+  "aggregateExitDelayHint": "Se muestran los resultados existentes de los nodos. Las cadenas sin medir se prueban automáticamente a través de la entrada {entry}.",
   "aggregateEntryStatus": "Estado de entrada",
   "aggregateEntryUnknown": "Estado desconocido",
   "aggregateEntryNotLoaded": "Cadena no cargada",

@@ -4151,7 +4151,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'Chain latency is measured through entry $entry; node latency is the standalone result.';
+    return 'Existing node results are shown. Missing chain results are tested automatically through entry $entry.';
   }
 
   @override

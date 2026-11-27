@@ -1312,7 +1312,7 @@
   "aggregateUntested": "Not tested",
   "aggregateNodeDelay": "Node latency",
   "aggregateTestChain": "Test chain",
-  "aggregateExitDelayHint": "Chain latency is measured through entry {entry}; node latency is the standalone result.",
+  "aggregateExitDelayHint": "Existing node results are shown. Missing chain results are tested automatically through entry {entry}.",
   "@aggregateExitDelayHint": {
     "placeholders": {
       "entry": {

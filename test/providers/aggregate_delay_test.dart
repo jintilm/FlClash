@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fl_clash/common/aggregation.dart';
+import 'package:fl_clash/common/task_pool.dart';
 import 'package:fl_clash/core/controller.dart';
 import 'package:fl_clash/core/interface.dart';
 import 'package:fl_clash/core/method.dart';
@@ -17,6 +18,7 @@ class _Core extends Mock implements CoreHandlerInterface {}
 void main() {
   late ProviderContainer container;
   late _Core core;
+  late TaskPool testPool;
   var disposed = false;
   final nodes = aggregateNodes(
     sourceId: 1,
@@ -33,9 +35,11 @@ void main() {
   setUp(() {
     disposed = false;
     core = _Core();
+    testPool = TaskPool(1);
     container = ProviderContainer(
       overrides: [
         coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+        aggregateDelayPoolProvider.overrideWithValue(testPool),
         coreStatusProvider.overrideWithBuild((_, _) => CoreStatus.connected),
         realTestUrlProvider(
           null,
@@ -111,6 +115,72 @@ void main() {
     expect(container.read(provider).error, isNotEmpty);
     expect(container.read(provider).testing, isFalse);
   });
+
+  test(
+    'automatic tests reuse completed results and manual tests still refresh them',
+    () async {
+      when(
+        () => core.testDraftDelay(
+          proxies: any(named: 'proxies'),
+          testUrl: any(named: 'testUrl'),
+          timeout: any(named: 'timeout'),
+        ),
+      ).thenAnswer((_) async => const Delay(name: '', url: '', value: -1));
+      final notifier = container.read(provider.notifier);
+      await notifier.testIfNeeded(target);
+      await notifier.testIfNeeded(target);
+      expect(container.read(provider).delay, -1);
+      verify(
+        () => core.testDraftDelay(
+          proxies: any(named: 'proxies'),
+          testUrl: any(named: 'testUrl'),
+          timeout: any(named: 'timeout'),
+        ),
+      ).called(1);
+      await notifier.test(target);
+      verify(
+        () => core.testDraftDelay(
+          proxies: any(named: 'proxies'),
+          testUrl: any(named: 'testUrl'),
+          timeout: any(named: 'timeout'),
+        ),
+      ).called(1);
+    },
+  );
+
+  test(
+    'a queued test is skipped after its picker closes and can be retried',
+    () async {
+      final blocked = Completer<void>();
+      final slot = testPool.run(() => blocked.future);
+      var pickerOpen = true;
+      final notifier = container.read(provider.notifier);
+      final job = notifier.testIfNeeded(target, isCurrent: () => pickerOpen);
+      expect(testPool.pendingCount, 1);
+      pickerOpen = false;
+      blocked.complete();
+      await slot;
+      await job;
+      expect(container.read(provider).testing, isFalse);
+      expect(container.read(provider).delay, isNull);
+      verifyNever(
+        () => core.testDraftDelay(
+          proxies: any(named: 'proxies'),
+          testUrl: any(named: 'testUrl'),
+          timeout: any(named: 'timeout'),
+        ),
+      );
+      when(
+        () => core.testDraftDelay(
+          proxies: any(named: 'proxies'),
+          testUrl: any(named: 'testUrl'),
+          timeout: any(named: 'timeout'),
+        ),
+      ).thenAnswer((_) async => const Delay(name: '', url: '', value: 52));
+      await notifier.testIfNeeded(target);
+      expect(container.read(provider).delay, 52);
+    },
+  );
 
   test('a core disconnect invalidates a pending result', () async {
     final answer = Completer<Delay>();

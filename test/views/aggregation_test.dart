@@ -45,7 +45,10 @@ class _Delay extends AggregateDelayTest {
   void measure(int value) => state = AggregateDelayResult(delay: value);
 
   @override
-  Future<void> test(AggregateDelayTarget target) async {
+  Future<void> test(
+    AggregateDelayTarget target, {
+    bool Function()? isCurrent,
+  }) async {
     tested.add(target);
     state = AggregateDelayResult(delay: 58, testedAt: DateTime(2026));
   }

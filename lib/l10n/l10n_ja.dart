@@ -3959,7 +3959,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return 'チェーンの遅延は入口 $entry を経由して測定します。ノードの遅延は単独の測定結果です。';
+    return '既存のノード測定結果を表示します。未測定のチェーンは入口 $entry を経由して自動測定します。';
   }
 
   @override

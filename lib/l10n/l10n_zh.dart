@@ -3908,7 +3908,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String aggregateExitDelayHint(String entry) {
-    return '链路延迟通过入口 $entry 测得；节点延迟为单独测试结果。';
+    return '沿用已有节点延迟；未测链路会通过入口 $entry 自动测速。';
   }
 
   @override

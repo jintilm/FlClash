@@ -109,6 +109,21 @@ ProfileOverrides profileOverrides(Ref ref, int? profileId) {
         );
 }
 
+Future<SetupState> readSetupState(
+  ProviderContainer container,
+  int? profileId,
+) async {
+  final subscription = container.listen(
+    setupStateProvider(profileId).future,
+    (_, _) {},
+  );
+  try {
+    return await subscription.read();
+  } finally {
+    subscription.close();
+  }
+}
+
 @riverpod
 Future<SetupState> setupState(Ref ref, int? profileId) async {
   final profile = ref.watch(profileProvider(profileId));

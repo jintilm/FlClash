@@ -1197,7 +1197,7 @@
   "aggregateUntested": "Non testé",
   "aggregateNodeDelay": "Latence du nœud",
   "aggregateTestChain": "Tester la chaîne",
-  "aggregateExitDelayHint": "La latence de la chaîne est mesurée via l’entrée {entry} ; celle du nœud est mesurée séparément.",
+  "aggregateExitDelayHint": "Les résultats existants des nœuds sont affichés. Les chaînes non testées sont mesurées automatiquement via l’entrée {entry}.",
   "aggregateEntryStatus": "État de l’entrée",
   "aggregateEntryUnknown": "État inconnu",
   "aggregateEntryNotLoaded": "Chaîne non chargée",

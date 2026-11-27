@@ -36,8 +36,12 @@ class AggregateDelayTest extends _$AggregateDelayTest {
     return const AggregateDelayResult();
   }
 
-  Future<void> test(AggregateDelayTarget target) async {
+  Future<void> test(
+    AggregateDelayTarget target, {
+    bool Function()? isCurrent,
+  }) async {
     if (state.testing || !target.testable || target.key != targetKey) return;
+    if (isCurrent?.call() == false) return;
     final runRef = ref;
     final core = runRef.read(coreHandlerProvider);
     final pool = runRef.read(aggregateDelayPoolProvider);
@@ -51,7 +55,7 @@ class AggregateDelayTest extends _$AggregateDelayTest {
     );
     try {
       await pool.run(() async {
-        if (!runRef.mounted) return;
+        if (!runRef.mounted || isCurrent?.call() == false) return;
         if (runRef.read(coreStatusProvider) != CoreStatus.connected) {
           throw MessageException(currentAppLocalizations.aggregateCoreRequired);
         }
@@ -79,5 +83,13 @@ class AggregateDelayTest extends _$AggregateDelayTest {
         state = previous;
       }
     }
+  }
+
+  Future<void> testIfNeeded(
+    AggregateDelayTarget target, {
+    bool Function()? isCurrent,
+  }) async {
+    if (state.delay != null || state.testing) return;
+    await test(target, isCurrent: isCurrent);
   }
 }

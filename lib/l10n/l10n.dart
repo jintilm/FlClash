@@ -7299,7 +7299,7 @@ abstract class AppLocalizations {
   /// No description provided for @aggregateExitDelayHint.
   ///
   /// In en, this message translates to:
-  /// **'Chain latency is measured through entry {entry}; node latency is the standalone result.'**
+  /// **'Existing node results are shown. Missing chain results are tested automatically through entry {entry}.'**
   String aggregateExitDelayHint(String entry);
 
   /// No description provided for @aggregateEntryStatus.
